@@ -1,0 +1,11 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Unit test / coverage reports
+.coverage
+
+# Ignore the environment files
+venv/
+
+# Ignore .vscode directory and its files
+.vscode/
