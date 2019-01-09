@@ -61,6 +61,7 @@ class BaseTestCase(unittest.TestCase):
         )
 
         self.user_login = dict(username="test_user", password="12345")
+        self.wrong_password = dict(username="test_user", password="abcde")
 
     def tearDown(self):
         del USERS[:]

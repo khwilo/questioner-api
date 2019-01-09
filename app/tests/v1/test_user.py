@@ -114,3 +114,20 @@ class UserTestCase(BaseTestCase):
         self.assertEqual(res.status_code, 400)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual("User with username 'test_user' doesn't exist!", response_msg["message"])
+
+    def test_incorrect_password(self):
+        '''Test the API cannot log in a user with an incorrect password'''
+        res = self.client().post(
+            '/auth/register',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(self.user_registration)
+        )
+        self.assertEqual(res.status_code, 201)
+        res = self.client().post(
+            '/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(self.wrong_password)
+        )
+        self.assertEqual(res.status_code, 401)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual('Wrong credentials', response_msg["message"])
