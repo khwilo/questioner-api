@@ -33,6 +33,7 @@ class UserRegistration(Resource):
         )
 
         username = data['username']
+        password = data['password']
 
         # Validate the username
         if username.isdigit():
@@ -42,6 +43,12 @@ class UserRegistration(Resource):
         if not username or not username.split():
             return {
                 'message': 'username cannot be empty'
+            }, 400
+
+        # Validate the password
+        if not password or not password.split():
+            return {
+                'message': 'password cannot be empty'
             }, 400
 
         UserModel.add_user(serialize(user))
