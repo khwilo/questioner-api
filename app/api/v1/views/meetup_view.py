@@ -61,4 +61,4 @@ class Meetup(Resource):
             }, 200
         return {
             'message': 'Meetup ID must be an Integer'
-        }
+        }, 400
