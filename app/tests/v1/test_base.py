@@ -26,6 +26,17 @@ class BaseTestCase(unittest.TestCase):
             password="12345"
         )
 
+        self.digit_username = dict(
+            firstname="test_first",
+            lastname="test_last",
+            othername="test_other",
+            email="test@example.com",
+            phone_number="0700000000",
+            username="1234",
+            is_admin=False,
+            password="12345"
+        )
+
     def tearDown(self):
         del USERS[:]
         self.app_context.pop()

@@ -17,3 +17,14 @@ class UserTestCase(BaseTestCase):
         self.assertEqual(response_msg["status"], 201)
         self.assertTrue(response_msg["data"][0]["message"])
         self.assertEqual(response_msg["data"][0]["message"], "Create a user record")
+
+    def test_digit_username(self):
+        '''
+        Test the API cannot register a user with a username consisting of digits only
+        '''
+        res = self.client().post(
+            '/auth/register',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(self.digit_username)
+        )
+        self.assertEqual(res.status_code, 400)
