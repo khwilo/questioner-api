@@ -1,4 +1,7 @@
-from flask import Flask, make_response, jsonify
+'''Application entry module'''
+from flask import Flask
+
+from app.api.v1 import AUTH_BLUEPRINT
 
 from instance.config import APP_CONFIG
 
@@ -8,12 +11,6 @@ def create_app(config_name):
     app.config.from_object(APP_CONFIG[config_name])
     app.config.from_pyfile('config.py')
 
-    @app.route("/")
-    def welcome():
-        return make_response(
-            jsonify({
-                'message': 'Welcome to Questioner'
-            })
-        )
+    app.register_blueprint(AUTH_BLUEPRINT)
 
     return app
