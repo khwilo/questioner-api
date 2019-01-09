@@ -51,6 +51,13 @@ class UserRegistration(Resource):
                 'message': 'password cannot be empty'
             }, 400
 
+        users = UserModel.get_all_users()
+
+        if next(filter(lambda u: u['username'] == username, users), None):
+            return {
+                'message': "A user with username '{}' already exists!".format(username)
+            }, 401
+
         UserModel.add_user(serialize(user))
 
         return {

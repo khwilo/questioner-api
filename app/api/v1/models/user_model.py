@@ -26,3 +26,8 @@ class UserModel:
     def add_user(user):
         '''Add a new user to the data store'''
         USERS.append(user)
+
+    @staticmethod
+    def get_all_users():
+        '''Fetch all users'''
+        return USERS
