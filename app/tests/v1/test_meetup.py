@@ -69,3 +69,16 @@ class MeetupTestCase(BaseTestCase):
         self.assertEqual(res.status_code, 400)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg["message"], "Meetup ID must be an Integer")
+
+    def test_empty_meetup_list(self):
+        '''Test the API cannot read from an empty meetup list'''
+        res = self.get_response_from_user_login(self.admin_registration, self.admin_login)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["access_token"]
+        res = self.client().get(
+            '/api/v1/meetups/2',
+            headers=self.get_authentication_headers(access_token)
+        )
+        self.assertEqual(res.status_code, 404)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"], "Meetup with id '2' doesn't exist!")
