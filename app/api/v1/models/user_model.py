@@ -29,6 +29,11 @@ class UserModel:
         return sha256.hash(password)
 
     @staticmethod
+    def verify_password_hash(password, hashed_password):
+        '''Compare the password with its hashed value'''
+        return sha256.verify(password, hashed_password)
+
+    @staticmethod
     def add_user(user):
         '''Add a new user to the data store'''
         USERS.append(user)
@@ -37,3 +42,12 @@ class UserModel:
     def get_all_users():
         '''Fetch all users'''
         return USERS
+
+    @staticmethod
+    def get_user_by_username(username):
+        '''Fetch a user given a username'''
+        user = {}
+        for index, _ in enumerate(USERS):
+            if USERS[index].get('username') == username:
+                user = USERS[index]
+        return user
