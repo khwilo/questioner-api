@@ -39,6 +39,10 @@ class UserRegistration(Resource):
             return {
                 'message': 'username cannot consist of digits only'
             }, 400
+        if not username or not username.split():
+            return {
+                'message': 'username cannot be empty'
+            }, 400
 
         UserModel.add_user(serialize(user))
 
