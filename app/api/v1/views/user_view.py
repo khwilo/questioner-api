@@ -29,7 +29,7 @@ class UserRegistration(Resource):
             phone_number=data['phone_number'],
             username=data['username'],
             is_admin=data['is_admin'],
-            password=data['password']
+            password=UserModel.generate_password_hash(data['password'])
         )
 
         username = data['username']
@@ -64,6 +64,7 @@ class UserRegistration(Resource):
             "status": 201,
             "data": [
                 {
+                    "id": user.get_user_id(),
                     "message": "Create a user record"
                 }
             ]
