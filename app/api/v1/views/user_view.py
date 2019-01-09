@@ -32,6 +32,14 @@ class UserRegistration(Resource):
             password=data['password']
         )
 
+        username = data['username']
+
+        # Validate the username
+        if username.isdigit():
+            return {
+                'message': 'username cannot consist of digits only'
+            }, 400
+
         UserModel.add_user(serialize(user))
 
         return {
