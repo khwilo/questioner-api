@@ -28,3 +28,18 @@ class UserTestCase(BaseTestCase):
             data=json.dumps(self.digit_username)
         )
         self.assertEqual(res.status_code, 400)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"], "username cannot consist of digits only")
+
+    def test_empty_username(self):
+        '''
+        Test the API cannot register a user with an empty username
+        '''
+        res = self.client().post(
+            '/auth/register',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(self.empty_username)
+        )
+        self.assertEqual(res.status_code, 400)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"], "username cannot be empty")
