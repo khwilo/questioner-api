@@ -1,4 +1,5 @@
 '''This module represents the user view'''
+from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 
 from app.api.v1.utils.serializer import serialize
@@ -88,8 +89,10 @@ class UserLogin(Resource):
             }, 400
 
         if UserModel.verify_password_hash(data['password'], current_user['password']):
+            access_token = create_access_token(identity=data['username'])
             return {
-                'message': "Logged in as '{}'".format(current_user['username'])
+                'message': "Logged in as '{}'".format(current_user['username']),
+                'access_token': access_token
             }, 200
         return {
             'message': 'Wrong credentials'
