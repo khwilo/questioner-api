@@ -43,3 +43,16 @@ class UserTestCase(BaseTestCase):
         self.assertEqual(res.status_code, 400)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg["message"], "username cannot be empty")
+
+    def test_empty_password(self):
+        '''
+        Test the API cannot register a user without a password
+        '''
+        res = self.client().post(
+            '/auth/register',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(self.empty_password)
+        )
+        self.assertEqual(res.status_code, 400)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"], "password cannot be empty")
