@@ -103,3 +103,14 @@ class UserTestCase(BaseTestCase):
             data=json.dumps(self.user_registration)
         )
         self.assertEqual(UserModel.get_user_by_username('test_user'), USERS[0])
+
+    def test_incorrect_username(self):
+        '''Test the API cannot log in a user who is not yet registered'''
+        res = self.client().post(
+            '/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(self.user_login)
+        )
+        self.assertEqual(res.status_code, 400)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual("User with username 'test_user' doesn't exist!", response_msg["message"])
