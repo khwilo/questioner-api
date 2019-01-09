@@ -27,7 +27,7 @@ class BaseTestCase(unittest.TestCase):
             password="12345"
         )
 
-        self.adming_registration = dict(
+        self.admin_registration = dict(
             firstname="admin_first",
             lastname="admin_last",
             othername="admin_other",
