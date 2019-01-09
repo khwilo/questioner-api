@@ -1,0 +1,45 @@
+'''This module represents the meetup view'''
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_restful import reqparse, Resource
+
+from app.api.v1.utils.serializer import serialize
+from app.api.v1.models.meetup_model import MeetupModel
+from app.api.v1.models.user_model import UserModel
+
+class MeetupList(Resource):
+    '''Request on a meetup list'''
+    @jwt_required
+    def post(self):
+        '''Create a meetup record'''
+        parser = reqparse.RequestParser()
+        parser.add_argument('location', required=True, help="location cannot be blank!")
+        parser.add_argument('images', action='append')
+        parser.add_argument('topic', required=True, help="location cannot be blank!")
+        parser.add_argument('happening_on', required=True, help="location cannot be blank!")
+        parser.add_argument('tags', action='append')
+        data = parser.parse_args()
+
+        current_user = get_jwt_identity()
+        user = UserModel.get_user_by_username(current_user)
+
+        if not user:
+            return {
+                'message': "This action required loggin in!"
+            }, 401
+
+        if user['is_admin']:
+            meetup = MeetupModel(
+                location=data['location'],
+                images=data['images'],
+                topic=data['topic'],
+                happening_on=data['happening_on'],
+                tags=data['tags']
+            )
+            MeetupModel.add_meetup(serialize(meetup))
+            return {
+                'status': 201,
+                'data': [serialize(meetup)]
+            }, 201
+        return {
+            'message': "Only administrators can create a meetup"
+        }, 401
