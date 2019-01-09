@@ -1,4 +1,5 @@
 '''This module represents the user view'''
+from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 
 from app.api.v1.utils.serializer import serialize
@@ -69,3 +70,30 @@ class UserRegistration(Resource):
                 }
             ]
         }, 201
+
+class UserLogin(Resource):
+    '''Log in a user'''
+    def post(self):
+        '''Sign In a registered user'''
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', type=str, required=True, help='username cannot be blank!')
+        parser.add_argument('password', type=str, required=True, help='password cannot be blank!')
+
+        data = parser.parse_args()
+
+        current_user = UserModel.get_user_by_username(data['username'])
+
+        if not current_user:
+            return {
+                'message': "User with username '{}' doesn't exist!".format(data['username'])
+            }, 400
+
+        if UserModel.verify_password_hash(data['password'], current_user['password']):
+            access_token = create_access_token(identity=data['username'])
+            return {
+                'message': "Logged in as '{}'".format(current_user['username']),
+                'access_token': access_token
+            }, 200
+        return {
+            'message': 'Wrong credentials'
+        }, 401
