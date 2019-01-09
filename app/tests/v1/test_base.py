@@ -1,8 +1,8 @@
 '''This module represents the base test class'''
-import json
 import unittest
 
 from app import create_app
+from app.api.v1.models.user_model import USERS
 
 class BaseTestCase(unittest.TestCase):
     '''Base class for other test classes'''
@@ -12,15 +12,27 @@ class BaseTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
 
+        self.user_registration = dict(
+            firstname="test_first",
+            lastname="test_last",
+            othername="test_other",
+            email="test@example.com",
+            phone_number="0700000000",
+            username="test_user",
+            is_admin=False,
+            password="12345"
+        )
+
     def tearDown(self):
+        del USERS[:]
         self.app_context.pop()
 
-    def test_welcome_message(self):
-        '''Test the API can return the welcome message'''
-        res = self.client().get("/")
-        self.assertEqual(res.status_code, 200)
-        response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual("Welcome to Questioner", response_msg["message"])
+    def get_accept_content_type_headers(self):
+        '''Return the content type headers for the body'''
+        return {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
 
 if __name__ == "__main__":
     unittest.main()
