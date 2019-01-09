@@ -60,6 +60,8 @@ class BaseTestCase(unittest.TestCase):
             password=""
         )
 
+        self.user_login = dict(username="test_user", password="12345")
+
     def tearDown(self):
         del USERS[:]
         self.app_context.pop()
@@ -70,6 +72,12 @@ class BaseTestCase(unittest.TestCase):
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
+
+    def get_authentication_headers(self, access_token):
+        '''Return the authentication header'''
+        authentication_headers = self.get_accept_content_type_headers()
+        authentication_headers['Authorization'] = "Bearer {}".format(access_token)
+        return authentication_headers
 
     def test_serialize_function(self):
         '''Test the function serialize() converts an object to a dictionary'''

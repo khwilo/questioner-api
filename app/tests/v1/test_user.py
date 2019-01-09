@@ -74,4 +74,22 @@ class UserTestCase(BaseTestCase):
         ) # Second user registration
         self.assertEqual(res.status_code, 401)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual(response_msg["message"], "A user with username 'test_user' already exists!")
+        self.assertEqual(
+            response_msg["message"],
+            "A user with username 'test_user' already exists!"
+        )
+
+    def test_user_login(self):
+        '''Test the API can log in a user'''
+        res = self.client().post(
+            '/auth/register',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(self.user_registration)
+        )
+        self.assertEqual(res.status_code, 201)
+        res = self.client().post(
+            '/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(self.user_login)
+        )
+        self.assertEqual(res.status_code, 200)
