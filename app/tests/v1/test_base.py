@@ -1,4 +1,5 @@
 '''This module represents the base test class'''
+import json
 import unittest
 
 from datetime import datetime
@@ -24,6 +25,17 @@ class BaseTestCase(unittest.TestCase):
             username="test_user",
             is_admin=False,
             password="12345"
+        )
+
+        self.adming_registration = dict(
+            firstname="admin_first",
+            lastname="admin_last",
+            othername="admin_other",
+            email="admin@example.com",
+            phone_number="0711111111",
+            username="test_admin",
+            is_admin=True,
+            password="901sT"
         )
 
         self.digit_username = dict(
@@ -63,6 +75,16 @@ class BaseTestCase(unittest.TestCase):
         self.user_login = dict(username="test_user", password="12345")
         self.wrong_password = dict(username="test_user", password="abcde")
 
+        self.admin_login = dict(username="test_admin", password="901sT")
+
+        self.meetup = dict(
+            location="Test Location",
+            images=[],
+            topic="Test Topic",
+            happening_on="2019-01-09",
+            tags=["Programming", "Design"]
+        )
+
     def tearDown(self):
         del USERS[:]
         self.app_context.pop()
@@ -79,6 +101,20 @@ class BaseTestCase(unittest.TestCase):
         authentication_headers = self.get_accept_content_type_headers()
         authentication_headers['Authorization'] = "Bearer {}".format(access_token)
         return authentication_headers
+
+    def get_response_from_user_login(self, user_registration, user_login):
+        '''Return a response from user log in'''
+        self.client().post(
+            '/auth/register',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(user_registration)
+        ) # User Registration
+        res = self.client().post(
+            '/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(user_login)
+        ) # User Log In
+        return res
 
     def test_serialize_function(self):
         '''Test the function serialize() converts an object to a dictionary'''
