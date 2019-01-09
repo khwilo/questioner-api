@@ -1,8 +1,11 @@
 '''This module represents the base test class'''
 import unittest
 
+from datetime import datetime
+
 from app import create_app
-from app.api.v1.models.user_model import USERS
+from app.api.v1.utils.serializer import serialize
+from app.api.v1.models.user_model import USERS, UserModel
 
 class BaseTestCase(unittest.TestCase):
     '''Base class for other test classes'''
@@ -33,6 +36,34 @@ class BaseTestCase(unittest.TestCase):
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
+
+    def test_serialize_function(self):
+        '''Test the function serialize() converts an object to a dictionary'''
+        user = UserModel(
+            firstname="test_first",
+            lastname="test_last",
+            othername="test_other",
+            email="test@example.com",
+            phone_number="0700000000",
+            username="test_user",
+            is_admin=False,
+            password="12345"
+        )
+        serialized_user_obj = serialize(user)
+        user_dict = dict(
+            firstname="test_first",
+            lastname="test_last",
+            othername="test_other",
+            email="test@example.com",
+            phone_number="0700000000",
+            username="test_user",
+            is_admin=False,
+            password="12345"
+        )
+        self.assertTrue(serialized_user_obj, user_dict)
+        now_date = datetime.utcnow()
+        serialized_date = serialize(now_date)
+        self.assertTrue(serialized_date, now_date.isoformat())
 
 if __name__ == "__main__":
     unittest.main()
