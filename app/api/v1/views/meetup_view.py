@@ -71,7 +71,7 @@ class UpcomingMeetup(Resource):
         meetups = MeetupModel.get_all_meetups()
         if meetups == []:
             return {
-                'message': 'No meetup has been added yet'
+                'message': 'No meetup is available'
             }, 404
         return {
             'status': 200,
