@@ -29,3 +29,8 @@ class MeetupModel:
     def get_meetup_by_id(meetup_id):
         '''Return a meetup given a meetup id'''
         return fetch_item(meetup_id, 'meetup_id', MEETUPS)
+
+    @staticmethod
+    def get_all_meetups():
+        '''Fetch all meetups'''
+        return MEETUPS

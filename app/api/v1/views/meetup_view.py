@@ -62,3 +62,18 @@ class Meetup(Resource):
         return {
             'message': 'Meetup ID must be an Integer'
         }, 400
+
+class UpcomingMeetup(Resource):
+    '''Request on an upcoming meetup item'''
+    @jwt_required
+    def get(self):
+        '''Fetch all upcoming meetups'''
+        meetups = MeetupModel.get_all_meetups()
+        if meetups == []:
+            return {
+                'message': 'No meetup has been added yet'
+            }, 404
+        return {
+            'status': 200,
+            'data': [meetups]
+        }, 200
