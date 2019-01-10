@@ -32,7 +32,7 @@ class MeetupList(Resource):
                 location=data['location'],
                 images=data['images'],
                 topic=data['topic'],
-                happening_on=data['happening_on'],
+                happening_on=MeetupModel.convert_string_to_date(data['happening_on']),
                 tags=data['tags']
             )
             MeetupModel.add_meetup(serialize(meetup))
@@ -75,5 +75,5 @@ class UpcomingMeetup(Resource):
             }, 404
         return {
             'status': 200,
-            'data': [meetups]
+            'data': sorted(meetups, key=lambda item: item['happening_on'], reverse=True)
         }, 200
