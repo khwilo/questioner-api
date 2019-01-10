@@ -21,3 +21,12 @@ class MeetupModel:
     def add_meetup(meetup):
         '''Add a new meetup to the data store'''
         MEETUPS.append(meetup)
+
+    @staticmethod
+    def get_meetup_by_id(meetup_id):
+        '''Return a meetup given a meetup id'''
+        meetup = {}
+        for index, _ in enumerate(MEETUPS):
+            if MEETUPS[index].get('meetup_id') == meetup_id:
+                meetup = MEETUPS[index]
+        return meetup

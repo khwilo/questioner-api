@@ -43,3 +43,22 @@ class MeetupList(Resource):
         return {
             'message': "Only administrators can create a meetup"
         }, 401
+
+class Meetup(Resource):
+    '''Request on a meetup item'''
+    @jwt_required
+    def get(self, meetup_id):
+        '''Fetch a single meetup item'''
+        if meetup_id.isdigit():
+            meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
+            if meetup == {}:
+                return {
+                    'message': "Meetup with id '{}' doesn't exist!".format(meetup_id)
+                }, 404
+            return {
+                'status': 200,
+                'data': [meetup]
+            }, 200
+        return {
+            'message': 'Meetup ID must be an Integer'
+        }, 400
