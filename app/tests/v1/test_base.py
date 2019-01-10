@@ -6,6 +6,7 @@ from datetime import datetime
 
 from app import create_app
 from app.api.v1.utils.serializer import serialize
+from app.api.v1.models.meetup_model import MEETUPS
 from app.api.v1.models.user_model import USERS, UserModel
 
 class BaseTestCase(unittest.TestCase):
@@ -81,11 +82,12 @@ class BaseTestCase(unittest.TestCase):
             location="Test Location",
             images=[],
             topic="Test Topic",
-            happening_on="2019-01-09",
+            happening_on="Jan 10 2018 5:31AM",
             tags=["Programming", "Design"]
         )
 
     def tearDown(self):
+        del MEETUPS[:]
         del USERS[:]
         self.app_context.pop()
 

@@ -32,7 +32,7 @@ class MeetupList(Resource):
                 location=data['location'],
                 images=data['images'],
                 topic=data['topic'],
-                happening_on=data['happening_on'],
+                happening_on=MeetupModel.convert_string_to_date(data['happening_on']),
                 tags=data['tags']
             )
             MeetupModel.add_meetup(serialize(meetup))
@@ -62,3 +62,18 @@ class Meetup(Resource):
         return {
             'message': 'Meetup ID must be an Integer'
         }, 400
+
+class UpcomingMeetup(Resource):
+    '''Request on an upcoming meetup item'''
+    @jwt_required
+    def get(self):
+        '''Fetch all upcoming meetups'''
+        meetups = MeetupModel.get_all_meetups()
+        if meetups == []:
+            return {
+                'message': 'No meetup is available'
+            }, 404
+        return {
+            'status': 200,
+            'data': sorted(meetups, key=lambda item: item['happening_on'], reverse=True)
+        }, 200

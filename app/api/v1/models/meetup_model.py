@@ -1,5 +1,8 @@
 '''This module represents a meetup entity'''
 from datetime import datetime
+
+from app.api.v1.utils.utility import fetch_item
+
 MEETUPS = [] # Data store for the meetups
 
 class MeetupModel:
@@ -18,6 +21,11 @@ class MeetupModel:
         return self.get_meetup_id
 
     @staticmethod
+    def convert_string_to_date(string_date):
+        '''Convert string object to datetime object'''
+        return str(datetime.strptime(string_date, '%b %d %Y %I:%M%p'))
+
+    @staticmethod
     def add_meetup(meetup):
         '''Add a new meetup to the data store'''
         MEETUPS.append(meetup)
@@ -25,8 +33,9 @@ class MeetupModel:
     @staticmethod
     def get_meetup_by_id(meetup_id):
         '''Return a meetup given a meetup id'''
-        meetup = {}
-        for index, _ in enumerate(MEETUPS):
-            if MEETUPS[index].get('meetup_id') == meetup_id:
-                meetup = MEETUPS[index]
-        return meetup
+        return fetch_item(meetup_id, 'meetup_id', MEETUPS)
+
+    @staticmethod
+    def get_all_meetups():
+        '''Fetch all meetups'''
+        return MEETUPS

@@ -31,7 +31,7 @@ class MeetupTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg['message'], "Only administrators can create a meetup")
 
-    def test_fetch_one_question(self):
+    def test_fetch_one_meetup(self):
         '''Test the API can fetch one meetup'''
         res = self.get_response_from_user_login(self.admin_registration, self.admin_login)
         response_msg = json.loads(res.data.decode("UTF-8"))
@@ -70,8 +70,8 @@ class MeetupTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg["message"], "Meetup ID must be an Integer")
 
-    def test_empty_meetup_list(self):
-        '''Test the API cannot read from an empty meetup list'''
+    def test_empty_meetup_item(self):
+        '''Test the API cannot read data from an empty meetup item'''
         res = self.get_response_from_user_login(self.admin_registration, self.admin_login)
         response_msg = json.loads(res.data.decode("UTF-8"))
         access_token = response_msg["access_token"]
@@ -82,3 +82,33 @@ class MeetupTestCase(BaseTestCase):
         self.assertEqual(res.status_code, 404)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg["message"], "Meetup with id '2' doesn't exist!")
+
+    def test_fetch_all_meetups(self):
+        '''Test the API can fetch all meetups'''
+        res = self.get_response_from_user_login(self.admin_registration, self.admin_login)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["access_token"]
+        res = self.client().post(
+            '/api/v1/meetups',
+            headers=self.get_authentication_headers(access_token),
+            data=json.dumps(self.meetup)
+        )
+        self.assertEqual(res.status_code, 201)
+        res = self.client().get(
+            '/api/v1/meetups/upcoming/',
+            headers=self.get_authentication_headers(access_token)
+        )
+        self.assertEqual(res.status_code, 200)
+
+    def test_fetch_empty_meetup_list(self):
+        '''Test the API cannot fetch data from an empty meetup list data store'''
+        res = self.get_response_from_user_login(self.admin_registration, self.admin_login)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["access_token"]
+        res = self.client().get(
+            '/api/v1/meetups/upcoming/',
+            headers=self.get_authentication_headers(access_token)
+        )
+        self.assertEqual(res.status_code, 404)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg['message'], 'No meetup is available')
