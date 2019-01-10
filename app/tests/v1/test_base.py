@@ -82,7 +82,7 @@ class BaseTestCase(unittest.TestCase):
             location="Test Location",
             images=[],
             topic="Test Topic",
-            happening_on="2019-01-09",
+            happening_on="Jan 10 2018 5:31AM",
             tags=["Programming", "Design"]
         )
 
