@@ -86,6 +86,16 @@ class BaseTestCase(unittest.TestCase):
             tags=["Programming", "Design"]
         )
 
+        self.question = dict(
+            created_by=1,
+            meetup=1,
+            title="test title",
+            body="test question description",
+            votes=0
+        )
+
+
+
     def tearDown(self):
         del MEETUPS[:]
         del USERS[:]
