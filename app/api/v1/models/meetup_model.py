@@ -1,5 +1,8 @@
 '''This module represents a meetup entity'''
 from datetime import datetime
+
+from app.api.v1.utils.utility import fetch_item
+
 MEETUPS = [] # Data store for the meetups
 
 class MeetupModel:
@@ -25,8 +28,4 @@ class MeetupModel:
     @staticmethod
     def get_meetup_by_id(meetup_id):
         '''Return a meetup given a meetup id'''
-        meetup = {}
-        for index, _ in enumerate(MEETUPS):
-            if MEETUPS[index].get('meetup_id') == meetup_id:
-                meetup = MEETUPS[index]
-        return meetup
+        return fetch_item(meetup_id, 'meetup_id', MEETUPS)
