@@ -21,6 +21,11 @@ class MeetupModel:
         return self.get_meetup_id
 
     @staticmethod
+    def convert_string_to_date(string_date):
+        '''Convert string object to datetime object'''
+        return str(datetime.strptime(string_date, '%b %d %Y %I:%M%p'))
+
+    @staticmethod
     def add_meetup(meetup):
         '''Add a new meetup to the data store'''
         MEETUPS.append(meetup)
