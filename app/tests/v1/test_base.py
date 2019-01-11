@@ -92,6 +92,8 @@ class BaseTestCase(unittest.TestCase):
             body="test body"
         )
 
+        self.rsvp = dict(response="maybe")
+
     def tearDown(self):
         del QUESTIONS[:]
         del MEETUPS[:]
