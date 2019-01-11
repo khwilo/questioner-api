@@ -45,3 +45,59 @@ class Question(Resource):
         return {
             'message': 'meetup ID must be an integer value'
         }, 400
+
+class Upvote(Resource):
+    '''Upvotes requests'''
+    @jwt_required
+    def patch(self, meetup_id, question_id):
+        '''Increase the vote of a question by 1'''
+        meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
+        if meetup == {}:
+            return {
+                'message': "Meetup with ID '{}' doesn't exist!".format(meetup_id)
+            }, 404
+        question = MeetupModel.get_question_by_id(meetup, int(question_id))
+        if question == {}:
+            return {
+                'message': "Question with ID '{}' doesn't exist!".format(question_id)
+            }, 404
+        question["votes"] += 1
+        return {
+            "status": 200,
+            "data": [
+                {
+                    "meetup": meetup_id,
+                    "title": question["title"],
+                    "body": question["body"],
+                    "votes": question["votes"]
+                }
+            ]
+        }, 200
+
+class Downvote(Resource):
+    '''Downvotes requests'''
+    @jwt_required
+    def patch(self, meetup_id, question_id):
+        '''Decrease the vote of a question by 1'''
+        meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
+        if meetup == {}:
+            return {
+                'message': "Meetup with ID '{}' doesn't exist!".format(meetup_id)
+            }, 404
+        question = MeetupModel.get_question_by_id(meetup, int(question_id))
+        if question == {}:
+            return {
+                'message': "Question with ID '{}' doesn't exist!".format(question_id)
+            }, 404
+        question["votes"] -= 1
+        return {
+            "status": 200,
+            "data": [
+                {
+                    "meetup": meetup_id,
+                    "title": question["title"],
+                    "body": question["body"],
+                    "votes": question["votes"]
+                }
+            ]
+        }, 200

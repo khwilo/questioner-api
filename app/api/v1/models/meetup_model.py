@@ -40,3 +40,9 @@ class MeetupModel:
     def get_all_meetups():
         '''Fetch all meetups'''
         return MEETUPS
+
+    @staticmethod
+    def get_question_by_id(meetup, question_id):
+        '''Return a question to a meetup by its ID'''
+        questions = meetup.get("questions")
+        return fetch_item(question_id, 'question_id', questions)
