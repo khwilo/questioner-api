@@ -7,6 +7,7 @@ from datetime import datetime
 from app import create_app
 from app.api.v1.utils.serializer import serialize
 from app.api.v1.models.meetup_model import MEETUPS
+from app.api.v1.models.question_model import QUESTIONS
 from app.api.v1.models.user_model import USERS, UserModel
 
 class BaseTestCase(unittest.TestCase):
@@ -87,16 +88,12 @@ class BaseTestCase(unittest.TestCase):
         )
 
         self.question = dict(
-            created_by=1,
-            meetup=1,
             title="test title",
-            body="test question description",
-            votes=0
+            body="test body"
         )
 
-
-
     def tearDown(self):
+        del QUESTIONS[:]
         del MEETUPS[:]
         del USERS[:]
         self.app_context.pop()
