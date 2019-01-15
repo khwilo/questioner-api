@@ -102,10 +102,10 @@ class BaseTestCase(unittest.TestCase):
 
     def get_accept_content_type_headers(self):
         '''Return the content type headers for the body'''
-        return {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
+        content_type = {}
+        content_type['Accept'] = 'application/json'
+        content_type['Content-Type'] = 'application/json'
+        return content_type
 
     def get_authentication_headers(self, access_token):
         '''Return the authentication header'''
@@ -113,8 +113,8 @@ class BaseTestCase(unittest.TestCase):
         authentication_headers['Authorization'] = "Bearer {}".format(access_token)
         return authentication_headers
 
-    def get_response_from_user_login(self, user_registration, user_login):
-        '''Return a response from user log in'''
+    def get_access_token(self, user_registration, user_login):
+        '''Fetch access token from user login'''
         self.client().post(
             '/auth/register',
             headers=self.get_accept_content_type_headers(),
@@ -125,7 +125,25 @@ class BaseTestCase(unittest.TestCase):
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(user_login)
         ) # User Log In
-        return res
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["access_token"]
+        return access_token
+
+    def create_meetup(self, access_token, meetup):
+        '''Create a meetup record'''
+        self.client().post(
+            '/api/v1/meetups',
+            headers=self.get_authentication_headers(access_token),
+            data=json.dumps(meetup)
+        )
+
+    def create_question(self, access_token, question):
+        '''Create a question record'''
+        self.client().post(
+            '/api/v1/meetups/1/questions',
+            headers=self.get_authentication_headers(access_token),
+            data=json.dumps(question)
+        )
 
     def test_serialize_function(self):
         '''Test the function serialize() converts an object to a dictionary'''
