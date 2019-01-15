@@ -83,7 +83,15 @@ class BaseTestCase(unittest.TestCase):
             location="Test Location",
             images=[],
             topic="Test Topic",
-            happening_on="Jan 10 2018 5:31AM",
+            happening_on="Jan 10 2019 3:30PM",
+            tags=["Programming", "Design"]
+        )
+
+        self.new_meetup = dict(
+            location="Test New Location",
+            images=[],
+            topic="Test New Topic",
+            happening_on="Mar 5 2019 11:00AM",
             tags=["Programming", "Design"]
         )
 
