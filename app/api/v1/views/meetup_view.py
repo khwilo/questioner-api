@@ -2,7 +2,7 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import reqparse, Resource
 
-from app.api.v1.utils.serializer import serialize
+from app.api.v1.utils.utility import Utility
 from app.api.v1.models.meetup_model import MeetupModel
 from app.api.v1.models.user_model import UserModel
 
@@ -35,10 +35,10 @@ class MeetupList(Resource):
                 happening_on=MeetupModel.convert_string_to_date(data['happening_on']),
                 tags=data['tags']
             )
-            MeetupModel.add_meetup(serialize(meetup))
+            MeetupModel.add_meetup(Utility.serialize(meetup))
             return {
                 'status': 201,
-                'data': [serialize(meetup)]
+                'data': [Utility.serialize(meetup)]
             }, 201
         return {
             'message': "Only administrators can create a meetup"

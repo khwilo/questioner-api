@@ -2,7 +2,7 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import reqparse, Resource
 
-from app.api.v1.utils.serializer import serialize
+from app.api.v1.utils.utility import Utility
 from app.api.v1.models.rsvp_model import RsvpModel
 from app.api.v1.models.user_model import UserModel
 from app.api.v1.models.meetup_model import MeetupModel
@@ -27,7 +27,7 @@ class Rsvp(Resource):
             response=data['response']
         )
 
-        RsvpModel.add_rsvp(serialize(rsvp))
+        RsvpModel.add_rsvp(Utility.serialize(rsvp))
 
         return {
             'status': 201,

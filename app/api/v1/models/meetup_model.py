@@ -1,7 +1,7 @@
 '''This module represents a meetup entity'''
 from datetime import datetime
 
-from app.api.v1.utils.utility import fetch_item
+from app.api.v1.utils.utility import Utility
 
 MEETUPS = [] # Data store for the meetups
 
@@ -34,7 +34,7 @@ class MeetupModel:
     @staticmethod
     def get_meetup_by_id(meetup_id):
         '''Return a meetup given a meetup id'''
-        return fetch_item(meetup_id, 'meetup_id', MEETUPS)
+        return Utility.fetch_item(meetup_id, 'meetup_id', MEETUPS)
 
     @staticmethod
     def get_all_meetups():
@@ -45,4 +45,4 @@ class MeetupModel:
     def get_question_by_id(meetup, question_id):
         '''Return a question to a meetup by its ID'''
         questions = meetup.get("questions")
-        return fetch_item(question_id, 'question_id', questions)
+        return Utility.fetch_item(question_id, 'question_id', questions)

@@ -5,7 +5,7 @@ import unittest
 from datetime import datetime
 
 from app import create_app
-from app.api.v1.utils.serializer import serialize
+from app.api.v1.utils.utility import Utility
 from app.api.v1.models.meetup_model import MEETUPS
 from app.api.v1.models.question_model import QUESTIONS
 from app.api.v1.models.user_model import USERS, UserModel
@@ -165,7 +165,7 @@ class BaseTestCase(unittest.TestCase):
             is_admin=False,
             password="12345"
         )
-        serialized_user_obj = serialize(user)
+        serialized_user_obj = Utility.serialize(user)
         user_dict = dict(
             firstname="test_first",
             lastname="test_last",
@@ -178,7 +178,7 @@ class BaseTestCase(unittest.TestCase):
         )
         self.assertTrue(serialized_user_obj, user_dict)
         now_date = datetime.utcnow()
-        serialized_date = serialize(now_date)
+        serialized_date = Utility.serialize(now_date)
         self.assertTrue(serialized_date, now_date.isoformat())
 
 if __name__ == "__main__":

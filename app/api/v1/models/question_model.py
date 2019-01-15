@@ -1,7 +1,7 @@
 '''This module represents the question entity'''
 from datetime import datetime
 
-from app.api.v1.utils.serializer import serialize
+from app.api.v1.utils.utility import Utility
 from app.api.v1.models.meetup_model import MeetupModel
 
 QUESTIONS = [] # Data store for the questions
@@ -22,4 +22,4 @@ class QuestionModel:
         '''Add a new question to the data store'''
         QUESTIONS.append(question)
         meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
-        meetup["questions"].append(serialize(question))
+        meetup["questions"].append(Utility.serialize(question))

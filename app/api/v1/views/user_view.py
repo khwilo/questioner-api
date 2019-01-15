@@ -2,7 +2,7 @@
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 
-from app.api.v1.utils.serializer import serialize
+from app.api.v1.utils.utility import Utility
 from app.api.v1.models.user_model import UserModel
 
 class UserRegistration(Resource):
@@ -59,7 +59,7 @@ class UserRegistration(Resource):
                 'message': "A user with username '{}' already exists!".format(username)
             }, 409
 
-        UserModel.add_user(serialize(user))
+        UserModel.add_user(Utility.serialize(user))
 
         return {
             "status": 201,

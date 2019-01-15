@@ -2,7 +2,7 @@
 from datetime import datetime
 from passlib.hash import pbkdf2_sha256 as sha256
 
-from app.api.v1.utils.utility import fetch_item
+from app.api.v1.utils.utility import Utility
 
 USERS = [] # Data store for the users
 
@@ -47,4 +47,4 @@ class UserModel:
     @staticmethod
     def get_user_by_username(username):
         '''Fetch a user given a username'''
-        return fetch_item(username, 'username', USERS)
+        return Utility.fetch_item(username, 'username', USERS)
