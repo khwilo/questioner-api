@@ -15,7 +15,9 @@ class MeetupTestCase(BaseTestCase):
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(self.meetup)
         )
+        response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 201)
+        self.assertTrue(response_msg['data'])
 
     def test_user_cannot_create_meetup(self):
         '''Test a regular user cannot create a meetup'''
@@ -98,7 +100,9 @@ class MeetupTestCase(BaseTestCase):
             '/api/v1/meetups/upcoming/',
             headers=self.get_authentication_headers(access_token)
         )
+        response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
+        self.assertTrue(response_msg['data'])
 
     def test_fetch_empty_meetup_list(self):
         '''Test the API cannot fetch data from an empty meetup list data store'''

@@ -31,3 +31,5 @@ class RsvpTestCase(BaseTestCase):
             data=json.dumps(self.rsvp)
         ) # respond to a meetup rsvp
         self.assertEqual(res.status_code, 201)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg['data'][0]['status'], "maybe")

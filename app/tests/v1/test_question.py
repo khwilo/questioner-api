@@ -1,6 +1,7 @@
 '''This module represents tests for the question entity'''
 import json
 
+from app.api.v1.models.meetup_model import MEETUPS
 from app.tests.v1.test_base import BaseTestCase
 
 class QuestionTestCase(BaseTestCase):
@@ -24,7 +25,13 @@ class QuestionTestCase(BaseTestCase):
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(self.question)
         )
+        response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 201)
+        self.assertTrue(response_msg['data'])
+        self.assertEqual(
+            MEETUPS[0]['questions'][0]['question_id'],
+            response_msg['data'][0]['questions'][0]['question_id']
+        )
 
     def test_ask_non_existent_meetup(self):
         '''Test the API cannot post a question to a non-existent meetup'''
@@ -67,6 +74,9 @@ class QuestionTestCase(BaseTestCase):
             '/api/v1/meetups/1/questions/1/upvote',
             headers=self.get_authentication_headers(access_token)
         ) # Upvote a question
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertTrue(response_msg['data'])
+        self.assertEqual(response_msg['data'][0]['votes'], 1)
 
     def test_downvote_question(self):
         '''Test the API can downvote a question'''
@@ -93,3 +103,6 @@ class QuestionTestCase(BaseTestCase):
             headers=self.get_authentication_headers(access_token)
         ) # Downvote a question
         self.assertEqual(res.status_code, 200)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertTrue(response_msg['data'])
+        self.assertEqual(response_msg['data'][0]['votes'], -1)
