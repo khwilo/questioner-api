@@ -1,6 +1,7 @@
 '''This module represents tests for the meetup entity'''
 import json
 
+from app.api.v1.models.meetup_model import MEETUPS
 from app.tests.v1.test_base import BaseTestCase
 
 class MeetupTestCase(BaseTestCase):
@@ -16,6 +17,7 @@ class MeetupTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 201)
         self.assertTrue(response_msg['data'])
+        self.assertEqual(MEETUPS[0], response_msg['data'][0])
 
     def test_user_cannot_create_meetup(self):
         '''Test a regular user cannot create a meetup'''
@@ -33,14 +35,16 @@ class MeetupTestCase(BaseTestCase):
         '''Test the API can fetch one meetup'''
         access_token = self.get_access_token(self.admin_registration, self.admin_login)
         self.create_meetup(access_token, self.meetup)
+        self.create_meetup(access_token, self.new_meetup)
         res = self.client().get(
-            '/api/v1/meetups/1',
+            '/api/v1/meetups/2',
             headers=self.get_authentication_headers(access_token)
         )
         self.assertEqual(res.status_code, 200)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg["status"], 200)
         self.assertTrue(response_msg["data"])
+        self.assertEqual(MEETUPS[1], response_msg['data'][0])
 
     def test_fetch_incorrect_meetup_id(self):
         '''Test the API cannot fetch a meetup with an incorrect ID'''
@@ -68,7 +72,8 @@ class MeetupTestCase(BaseTestCase):
     def test_fetch_all_meetups(self):
         '''Test the API can fetch all meetups'''
         access_token = self.get_access_token(self.admin_registration, self.admin_login)
-        self.create_meetup(access_token, self.meetup)
+        self.create_meetup(access_token, self.meetup) # Earlier meetup
+        self.create_meetup(access_token, self.new_meetup) # Latest meetup
         res = self.client().get(
             '/api/v1/meetups/upcoming/',
             headers=self.get_authentication_headers(access_token)
@@ -76,6 +81,10 @@ class MeetupTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
         self.assertTrue(response_msg['data'])
+        self.assertEqual(
+            MEETUPS[1],
+            response_msg['data'][0]
+        ) # Assert that the latest meetup is always displayed first
 
     def test_fetch_empty_meetup_list(self):
         '''Test the API cannot fetch data from an empty meetup list data store'''
