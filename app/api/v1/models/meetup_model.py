@@ -7,15 +7,15 @@ MEETUPS = [] # Data store for the meetups
 
 class MeetupModel:
     '''Entity representation for a meetup'''
-    def __init__(self, location, topic, happening_on, tags, images=None, questions=None):
+    def __init__(self, **kwargs):
         self.meetup_id = len(MEETUPS) + 1
         self.created_on = str(datetime.utcnow())
-        self.location = location
-        self.images = [] if images is None else images
-        self.topic = topic
-        self.happening_on = happening_on
-        self.tags = tags
-        self.questions = [] if questions is None else questions
+        self.location = kwargs.get('location')
+        self.images = kwargs.get('images', [])
+        self.topic = kwargs.get('topic')
+        self.happening_on = kwargs.get('happening_on')
+        self.tags = kwargs.get('tags')
+        self.questions = kwargs.get('questions', [])
 
     def get_meetup_id(self):
         '''Fetch the meetup id'''
