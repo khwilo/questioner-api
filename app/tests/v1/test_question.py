@@ -47,6 +47,7 @@ class QuestionTestCase(BaseTestCase):
             headers=self.get_authentication_headers(access_token)
         ) # Upvote a question
         response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 200)
         self.assertTrue(response_msg['data'])
         self.assertEqual(response_msg['data'][0]['votes'], 1)
 
@@ -60,7 +61,7 @@ class QuestionTestCase(BaseTestCase):
             '/api/v1/meetups/1/questions/1/downvote',
             headers=self.get_authentication_headers(access_token)
         ) # Downvote a question
-        self.assertEqual(res.status_code, 200)
         response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 200)
         self.assertTrue(response_msg['data'])
         self.assertEqual(response_msg['data'][0]['votes'], -1)

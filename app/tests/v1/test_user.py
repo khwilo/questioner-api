@@ -73,7 +73,7 @@ class UserTestCase(BaseTestCase):
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_registration)
         ) # Second user registration
-        self.assertEqual(res.status_code, 401)
+        self.assertEqual(res.status_code, 409)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(
             response_msg["message"],
@@ -111,7 +111,7 @@ class UserTestCase(BaseTestCase):
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_login)
         )
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, 404)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual("User with username 'test_user' doesn't exist!", response_msg["message"])
 

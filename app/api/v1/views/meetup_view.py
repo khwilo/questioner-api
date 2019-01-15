@@ -42,7 +42,7 @@ class MeetupList(Resource):
             }, 201
         return {
             'message': "Only administrators can create a meetup"
-        }, 401
+        }, 403
 
 class Meetup(Resource):
     '''Request on a meetup item'''

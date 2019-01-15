@@ -25,7 +25,7 @@ class MeetupTestCase(BaseTestCase):
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(self.meetup)
         )
-        self.assertEqual(res.status_code, 401)
+        self.assertEqual(res.status_code, 403)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg['message'], "Only administrators can create a meetup")
 

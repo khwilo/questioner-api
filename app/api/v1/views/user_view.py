@@ -57,7 +57,7 @@ class UserRegistration(Resource):
         if next(filter(lambda u: u['username'] == username, users), None):
             return {
                 'message': "A user with username '{}' already exists!".format(username)
-            }, 401
+            }, 409
 
         UserModel.add_user(serialize(user))
 
@@ -86,7 +86,7 @@ class UserLogin(Resource):
         if not current_user:
             return {
                 'message': "User with username '{}' doesn't exist!".format(data['username'])
-            }, 400
+            }, 404
 
         if UserModel.verify_password_hash(data['password'], current_user['password']):
             access_token = create_access_token(identity=data['username'])
