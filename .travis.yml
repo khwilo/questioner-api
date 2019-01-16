@@ -4,6 +4,11 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install coveralls
+services:
+  - postgresql
+before-script:
+  - psql -c 'create database questioner;' -U postgres
+  - psql -c 'create database test_questioner;' -U postgres
 script:
   - pytest --cov=app/
   - coveralls
