@@ -37,9 +37,13 @@ class UserRegistration(Resource):
 
         username = data['username']
         password = data['password']
+        email = data['email']
 
         # Validate the username
         ValidationHandler.validate_correct_username(username)
+
+        # Validate the email address
+        ValidationHandler.validate_email_address(email)
 
         # Validate the password
         ValidationHandler.validate_password(password)
