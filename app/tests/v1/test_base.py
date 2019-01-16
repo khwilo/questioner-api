@@ -74,6 +74,17 @@ class BaseTestCase(unittest.TestCase):
             password=""
         )
 
+        self.wrong_email_registration = dict(
+            firstname="test_first",
+            lastname="test_last",
+            othername="test_other",
+            email="testexample.com",
+            phone_number="0700000000",
+            username="test",
+            is_admin=False,
+            password="12345"
+        )
+
         self.user_login = dict(username="test_user", password="12345")
         self.wrong_password = dict(username="test_user", password="abcde")
 
