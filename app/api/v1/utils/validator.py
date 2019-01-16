@@ -1,4 +1,5 @@
 '''Module for handling validations'''
+from email_validator import validate_email, EmailNotValidError
 from flask import abort
 
 class ValidationHandler:
@@ -22,3 +23,12 @@ class ValidationHandler:
         '''Validation for a password'''
         if not password or not password.split():
             abort(400, "password cannot be empty")
+
+    @staticmethod
+    def validate_email_address(email):
+        '''Validation for an email address'''
+        try:
+            v_email = validate_email(email)
+            email = v_email["email"]
+        except EmailNotValidError as email_valid_error:
+            abort(400, str(email_valid_error))
