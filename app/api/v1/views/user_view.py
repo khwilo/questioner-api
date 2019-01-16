@@ -1,8 +1,10 @@
 '''This module represents the user view'''
+from flask import abort
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 
-from app.api.v1.utils.serializer import serialize
+from app.api.v1.utils.utility import Utility
+from app.api.v1.utils.validator import ValidationHandler
 from app.api.v1.models.user_model import UserModel
 
 class UserRegistration(Resource):
@@ -35,31 +37,22 @@ class UserRegistration(Resource):
 
         username = data['username']
         password = data['password']
+        email = data['email']
 
         # Validate the username
-        if username.isdigit():
-            return {
-                'message': 'username cannot consist of digits only'
-            }, 400
-        if not username or not username.split():
-            return {
-                'message': 'username cannot be empty'
-            }, 400
+        ValidationHandler.validate_correct_username(username)
+
+        # Validate the email address
+        ValidationHandler.validate_email_address(email)
 
         # Validate the password
-        if not password or not password.split():
-            return {
-                'message': 'password cannot be empty'
-            }, 400
+        ValidationHandler.validate_password(password)
 
         users = UserModel.get_all_users()
 
-        if next(filter(lambda u: u['username'] == username, users), None):
-            return {
-                'message': "A user with username '{}' already exists!".format(username)
-            }, 409
+        ValidationHandler.validate_existing_user(users, username)
 
-        UserModel.add_user(serialize(user))
+        UserModel.add_user(Utility.serialize(user))
 
         return {
             "status": 201,
@@ -83,10 +76,9 @@ class UserLogin(Resource):
 
         current_user = UserModel.get_user_by_username(data['username'])
 
+        ValidationHandler.validate_correct_username(data['username'])
         if not current_user:
-            return {
-                'message': "User with username '{}' doesn't exist!".format(data['username'])
-            }, 404
+            abort(404, "User with username '{}' doesn't exist!".format(data['username']))
 
         if UserModel.verify_password_hash(data['password'], current_user['password']):
             access_token = create_access_token(identity=data['username'])
@@ -94,6 +86,5 @@ class UserLogin(Resource):
                 'message': "Logged in as '{}'".format(current_user['username']),
                 'access_token': access_token
             }, 200
-        return {
-            'message': 'Wrong credentials'
-        }, 401
+        abort(401, 'Wrong credentials')
+        return None

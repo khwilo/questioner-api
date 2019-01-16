@@ -58,6 +58,22 @@ class UserTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg["message"], "password cannot be empty")
 
+    def test_invalid_email_address_registration(self):
+        '''
+        Test the API cannot register a user with an invalid email address
+        '''
+        res = self.client().post(
+            '/auth/register',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(self.wrong_email_registration)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(
+            response_msg['message'],
+            "The email address is not valid. It must have exactly one @-sign."
+        )
+
     def test_duplicate_user_registration(self):
         '''
         Test the API can register a user only once

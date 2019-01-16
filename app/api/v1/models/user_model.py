@@ -2,24 +2,23 @@
 from datetime import datetime
 from passlib.hash import pbkdf2_sha256 as sha256
 
-from app.api.v1.utils.utility import fetch_item
+from app.api.v1.utils.utility import Utility
 
 USERS = [] # Data store for the users
 
 class UserModel:
     '''Entity representation for a user'''
-    def __init__(self, firstname, lastname, othername, email, phone_number, \
-                username, is_admin, password):
+    def __init__(self, **kwargs):
         self.user_id = len(USERS) + 1
-        self.firstname = firstname
-        self.lastname = lastname
-        self.othername = othername
-        self.email = email
-        self.phone_number = phone_number
-        self.username = username
+        self.firstname = kwargs.get('firstname')
+        self.lastname = kwargs.get('lastname')
+        self.othername = kwargs.get('othername')
+        self.email = kwargs.get('email')
+        self.phone_number = kwargs.get('phone_number')
+        self.username = kwargs.get('username')
         self.registered = str(datetime.utcnow())
-        self.is_admin = is_admin
-        self.password = password
+        self.is_admin = kwargs.get('is_admin')
+        self.password = kwargs.get('password')
 
     def get_user_id(self):
         '''Fetch a user id'''
@@ -48,4 +47,4 @@ class UserModel:
     @staticmethod
     def get_user_by_username(username):
         '''Fetch a user given a username'''
-        return fetch_item(username, 'username', USERS)
+        return Utility.fetch_item(username, 'username', USERS)
