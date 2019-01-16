@@ -10,11 +10,13 @@ class Config(object):
 class DevelopmentConfig(Config):
     """Development environment configurations"""
     DEBUG = True
+    DATABASE_CONNECTION_URL = os.getenv('DATABASE_CONNECTION_URL')
 
 class TestingConfig(Config):
     """Testing environment configurations"""
     TESTING = True
     DEBUG = True
+    DATABASE_CONNECTION_URL = os.getenv('DATABASE_TEST_CONNECTION_URL')
 
 class StagingConfig(Config):
     """Staging environment configurations"""
