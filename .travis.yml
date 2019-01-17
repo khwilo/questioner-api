@@ -7,7 +7,6 @@ install:
 services:
   - postgresql
 before-script:
-  - psql -c 'create database questioner;' -U postgres
   - psql -c 'create database test_questioner;' -U postgres
 script:
   - pytest --cov=app/
