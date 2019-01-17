@@ -1,13 +1,19 @@
 '''Module to setup the database'''
 import psycopg2
 
-from instance.config import APP_CONFIG
+from instance.config import Config
 
 class DatabaseSetup:
     '''Initiliaza a database connection'''
-    def __init__(self, app_config):
-        database_url = APP_CONFIG[app_config].DATABASE_CONNECTION_URL
-        self.connection = psycopg2.connect(database_url)
+    def __init__(self):
+        # database_url = APP_CONFIG[app_config].DATABASE_CONNECTION_URL
+        #self.connection = psycopg2.connect(database_url)
+        self.connection = psycopg2.connect(
+            host=Config.DATABASE_HOST,
+            database=Config.DATABASE_NAME,
+            user=Config.DATABASE_USER,
+            password=Config.DATABASE_PASSWORD
+        )
         self.cursor = self.connection.cursor()
 
     def initialize_db(self):
