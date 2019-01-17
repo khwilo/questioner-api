@@ -11,11 +11,12 @@ def create_app(config_name):
     '''Instantiate the Flask application'''
     app = Flask(__name__, instance_relative_config=True)
     jwt = JWTManager(app)
-    database = DatabaseSetup()
+    database = DatabaseSetup(config_name)
 
     app.config.from_object(APP_CONFIG[config_name])
     app.config.from_pyfile('config.py')
-    database.initiliaze_database_tables()
+    database.initialize_db()
+    database.create_tables()
 
     app.register_blueprint(AUTH_BLUEPRINT)
     app.register_blueprint(API_BLUEPRINT)
