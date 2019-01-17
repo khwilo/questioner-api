@@ -10,7 +10,7 @@ before-script:
   - psql -c "CREATE USER testuser WITH PASSWORD 'testpass';" -U postgres
   - psql -c "CREATE DATABASE testdb;" -U postgres
 script:
-  - pytest --cov=app/
+  - pytest --cov=app/api
   - coveralls
 after_success:
   - coveralls
