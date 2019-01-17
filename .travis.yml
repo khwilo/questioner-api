@@ -8,8 +8,8 @@ services:
   - postgresql
 before-script:
   - psql -c "CREATE DATABASE test_db;" -U postgres
-  - psql -c "CREATE USER test_user WITH PASSWORD 'home#5775';" -U postgres
-  - psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to postgres ;" -U postgres
+  - psql -c "CREATE USER test_user WITH PASSWORD 'home5775';" -U postgres
+  - psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to test_user ;" -U postgress
 script:
   - pytest --cov=app/
   - coveralls
