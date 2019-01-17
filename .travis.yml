@@ -9,6 +9,7 @@ services:
 before-script:
   - psql -c "CREATE DATABASE test_db;" -U postgres
   - psql -c "CREATE USER test_user WITH PASSWORD 'test_password';" -U postgres
+  - psql -c "GRANT ALL PRIVILEGES ON DATABASE test_db TO test_user;" -U postgres
 script:
   - pytest --cov=app/
   - coveralls
