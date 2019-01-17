@@ -6,7 +6,7 @@ from instance.config import APP_CONFIG
 class DatabaseSetup:
     '''Initiliaza a database connection'''
     def __init__(self, config_name):
-        self.connection = psycopg2.connect(APP_CONFIG[config_name].DATABASE_URL)
+        self.connection = psycopg2.connect(APP_CONFIG[config_name].DATABASE_CONNECTION_URL)
         self.cursor = self.connection.cursor()
 
     def initialize_db(self):
