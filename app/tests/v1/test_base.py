@@ -2,7 +2,6 @@
 from datetime import datetime
 import json
 import unittest
-import psycopg2
 
 from app import create_app
 from app.api.v1.utils.utility import Utility
@@ -10,15 +9,11 @@ from app.api.v1.models.meetup_model import MEETUPS
 from app.api.v1.models.question_model import QUESTIONS
 from app.api.v1.models.user_model import USERS, UserModel
 
-from instance.config import APP_CONFIG
-
 class BaseTestCase(unittest.TestCase):
     '''Base class for other test classes'''
     def setUp(self):
         self.app = create_app(config_name="testing")
         self.client = self.app.test_client
-        self.connection = psycopg2.connect(APP_CONFIG['testing'].DATABASE_CONNECTION_URL)
-        self.cursor = self.connection.cursor()
         self.app_context = self.app.app_context()
         self.app_context.push()
 
@@ -121,9 +116,6 @@ class BaseTestCase(unittest.TestCase):
         del QUESTIONS[:]
         del MEETUPS[:]
         del USERS[:]
-        self.cursor.execute("DROP TABLE users")
-        self.connection.commit()
-        self.connection.close()
         self.app_context.pop()
 
     def get_accept_content_type_headers(self):

@@ -6,7 +6,6 @@ class Config:
     DEBUG = False
     SECRET = os.getenv('SECRET_KEY')
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
-    DATABASE_CONNECTION_URL = os.getenv('DATABASE_CONNECTION_URL')
 
 class DevelopmentConfig(Config):
     """Development environment configurations"""
