@@ -1,8 +1,7 @@
 '''This module represents the base test class'''
+from datetime import datetime
 import json
 import unittest
-
-from datetime import datetime
 
 from app import create_app
 from app.api.v1.utils.utility import Utility

@@ -1,11 +1,13 @@
 '''Application configuration file'''
 import os
 
-class Config(object):
+class Config:
     """Parent configuration class"""
     DEBUG = False
     SECRET = os.getenv('SECRET_KEY')
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+    DATABASE_CONNECTION_URL = os.getenv("DATABASE_CONNECTION_URL")
+    DATABASE_TEST_CONNECTION_URL = os.getenv("DATABASE_TEST_CONNECTION_URL")
 
 class DevelopmentConfig(Config):
     """Development environment configurations"""
@@ -15,6 +17,7 @@ class TestingConfig(Config):
     """Testing environment configurations"""
     TESTING = True
     DEBUG = True
+    DATABASE_TEST_CONNECTION_URL = os.getenv("DATABASE_TEST_CONNECTION_URL")
 
 class StagingConfig(Config):
     """Staging environment configurations"""
