@@ -13,12 +13,17 @@ def initiate_db():
     '''Initiate the database connection'''
     url = current_app.config['DATABASE_CONNECTION_URL']
     conn = psycopg2.connect(url)
+    curr = conn.cursor()
+    queries = create_tables()
+    for query in queries:
+        curr.execute(query)
+    conn.commit()
     return conn
 
 
 def init_test_db():
     '''Initiate the test database'''
-    conn = establish_connection(os.getenv('DATABASE_TEST_URL'))
+    conn = establish_connection(os.getenv('DATABASE_TEST_CONNECTION_URL'))
     curr = conn.cursor()
     queries = create_tables()
 
@@ -30,17 +35,18 @@ def init_test_db():
 
 def destroy():
     '''Remove the database tables'''
-    conn = establish_connection(os.getenv('DATABASE_TEST_URL'))
-    curr = conn.cursor()
-    users = "DROP TABLE IF EXISTS users CASCADE"
-    meetups = "DROP TABLE IF EXISTS meetups CASCADE"
-    questions = "DROP TABLE IF EXISTS questions CASCADE"
-    rsvps = "DROP TABLE IF EXISTS rsvps CASCADE"
-    queries = [users, meetups, questions, rsvps]
+    connection = establish_connection(os.getenv('DATABASE_TEST_CONNECTION_URL'))
+    cursor = connection.cursor()
 
-    for query in queries:
-        curr.execute(query)
-    conn.commit()
+    drop_queries = [
+        "DROP TABLE IF EXISTS users CASCADE",
+        "DROP TABLE IF EXISTS meetups CASCADE",
+        "DROP TABLE IF EXISTS questions CASCADE",
+        "DROP TABLE IF EXISTS rsvps CASCADE"
+    ]
+
+    for query in drop_queries:
+        cursor.execute(query)
 
 
 def create_tables():
@@ -55,15 +61,14 @@ def create_tables():
     username VARCHAR(50) UNIQUE NOT NULL,
     registered TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     is_admin BOOLEAN NOT NULL DEFAULT FALSE,
-    password_1 VARCHAR(100) NOT NULL,
-    password_2 VARCHAR(100) NOT NULL
+    password VARCHAR(100) NOT NULL
     );""" # create the users table
 
     meetup = """CREATE TABLE IF NOT EXISTS meetups(
     id SERIAL PRIMARY KEY,
     created_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     m_location VARCHAR NOT NULL,
-    images VARCHAR ARRAY NOT NUL,
+    images VARCHAR ARRAY NOT NULL,
     topic VARCHAR NOT NULL,
     m_description VARCHAR(200) NOT NULL,
     happening_on DATE NOT NULL,
@@ -78,8 +83,8 @@ def create_tables():
     title VARCHAR NOT NULL,
     body VARCHAR NOT NULL,
     votes INT DEFAULT 0,
-    FOREIGN_KEY (created_by) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN_KEY (meetup_id) REFERENCES meetups(id) ON DELETE CASCADE
+    FOREIGN KEY (created_by) REFERENCES users (id)  ON DELETE CASCADE,
+    FOREIGN KEY (meetup_id) REFERENCES meetups (id) ON DELETE CASCADE
     );""" # create the questions table
 
     rsvp = """CREATE TABLE IF NOT EXISTS rsvps(
@@ -87,8 +92,8 @@ def create_tables():
     meetup_id INT NOT NULL,
     user_id INT NOT NULL,
     response VARCHAR NOT NULL,
-    FOREIGN_KEY (meetup_id) REFERENCES meetups(id) ON DELETE CASCADE,
-    FOREIGN_KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (meetup_id) REFERENCES meetups (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
     );""" # create the rsvps table
 
     queries = [users, meetup, question, rsvp]
