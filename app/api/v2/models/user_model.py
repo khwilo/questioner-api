@@ -1,7 +1,7 @@
 """Module representing a user entity"""
 from datetime import datetime
 
-from app.api.v2.database.database_config import initiate_db
+from app.api.v2.models.database import DatabaseSetup
 
 class UserModel:
     """Entity representation for a user"""
@@ -15,14 +15,13 @@ class UserModel:
         self.registered = str(datetime.utcnow())
         self.is_admin = kwargs.get('is_admin')
         self.password = kwargs.get('password')
+        self.database = DatabaseSetup.initialize_db()
 
     def add_user(self):
         """Add a new user to the 'users' table"""
-        database = initiate_db()
-        db_cursor = database.cursor()
         query = """INSERT INTO users(
         firstname, lastname, othername, email, phone_number, username, is_admin, password) VALUES(
-        '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}');""".format(
+        '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')""".format(
             self.firstname,
             self.lastname,
             self.othername,
@@ -31,6 +30,6 @@ class UserModel:
             self.username,
             self.is_admin,
             self.password)
-        db_cursor.execute(query)
-        database.commit()
-        db_cursor.close()
+        self.database.cursor().execute(query)
+        self.database.commit()
+        self.database.cursor().close()

@@ -1,7 +1,6 @@
 '''This module represents the user view'''
 from flask_restful import Resource, reqparse
 
-from app.api.v1.utils.utility import Utility
 from app.api.v1.utils.validator import ValidationHandler
 from app.api.v1.models.user_model import UserModel as UserModel_v1
 from app.api.v2.models.user_model import UserModel as UserModel_v2
@@ -52,7 +51,6 @@ class UserRegistration(Resource):
             "status": 201,
             "data": [
                 {
-                    "user": Utility.serialize(user),
                     "message": "Create a user record"
                 }
             ]
