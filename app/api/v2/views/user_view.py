@@ -1,4 +1,5 @@
 '''This module represents the user view'''
+from flask import abort
 from flask_restful import Resource, reqparse
 
 from app.api.v1.utils.validator import ValidationHandler
@@ -45,12 +46,19 @@ class UserRegistration(Resource):
         # Validate the password
         ValidationHandler.validate_password(password)
 
+        if user.find_user_by_username('username', username):
+            abort(409, "Username '{}' already taken!".format(username))
+
+        if user.find_user_by_email('email', email):
+            abort(409, "Email address '{}' already in use!".format(email))
+
         user.add_user()
 
         return {
             "status": 201,
             "data": [
                 {
+                    "user": user.user_to_dict(),
                     "message": "Create a user record"
                 }
             ]

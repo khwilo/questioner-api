@@ -1,11 +1,14 @@
 """Module representing a user entity"""
 from datetime import datetime
 
-from app.api.v2.models.database import DatabaseSetup
+from app.api.v2.models.base_model import BaseModel
 
-class UserModel:
+TABLE_NAME = 'users'
+
+class UserModel(BaseModel):
     """Entity representation for a user"""
     def __init__(self, **kwargs):
+        super().__init__()
         self.firstname = kwargs.get('firstname')
         self.lastname = kwargs.get('lastname')
         self.othername = kwargs.get('othername')
@@ -15,7 +18,6 @@ class UserModel:
         self.registered = str(datetime.utcnow())
         self.is_admin = kwargs.get('is_admin')
         self.password = kwargs.get('password')
-        self.database = DatabaseSetup.initialize_db()
 
     def add_user(self):
         """Add a new user to the 'users' table"""
@@ -30,6 +32,29 @@ class UserModel:
             self.username,
             self.is_admin,
             self.password)
-        self.database.cursor().execute(query)
-        self.database.commit()
-        self.database.cursor().close()
+        self.cursor.execute(query)
+        self.connection.commit()
+
+    def find_user_by_username(self, username, value):
+        """Find a user by username"""
+        result = self.find_item_if_exists(TABLE_NAME, username, value)
+        return result
+
+    def find_user_by_email(self, email, value):
+        """Find a user by email address"""
+        result = self.find_item_if_exists(TABLE_NAME, email, value)
+        return result
+
+    def user_to_dict(self):
+        '''Turn user object to dictionary'''
+        return {
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'othername': self.othername,
+            'email': self.email,
+            'phone_number': self.phone_number,
+            'username': self.username,
+            'registered': self.registered,
+            'is_admin': self.is_admin,
+            'password': self.password
+        }
