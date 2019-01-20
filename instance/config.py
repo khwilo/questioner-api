@@ -6,18 +6,17 @@ class Config:
     DEBUG = False
     SECRET = os.getenv('SECRET_KEY')
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
-    DATABASE_CONNECTION_URL = os.getenv("DATABASE_CONNECTION_URL")
-    DATABASE_TEST_CONNECTION_URL = os.getenv("DATABASE_TEST_CONNECTION_URL")
 
 class DevelopmentConfig(Config):
     """Development environment configurations"""
     DEBUG = True
+    DATABASE_URL = os.getenv("DATABASE_URL")
 
 class TestingConfig(Config):
     """Testing environment configurations"""
     TESTING = True
     DEBUG = True
-    DATABASE_TEST_CONNECTION_URL = os.getenv("DATABASE_TEST_CONNECTION_URL")
+    DATABASE_URL = os.getenv("DATABASE_TEST_URL")
 
 class StagingConfig(Config):
     """Staging environment configurations"""
