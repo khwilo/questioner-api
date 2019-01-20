@@ -2,6 +2,7 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
+from db import establish_connection, create_tables
 from app.api.v1 import AUTH_BLUEPRINT, API_BLUEPRINT
 from app.api.v2 import API_V2_BLUEPRINT
 
@@ -14,6 +15,9 @@ def create_app(config_name):
 
     app.config.from_object(APP_CONFIG[config_name])
     app.config.from_pyfile('config.py')
+
+    connection = establish_connection()
+    create_tables(connection)
 
     app.register_blueprint(AUTH_BLUEPRINT)
     app.register_blueprint(API_BLUEPRINT)
