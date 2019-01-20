@@ -1,5 +1,6 @@
 '''This module represents the user view'''
 from flask import abort
+from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 
 from app.api.v1.utils.validator import ValidationHandler
@@ -52,14 +53,17 @@ class UserRegistration(Resource):
         if user.find_user_by_email('email', email):
             abort(409, "Email address '{}' already in use!".format(email))
 
+        token = create_access_token(identity=username)
+
         user.add_user()
 
         return {
             "status": 201,
             "data": [
                 {
+                    "token": token,
                     "user": user.user_to_dict(),
-                    "message": "Create a user record"
+                    "message": "User account created successfully"
                 }
             ]
         }, 201
