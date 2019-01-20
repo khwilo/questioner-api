@@ -19,5 +19,5 @@ def migrate_test():
     create_admin(connection)
 
 if __name__ == '__main__':
-    migrate_main()
+    # migrate_main()
     migrate_test()
