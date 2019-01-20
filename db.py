@@ -4,8 +4,6 @@ import psycopg2
 
 from flask import current_app
 
-from app.api.v1.models.user_model import UserModel
-
 def establish_connection():
     '''Establish a database connection'''
     database_url = current_app.config['DATABASE_URL']
@@ -74,16 +72,6 @@ def drop_table_queries():
         "DROP TABLE IF EXISTS rsvps CASCADE"
     ]
     return drop_queries
-
-def create_admin(db_connection):
-    '''Create an administrator'''
-    query = """INSERT INTO users(
-    firstname, lastname, othername, email, phone_number, username, is_admin, password) \
-    VALUES('Khwilo', 'Kabaka', 'Watai', 'watai@questioner.com', '0700000000', 'watai', True, '{}')"""\
-    .format(UserModel.generate_password_hash('questioner_1234'))
-    cursor = db_connection.cursor()
-    cursor.execute(query)
-    db_connection.commit()
 
 def create_tables(db_connection):
     '''Create the database tables'''
