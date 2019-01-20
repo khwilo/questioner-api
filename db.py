@@ -2,15 +2,14 @@
 import os
 import psycopg2
 
-from instance.config import APP_CONFIG
-
-CONFIG_NAME = os.getenv('APP_SETTINGS')
+from flask import current_app
 
 def establish_connection():
     '''Establish a database connection'''
-    database_url = APP_CONFIG[CONFIG_NAME].DATABASE_URL
+    database_url = current_app.config['DATABASE_URL']
     try:
         connection = psycopg2.connect(database_url)
+        create_tables(connection)
     except psycopg2.DatabaseError as error:
         print("error {}".format(error))
     return connection
@@ -83,11 +82,12 @@ def create_tables(db_connection):
         cursor.execute(query)
     db_connection.commit()
 
-
-def drop_tables(db_connection):
-    '''Remove database tables'''
-    cursor = db_connection.cursor()
+def destroy():
+    '''Delete database entries'''
+    database_url = os.getenv('DATABASE_TEST_URL')
+    connection = psycopg2.connect(database_url)
+    cursor = connection.cursor()
     queries = drop_table_queries()
     for query in queries:
         cursor.execute(query)
-    db_connection.commit()
+    connection.commit()
