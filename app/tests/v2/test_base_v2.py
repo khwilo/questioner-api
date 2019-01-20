@@ -1,32 +1,41 @@
 '''This module represents the base test class for v2 of the API'''
 import unittest
 
+from flask import g
 from app import create_app
-from app.api.v2.models.database import DatabaseSetup
+from app.api.v2.models.base_model import BaseModel
+from instance.config import APP_CONFIG
+from db import establish_connection, create_tables, drop_tables
 
 class BaseTestDbTestCase(unittest.TestCase):
     '''Base class for other test classes for API v2'''
     def setUp(self):
-        self.app = create_app(config_name="testing")
+        self.app = create_app('testing')
         self.client = self.app.test_client
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+
+        with self.app.app_context():
+            self.database = BaseModel()
+            self.connection = establish_connection()
+            create_tables(self.connection)
 
         self.user_registration = dict(
             firstname="test_first",
             lastname="test_last",
             othername="test_other",
-            email="test@example.com",
+            email="tes@example.com",
             phone_number="0700000000",
-            username="test_user",
+            username="test_ser",
             is_admin=False,
             password="12345"
         )
 
-        with self.app.app_context():
-            DatabaseSetup.initialize_db()
-
     def tearDown(self):
         with self.app.app_context():
-            DatabaseSetup.destroy()
+            if 'connection' not in g:
+                conn = establish_connection()
+            drop_tables(conn)
 
     def get_accept_content_type_headers(self):
         '''Return the content type headers for the body'''
