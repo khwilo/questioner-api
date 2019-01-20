@@ -1,4 +1,4 @@
-'''Module to seed the database with an admin user'''
+'''Module to define migrations for dev and test db'''
 import os
 import psycopg2
 
