@@ -12,17 +12,6 @@ class BaseTestDbTestCase(unittest.TestCase):
 
         self.client = self.app.test_client
 
-        self.user_registration = dict(
-            firstname="test_first",
-            lastname="test_last",
-            othername="test_other",
-            email="tester@example.com",
-            phone_number="0700000000",
-            username="tester_user",
-            is_admin=False,
-            password="12345"
-        )
-
         with self.app_context:
             establish_connection()
 
