@@ -11,8 +11,8 @@ services:
 before_script:
   - psql -c 'CREATE DATABASE test_questioner' -U postgres
   - psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to postgres ;" -U postgres
-  - python3 manage.py
 script:
+  - python3 manage.py
   - pytest --cov=app/
   - coveralls
 after_success:
