@@ -6,7 +6,6 @@ USER_REGISTRATION = dict(
     email="tester@example.com",
     phone_number="0700000000",
     username="tester_user",
-    is_admin=False,
     password="12345"
 )
 
@@ -17,7 +16,6 @@ USER_DUPLICATE_USERNAME = dict(
     email="test@example.com",
     phone_number="0700000000",
     username="tester_user",
-    is_admin=False,
     password="12345"
 )
 
@@ -28,6 +26,5 @@ USER_DUPLICATE_EMAIL = dict(
     email="tester@example.com",
     phone_number="0700000000",
     username="tes_user",
-    is_admin=False,
     password="12345"
 )

@@ -16,21 +16,19 @@ class UserModel(BaseModel):
         self.phone_number = kwargs.get('phone_number')
         self.username = kwargs.get('username')
         self.registered = str(datetime.utcnow())
-        self.is_admin = kwargs.get('is_admin')
         self.password = kwargs.get('password')
 
     def add_user(self):
         """Add a new user to the 'users' table"""
         query = """INSERT INTO users(
-        firstname, lastname, othername, email, phone_number, username, is_admin, password) VALUES(
-        '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')""".format(
+        firstname, lastname, othername, email, phone_number, username, password) VALUES(
+        '{}', '{}', '{}', '{}', '{}', '{}', '{}')""".format(
             self.firstname,
             self.lastname,
             self.othername,
             self.email,
             self.phone_number,
             self.username,
-            self.is_admin,
             self.password)
         self.cursor.execute(query)
         self.connection.commit()
@@ -55,6 +53,5 @@ class UserModel(BaseModel):
             'phone_number': self.phone_number,
             'username': self.username,
             'registered': self.registered,
-            'is_admin': self.is_admin,
             'password': self.password
         }
