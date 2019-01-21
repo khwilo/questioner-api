@@ -66,7 +66,7 @@ class UsersDbTestCase(BaseTestDbTestCase):
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(response_msg['message'], "Logged in as 'tester_user'")
+        self.assertEqual(response_msg['data'][0]['message'], "Logged in as 'tester_user'")
 
     def test_admin_login(self):
         '''Test that an admin can login'''
@@ -77,4 +77,4 @@ class UsersDbTestCase(BaseTestDbTestCase):
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(response_msg['message'], "Logged in as 'watai'")
+        self.assertEqual(response_msg['data'][0]['message'], "Logged in as 'watai'")

@@ -86,8 +86,13 @@ class UserLogin(Resource):
         if not current_user:
             abort(404, "User with username '{}' doesn't exist!".format(data['username']))
         if UserModel_v1.verify_password_hash(data['password'], current_user['password']):
+            token = create_access_token(identity=data['username'])
             return {
-                'message': "Logged in as '{}'".format(current_user['username'])
-            }, 200
+                "status": 200,
+                "data": [{
+                    "token": token,
+                    "message": "Logged in as '{}'".format(current_user['username'])
+                }]
+            }
         abort(401, 'Wrong credentials')
         return None
