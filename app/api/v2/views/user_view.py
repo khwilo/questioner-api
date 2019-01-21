@@ -67,3 +67,27 @@ class UserRegistration(Resource):
                 }
             ]
         }, 201
+
+class UserLogin(Resource):
+    '''Definitions for login in a user'''
+    def post(self):
+        '''Log in a registered user'''
+        user = UserModel_v2()
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('username', type=str, required=True, help='username cannot be blank!')
+        parser.add_argument('password', type=str, required=True, help='password cannot be blank!')
+        data = parser.parse_args()
+
+        current_user = user.find_user_by_username('username', data['username'])
+
+        ValidationHandler.validate_correct_username(data['username'])
+        ValidationHandler.validate_password(data['password'])
+        if not current_user:
+            abort(404, "User with username '{}' doesn't exist!".format(data['username']))
+        if UserModel_v1.verify_password_hash(data['password'], current_user['password']):
+            return {
+                'message': "Logged in as '{}'".format(current_user['username'])
+            }, 200
+        abort(401, 'Wrong credentials')
+        return None
