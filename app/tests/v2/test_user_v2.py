@@ -64,4 +64,6 @@ class UsersDbTestCase(BaseTestDbTestCase):
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(USER_LOGIN)
         )
+        response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
+        self.assertEqual(response_msg['message'], "Logged in as 'tester_user'")
