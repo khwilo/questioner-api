@@ -30,3 +30,5 @@ USER_DUPLICATE_EMAIL = dict(
 )
 
 USER_LOGIN = dict(username="tester_user", password="12345")
+
+ADMIN_LOGIN = dict(username="watai", password="questioner_1234")
