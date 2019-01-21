@@ -3,7 +3,7 @@ import json
 
 from app.tests.v2.test_base_v2 import BaseTestDbTestCase
 from app.tests.v2.sample_data import USER_REGISTRATION, USER_DUPLICATE_USERNAME, \
-USER_DUPLICATE_EMAIL
+USER_DUPLICATE_EMAIL, USER_LOGIN
 
 class UsersDbTestCase(BaseTestDbTestCase):
     '''Test definitions for a user'''
@@ -51,3 +51,17 @@ class UsersDbTestCase(BaseTestDbTestCase):
         self.assertEqual(res.status_code, 409)
         self.assertEqual(
             response_msg['message'], "Email address 'tester@example.com' already in use!")
+
+    def test_user_login(self):
+        '''Test that a user can login'''
+        res = self.client().post(
+            '/api/v2/register',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(USER_REGISTRATION)
+        ) # Register a user
+        res = self.client().post(
+            '/api/v2/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(USER_LOGIN)
+        )
+        self.assertEqual(res.status_code, 200)
