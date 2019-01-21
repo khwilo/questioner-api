@@ -3,7 +3,7 @@ import json
 
 from app.tests.v2.test_base_v2 import BaseTestDbTestCase
 from app.tests.v2.sample_data import USER_REGISTRATION, USER_DUPLICATE_USERNAME, \
-USER_DUPLICATE_EMAIL, USER_LOGIN
+USER_DUPLICATE_EMAIL, USER_LOGIN, ADMIN_LOGIN
 
 class UsersDbTestCase(BaseTestDbTestCase):
     '''Test definitions for a user'''
@@ -67,3 +67,14 @@ class UsersDbTestCase(BaseTestDbTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
         self.assertEqual(response_msg['message'], "Logged in as 'tester_user'")
+
+    def test_admin_login(self):
+        '''Test that an admin can login'''
+        res = self.client().post(
+            '/api/v2/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(ADMIN_LOGIN)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response_msg['message'], "Logged in as 'watai'")
