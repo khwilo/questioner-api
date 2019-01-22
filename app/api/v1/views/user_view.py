@@ -11,16 +11,16 @@ class UserRegistration(Resource):
     """Register a new user"""
     def post(self):
         """Create a user account"""
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('firstname', type=str, required=True, help='firstname cannot be blank!')
         parser.add_argument('lastname', type=str, required=True, help='lastname cannot be blank!')
         parser.add_argument('othername', type=str, required=True, help='othername cannot be blank!')
         parser.add_argument('email', type=str, required=True, help='email cannot be blank!')
         parser.add_argument(
-            'phoneNumber', type=str, required=True, help='phone_number cannot be blank!'
+            'phoneNumber', type=str, required=True, help='phoneNumber cannot be blank!'
         )
         parser.add_argument('username', type=str, required=True, help='username cannot be blank!')
-        parser.add_argument('isAdmin', type=bool, required=True, help='is_admin cannot be blank!')
+        parser.add_argument('isAdmin', type=bool, required=True, help='isAdmin cannot be blank!')
         parser.add_argument('password', type=str, required=True, help='password cannot be blank!')
 
         data = parser.parse_args()
@@ -70,7 +70,7 @@ class UserLogin(Resource):
     '''Log in a user'''
     def post(self):
         '''Sign In a registered user'''
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('username', type=str, required=True, help='username cannot be blank!')
         parser.add_argument('password', type=str, required=True, help='password cannot be blank!')
 

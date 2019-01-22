@@ -12,7 +12,7 @@ class MeetupList(Resource):
     @jwt_required
     def post(self):
         '''Create a meetup record'''
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('location', required=True, help="location cannot be blank!")
         parser.add_argument('images', action='append')
         parser.add_argument('topic', required=True, help="location cannot be blank!")

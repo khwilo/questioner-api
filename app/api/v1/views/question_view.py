@@ -12,7 +12,7 @@ class Question(Resource):
     @jwt_required
     def post(self, meetup_id):
         '''Create a question record'''
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('title', required=True, help="title cannot be blank!")
         parser.add_argument('body', required=True, help="body cannot be blank!")
         data = parser.parse_args()
