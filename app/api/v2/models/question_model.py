@@ -1,8 +1,8 @@
 '''This module represents the question entity'''
 from datetime import datetime
 
-from app.api.v1.utils.utility import Utility
-from app.api.v1.models.meetup_model import MeetupModel
+from app.api.v2.utils.utility import Utility
+from app.api.v2.models.meetup_model import MeetupModel
 
 QUESTIONS = [] # Data store for the questions
 

@@ -3,9 +3,9 @@ from flask import abort
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 
-from app.api.v1.utils.utility import Utility
-from app.api.v1.utils.validator import ValidationHandler
-from app.api.v1.models.user_model import UserModel
+from app.api.v2.utils.utility import Utility
+from app.api.v2.utils.validator import ValidationHandler
+from app.api.v2.models.user_model import UserModel
 
 class UserRegistration(Resource):
     """Register a new user"""

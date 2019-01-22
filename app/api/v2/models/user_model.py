@@ -2,7 +2,7 @@
 from datetime import datetime
 from passlib.hash import pbkdf2_sha256 as sha256
 
-from app.api.v1.utils.utility import Utility
+from app.api.v2.utils.utility import Utility
 
 USERS = [] # Data store for the users
 

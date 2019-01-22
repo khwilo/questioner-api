@@ -1,8 +1,8 @@
 '''This module represents tests for the user entity'''
 import json
 
-from app.api.v1.models.user_model import USERS, UserModel
-from app.tests.v1.test_base import BaseTestCase
+from app.api.v2.models.user_model import USERS, UserModel
+from app.tests.v2.test_base import BaseTestCase
 
 class UserTestCase(BaseTestCase):
     '''Test definitions for a user'''

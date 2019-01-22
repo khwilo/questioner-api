@@ -4,10 +4,10 @@ import json
 import unittest
 
 from app import create_app
-from app.api.v1.utils.utility import Utility
-from app.api.v1.models.meetup_model import MEETUPS
-from app.api.v1.models.question_model import QUESTIONS
-from app.api.v1.models.user_model import USERS, UserModel
+from app.api.v2.utils.utility import Utility
+from app.api.v2.models.meetup_model import MEETUPS
+from app.api.v2.models.question_model import QUESTIONS
+from app.api.v2.models.user_model import USERS, UserModel
 
 class BaseTestCase(unittest.TestCase):
     '''Base class for other test classes'''

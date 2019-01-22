@@ -1,8 +1,8 @@
 '''This module represents tests for the meetup entity'''
 import json
 
-from app.api.v1.models.meetup_model import MEETUPS
-from app.tests.v1.test_base import BaseTestCase
+from app.api.v2.models.meetup_model import MEETUPS
+from app.tests.v2.test_base import BaseTestCase
 
 class MeetupTestCase(BaseTestCase):
     '''Test definitions for a meetup'''

@@ -2,7 +2,7 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
-from app.api.v1 import AUTH_BLUEPRINT, API_BLUEPRINT
+from app.api.v2 import AUTH_BLUEPRINT, API_BLUEPRINT
 
 from instance.config import APP_CONFIG
 

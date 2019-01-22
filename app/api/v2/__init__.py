@@ -4,10 +4,10 @@ Modularize the app using BluePrints and the API resource
 from flask import Blueprint
 from flask_restful import Api
 
-from app.api.v1.views.meetup_view import MeetupList, Meetup, UpcomingMeetup
-from app.api.v1.views.question_view import Question, Upvote, Downvote
-from app.api.v1.views.rsvp_view import Rsvp
-from app.api.v1.views.user_view import UserRegistration, UserLogin
+from app.api.v2.views.meetup_view import MeetupList, Meetup, UpcomingMeetup
+from app.api.v2.views.question_view import Question, Upvote, Downvote
+from app.api.v2.views.rsvp_view import Rsvp
+from app.api.v2.views.user_view import UserRegistration, UserLogin
 
 AUTH_BLUEPRINT = Blueprint("auth", __name__, url_prefix='/auth')
 API_BLUEPRINT = Blueprint("api", __name__, url_prefix='/api/v1')
