@@ -55,3 +55,18 @@ class UserModel(BaseModel):
             'registered': self.registered,
             'password': self.password
         }
+
+    @staticmethod
+    def table_result_to_json(result):
+        '''Turn the table result to JSON'''
+        return {
+            'id': result['id'],
+            'firstname': result['firstname'],
+            'lastname': result['lastname'],
+            'othername': result['othername'],
+            'email': result['email'],
+            'phone_number': result['phone_number'],
+            'username': result['username'],
+            'registered ': str(result['registered']),
+            'is_admin': result['is_admin']
+        }
