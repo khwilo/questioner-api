@@ -95,8 +95,14 @@ class UserLogin(Resource):
         if UserModel.verify_password_hash(data['password'], current_user['password']):
             access_token = create_access_token(identity=data['username'])
             return {
-                'message': "Logged in as '{}'".format(current_user['username']),
-                'access_token': access_token
+                "status": 200,
+                "data": [
+                    {
+                        "token": access_token,
+                        "user": UserModel.to_json(current_user),
+                        "message": "Logged in as '{}'".format(current_user['username'])
+                    }
+                ]
             }, 200
         abort(401, {
             "error": "The password you entered doesn't match",
