@@ -15,7 +15,7 @@ before_script:
   - psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to postgres ;" -U postgres
   - python3 migrate.py
 script:
-  - pytest --cov=app/
+  - pytest --cov=app/api
   - coveralls
 after_success:
   - coveralls
