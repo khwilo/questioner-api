@@ -1,122 +1,23 @@
 '''This module represents the base test class'''
-from datetime import datetime
 import json
 import unittest
 
 from app import create_app
-from app.api.v2.utils.utility import Utility
-from app.api.v2.models.meetup_model import MEETUPS
-from app.api.v2.models.question_model import QUESTIONS
-from app.api.v2.models.user_model import USERS, UserModel
+from db import establish_connection, destroy
 
 class BaseTestCase(unittest.TestCase):
     '''Base class for other test classes'''
     def setUp(self):
         self.app = create_app(config_name="testing")
-        self.client = self.app.test_client
         self.app_context = self.app.app_context()
-        self.app_context.push()
+        self.client = self.app.test_client
 
-        self.user_registration = dict(
-            firstname="test_first",
-            lastname="test_last",
-            othername="test_other",
-            email="test@example.com",
-            phoneNumber="0700000000",
-            username="test_user",
-            isAdmin=False,
-            password="12345"
-        )
-
-        self.admin_registration = dict(
-            firstname="admin_first",
-            lastname="admin_last",
-            othername="admin_other",
-            email="admin@example.com",
-            phoneNumber="0711111111",
-            username="test_admin",
-            isAdmin=True,
-            password="901sT"
-        )
-
-        self.digit_username = dict(
-            firstname="test_first",
-            lastname="test_last",
-            othername="test_other",
-            email="test@example.com",
-            phoneNumber="0700000000",
-            username="1234",
-            isAdmin=False,
-            password="12345"
-        )
-
-
-        self.empty_username = dict(
-            firstname="test_first",
-            lastname="test_last",
-            othername="test_other",
-            email="test@example.com",
-            phoneNumber="0700000000",
-            username="",
-            isAdmin=False,
-            password="12345"
-        )
-
-        self.empty_password = dict(
-            firstname="test_first",
-            lastname="test_last",
-            othername="test_other",
-            email="test@example.com",
-            phoneNumber="0700000000",
-            username="test_user",
-            isAdmin=False,
-            password=""
-        )
-
-        self.wrong_email_registration = dict(
-            firstname="test_first",
-            lastname="test_last",
-            othername="test_other",
-            email="testexample.com",
-            phoneNumber="0700000000",
-            username="test",
-            isAdmin=False,
-            password="12345"
-        )
-
-        self.user_login = dict(username="test_user", password="12345")
-        self.wrong_password = dict(username="test_user", password="abcde")
-
-        self.admin_login = dict(username="test_admin", password="901sT")
-
-        self.meetup = dict(
-            location="Test Location",
-            images=[],
-            topic="Test Topic",
-            happeningOn="Jan 10 2019 3:30PM",
-            tags=["Programming", "Design"]
-        )
-
-        self.new_meetup = dict(
-            location="Test New Location",
-            images=[],
-            topic="Test New Topic",
-            happeningOn="Mar 5 2019 11:00AM",
-            tags=["Programming", "Design"]
-        )
-
-        self.question = dict(
-            title="test title",
-            body="test body"
-        )
-
-        self.rsvp = dict(response="maybe")
+        with self.app_context:
+            establish_connection()
 
     def tearDown(self):
-        del QUESTIONS[:]
-        del MEETUPS[:]
-        del USERS[:]
-        self.app_context.pop()
+        with self.app_context:
+            destroy()
 
     def get_accept_content_type_headers(self):
         '''Return the content type headers for the body'''
@@ -162,34 +63,6 @@ class BaseTestCase(unittest.TestCase):
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(question)
         )
-
-    def test_serialize_function(self):
-        '''Test the function serialize() converts an object to a dictionary'''
-        user = UserModel(
-            firstname="test_first",
-            lastname="test_last",
-            othername="test_other",
-            email="test@example.com",
-            phone_number="0700000000",
-            username="test_user",
-            is_admin=False,
-            password="12345"
-        )
-        serialized_user_obj = Utility.serialize(user)
-        user_dict = dict(
-            firstname="test_first",
-            lastname="test_last",
-            othername="test_other",
-            email="test@example.com",
-            phone_number="0700000000",
-            username="test_user",
-            is_admin=False,
-            password="12345"
-        )
-        self.assertTrue(serialized_user_obj, user_dict)
-        now_date = datetime.utcnow()
-        serialized_date = Utility.serialize(now_date)
-        self.assertTrue(serialized_date, now_date.isoformat())
 
 if __name__ == "__main__":
     unittest.main()
