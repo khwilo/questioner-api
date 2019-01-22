@@ -1,6 +1,4 @@
 '''This module represents tests for the rsvp entity'''
-import json
-
 from app.tests.v2.test_base import BaseTestCase
 
 class RsvpTestCase(BaseTestCase):
