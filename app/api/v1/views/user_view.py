@@ -16,9 +16,11 @@ class UserRegistration(Resource):
         parser.add_argument('lastname', type=str, required=True, help='lastname cannot be blank!')
         parser.add_argument('othername', type=str, required=True, help='othername cannot be blank!')
         parser.add_argument('email', type=str, required=True, help='email cannot be blank!')
-        parser.add_argument('phone_number', type=str, required=True, help='phone_number cannot be blank!')
+        parser.add_argument(
+            'phoneNumber', type=str, required=True, help='phone_number cannot be blank!'
+        )
         parser.add_argument('username', type=str, required=True, help='username cannot be blank!')
-        parser.add_argument('is_admin', type=bool, required=True, help='is_admin cannot be blank!')
+        parser.add_argument('isAdmin', type=bool, required=True, help='is_admin cannot be blank!')
         parser.add_argument('password', type=str, required=True, help='password cannot be blank!')
 
         data = parser.parse_args()
@@ -29,9 +31,9 @@ class UserRegistration(Resource):
             lastname=data['lastname'],
             othername=data['othername'],
             email=data['email'],
-            phone_number=data['phone_number'],
+            phone_number=data['phoneNumber'],
             username=data['username'],
-            is_admin=data['is_admin'],
+            is_admin=data['isAdmin'],
             password=UserModel.generate_password_hash(data['password'])
         )
 

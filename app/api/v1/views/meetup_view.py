@@ -16,7 +16,7 @@ class MeetupList(Resource):
         parser.add_argument('location', required=True, help="location cannot be blank!")
         parser.add_argument('images', action='append')
         parser.add_argument('topic', required=True, help="location cannot be blank!")
-        parser.add_argument('happening_on', required=True, help="location cannot be blank!")
+        parser.add_argument('happeningOn', required=True, help="location cannot be blank!")
         parser.add_argument('tags', action='append')
         data = parser.parse_args()
 
@@ -31,7 +31,7 @@ class MeetupList(Resource):
                 location=data['location'],
                 images=data['images'],
                 topic=data['topic'],
-                happening_on=MeetupModel.convert_string_to_date(data['happening_on']),
+                happening_on=MeetupModel.convert_string_to_date(data['happeningOn']),
                 tags=data['tags']
             )
             MeetupModel.add_meetup(Utility.serialize(meetup))

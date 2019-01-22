@@ -22,9 +22,9 @@ class BaseTestCase(unittest.TestCase):
             lastname="test_last",
             othername="test_other",
             email="test@example.com",
-            phone_number="0700000000",
+            phoneNumber="0700000000",
             username="test_user",
-            is_admin=False,
+            isAdmin=False,
             password="12345"
         )
 
@@ -33,9 +33,9 @@ class BaseTestCase(unittest.TestCase):
             lastname="admin_last",
             othername="admin_other",
             email="admin@example.com",
-            phone_number="0711111111",
+            phoneNumber="0711111111",
             username="test_admin",
-            is_admin=True,
+            isAdmin=True,
             password="901sT"
         )
 
@@ -44,9 +44,9 @@ class BaseTestCase(unittest.TestCase):
             lastname="test_last",
             othername="test_other",
             email="test@example.com",
-            phone_number="0700000000",
+            phoneNumber="0700000000",
             username="1234",
-            is_admin=False,
+            isAdmin=False,
             password="12345"
         )
 
@@ -56,9 +56,9 @@ class BaseTestCase(unittest.TestCase):
             lastname="test_last",
             othername="test_other",
             email="test@example.com",
-            phone_number="0700000000",
+            phoneNumber="0700000000",
             username="",
-            is_admin=False,
+            isAdmin=False,
             password="12345"
         )
 
@@ -67,9 +67,9 @@ class BaseTestCase(unittest.TestCase):
             lastname="test_last",
             othername="test_other",
             email="test@example.com",
-            phone_number="0700000000",
+            phoneNumber="0700000000",
             username="test_user",
-            is_admin=False,
+            isAdmin=False,
             password=""
         )
 
@@ -78,9 +78,9 @@ class BaseTestCase(unittest.TestCase):
             lastname="test_last",
             othername="test_other",
             email="testexample.com",
-            phone_number="0700000000",
+            phoneNumber="0700000000",
             username="test",
-            is_admin=False,
+            isAdmin=False,
             password="12345"
         )
 
@@ -93,7 +93,7 @@ class BaseTestCase(unittest.TestCase):
             location="Test Location",
             images=[],
             topic="Test Topic",
-            happening_on="Jan 10 2019 3:30PM",
+            happeningOn="Jan 10 2019 3:30PM",
             tags=["Programming", "Design"]
         )
 
@@ -101,7 +101,7 @@ class BaseTestCase(unittest.TestCase):
             location="Test New Location",
             images=[],
             topic="Test New Topic",
-            happening_on="Mar 5 2019 11:00AM",
+            happeningOn="Mar 5 2019 11:00AM",
             tags=["Programming", "Design"]
         )
 
