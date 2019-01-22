@@ -80,7 +80,10 @@ class UserLogin(Resource):
 
         ValidationHandler.validate_correct_username(data['username'])
         if not current_user:
-            abort(404, "User with username '{}' doesn't exist!".format(data['username']))
+            abort(404, {
+                "error": "User with username '{}' doesn't exist!".format(data['username']),
+                "status": 404}
+            )
 
         if UserModel.verify_password_hash(data['password'], current_user['password']):
             access_token = create_access_token(identity=data['username'])
@@ -88,5 +91,8 @@ class UserLogin(Resource):
                 'message': "Logged in as '{}'".format(current_user['username']),
                 'access_token': access_token
             }, 200
-        abort(401, 'Wrong credentials')
+        abort(401, {
+            "error": "The password you entered doesn't match",
+            "status": 401
+        })
         return None

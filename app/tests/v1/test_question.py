@@ -34,7 +34,7 @@ class QuestionTestCase(BaseTestCase):
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 404)
-        self.assertEqual(response_msg['message'], "Meetup with id '3' doesn't exist!")
+        self.assertEqual(response_msg["message"]["error"], "Meetup with id '3' doesn't exist!")
 
     def test_upvote_question(self):
         '''Test the API can upvote a question'''
