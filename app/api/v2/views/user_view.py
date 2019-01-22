@@ -57,12 +57,14 @@ class UserRegistration(Resource):
 
         user.add_user()
 
+        result = user.find_user_by_username('username', username)
+
         return {
             "status": 201,
             "data": [
                 {
                     "token": token,
-                    "user": user.user_to_dict(),
+                    "user": UserModel_v2.to_json(result),
                     "message": "User account created successfully"
                 }
             ]
@@ -91,7 +93,7 @@ class UserLogin(Resource):
                 "status": 200,
                 "data": [{
                     "token": token,
-                    "user": UserModel_v2.table_result_to_json(current_user),
+                    "user": UserModel_v2.to_json(current_user),
                     "message": "Logged in as '{}'".format(current_user['username'])
                 }]
             }
