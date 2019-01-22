@@ -12,7 +12,7 @@ class RsvpTestCase(BaseTestCase):
         access_token = self.get_access_token(self.user_registration, self.user_login)
         self.create_question(access_token, self.question)
         res = self.client().post(
-            '/api/v1/meetups/1/rsvps',
+            '/api/v2/meetups/1/rsvps',
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(self.rsvp)
         ) # respond to a meetup rsvp

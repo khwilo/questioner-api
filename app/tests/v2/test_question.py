@@ -12,7 +12,7 @@ class QuestionTestCase(BaseTestCase):
         self.create_meetup(access_token, self.meetup)
         access_token = self.get_access_token(self.user_registration, self.user_login)
         res = self.client().post(
-            '/api/v1/meetups/1/questions',
+            '/api/v2/meetups/1/questions',
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(self.question)
         )
@@ -28,7 +28,7 @@ class QuestionTestCase(BaseTestCase):
         '''Test the API cannot post a question to a non-existent meetup'''
         access_token = self.get_access_token(self.user_registration, self.user_login)
         res = self.client().post(
-            '/api/v1/meetups/3/questions',
+            '/api/v2/meetups/3/questions',
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(self.question)
         )
@@ -43,7 +43,7 @@ class QuestionTestCase(BaseTestCase):
         access_token = self.get_access_token(self.user_registration, self.user_login)
         self.create_question(access_token, self.question)
         res = self.client().patch(
-            '/api/v1/meetups/1/questions/1/upvote',
+            '/api/v2/meetups/1/questions/1/upvote',
             headers=self.get_authentication_headers(access_token)
         ) # Upvote a question
         response_msg = json.loads(res.data.decode("UTF-8"))
@@ -58,7 +58,7 @@ class QuestionTestCase(BaseTestCase):
         access_token = self.get_access_token(self.user_registration, self.user_login)
         self.create_question(access_token, self.question)
         res = self.client().patch(
-            '/api/v1/meetups/1/questions/1/downvote',
+            '/api/v2/meetups/1/questions/1/downvote',
             headers=self.get_authentication_headers(access_token)
         ) # Downvote a question
         response_msg = json.loads(res.data.decode("UTF-8"))

@@ -134,12 +134,12 @@ class BaseTestCase(unittest.TestCase):
     def get_access_token(self, user_registration, user_login):
         '''Fetch access token from user login'''
         self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(user_registration)
         ) # User Registration
         res = self.client().post(
-            '/auth/login',
+            '/api/v2/auth/login',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(user_login)
         ) # User Log In
@@ -150,7 +150,7 @@ class BaseTestCase(unittest.TestCase):
     def create_meetup(self, access_token, meetup):
         '''Create a meetup record'''
         self.client().post(
-            '/api/v1/meetups',
+            '/api/v2/meetups',
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(meetup)
         )
@@ -158,7 +158,7 @@ class BaseTestCase(unittest.TestCase):
     def create_question(self, access_token, question):
         '''Create a question record'''
         self.client().post(
-            '/api/v1/meetups/1/questions',
+            '/api/v2/meetups/1/questions',
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(question)
         )

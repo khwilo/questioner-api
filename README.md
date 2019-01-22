@@ -10,13 +10,13 @@ API implementation for the [Questioner](https://khwilo.github.io/questioner/) ap
 
 **_NOTE_**:
 
-- API endoints for user registration and login are prefixed by `/auth` while the rest of the endpoints are prefixed by `/api/v1`.
+- API endoints are prefixed by `/api/v2`.
 - Fields for the date are specified like this `month day year time`. An example date format: `"Jan 10 2019 12:15AM"`
 
 | Method        | Endpoint                                                       | Description              |
 | ------------- | -------------------------------------------------------------- | ------------------------ |
-| POST          | `/register`                                                    | Create a user record     |
-| POST          | `/login`                                                       | Log in a user            |
+| POST          | `/auth/signup`                                                 | Create a user record     |
+| POST          | `/auth/login`                                                  | Log in a user            |
 | POST          | `/meetups`                                                     | Create a meetup record   |
 | GET           | `/meetups/<meetup-id>`                                         | Fetch a specific meetup record |
 | GET           | `/meetups/upcoming/`                                           | Fetch all upcoming meetup records |

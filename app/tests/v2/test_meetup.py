@@ -10,7 +10,7 @@ class MeetupTestCase(BaseTestCase):
         '''Test an administrator can create a meetup'''
         access_token = self.get_access_token(self.admin_registration, self.admin_login)
         res = self.client().post(
-            '/api/v1/meetups',
+            '/api/v2/meetups',
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(self.meetup)
         )
@@ -23,7 +23,7 @@ class MeetupTestCase(BaseTestCase):
         '''Test a regular user cannot create a meetup'''
         access_token = self.get_access_token(self.user_registration, self.user_login)
         res = self.client().post(
-            '/api/v1/meetups',
+            '/api/v2/meetups',
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(self.meetup)
         )
@@ -37,7 +37,7 @@ class MeetupTestCase(BaseTestCase):
         self.create_meetup(access_token, self.meetup)
         self.create_meetup(access_token, self.new_meetup)
         res = self.client().get(
-            '/api/v1/meetups/2',
+            '/api/v2/meetups/2',
             headers=self.get_authentication_headers(access_token)
         )
         self.assertEqual(res.status_code, 200)
@@ -51,7 +51,7 @@ class MeetupTestCase(BaseTestCase):
         access_token = self.get_access_token(self.admin_registration, self.admin_login)
         self.create_meetup(access_token, self.meetup)
         res = self.client().get(
-            '/api/v1/meetups/i',
+            '/api/v2/meetups/i',
             headers=self.get_authentication_headers(access_token)
         )
         self.assertEqual(res.status_code, 400)
@@ -62,7 +62,7 @@ class MeetupTestCase(BaseTestCase):
         '''Test the API cannot read data from an empty meetup item'''
         access_token = self.get_access_token(self.admin_registration, self.admin_login)
         res = self.client().get(
-            '/api/v1/meetups/2',
+            '/api/v2/meetups/2',
             headers=self.get_authentication_headers(access_token)
         )
         self.assertEqual(res.status_code, 404)
@@ -75,7 +75,7 @@ class MeetupTestCase(BaseTestCase):
         self.create_meetup(access_token, self.meetup) # Earlier meetup
         self.create_meetup(access_token, self.new_meetup) # Latest meetup
         res = self.client().get(
-            '/api/v1/meetups/upcoming/',
+            '/api/v2/meetups/upcoming/',
             headers=self.get_authentication_headers(access_token)
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
@@ -90,7 +90,7 @@ class MeetupTestCase(BaseTestCase):
         '''Test the API cannot fetch data from an empty meetup list data store'''
         access_token = self.get_access_token(self.admin_registration, self.admin_login)
         res = self.client().get(
-            '/api/v1/meetups/upcoming/',
+            '/api/v2/meetups/upcoming/',
             headers=self.get_authentication_headers(access_token)
         )
         self.assertEqual(res.status_code, 404)

@@ -9,7 +9,7 @@ class UserTestCase(BaseTestCase):
     def test_user_registration(self):
         '''Test the API can register a user'''
         res = self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_registration)
         )
@@ -24,7 +24,7 @@ class UserTestCase(BaseTestCase):
         Test the API cannot register a user with a username consisting of digits only
         '''
         res = self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.digit_username)
         )
@@ -37,7 +37,7 @@ class UserTestCase(BaseTestCase):
         Test the API cannot register a user with an empty username
         '''
         res = self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.empty_username)
         )
@@ -50,7 +50,7 @@ class UserTestCase(BaseTestCase):
         Test the API cannot register a user without a password
         '''
         res = self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.empty_password)
         )
@@ -63,7 +63,7 @@ class UserTestCase(BaseTestCase):
         Test the API cannot register a user with an invalid email address
         '''
         res = self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.wrong_email_registration)
         )
@@ -79,13 +79,13 @@ class UserTestCase(BaseTestCase):
         Test the API can register a user only once
         '''
         res = self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_registration)
         ) # First user registration
         self.assertEqual(res.status_code, 201)
         res = self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_registration)
         ) # Second user registration
@@ -99,13 +99,13 @@ class UserTestCase(BaseTestCase):
     def test_user_login(self):
         '''Test the API can log in a user'''
         res = self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_registration)
         )
         self.assertEqual(res.status_code, 201)
         res = self.client().post(
-            '/auth/login',
+            '/api/v2/auth/login',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_login)
         )
@@ -114,7 +114,7 @@ class UserTestCase(BaseTestCase):
     def test_get_user_by_username(self):
         '''Test the method fetch a user by user username returns the correct user'''
         self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_registration)
         )
@@ -123,7 +123,7 @@ class UserTestCase(BaseTestCase):
     def test_incorrect_username(self):
         '''Test the API cannot log in a user who is not yet registered'''
         res = self.client().post(
-            '/auth/login',
+            '/api/v2/auth/login',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_login)
         )
@@ -134,13 +134,13 @@ class UserTestCase(BaseTestCase):
     def test_incorrect_password(self):
         '''Test the API cannot log in a user with an incorrect password'''
         res = self.client().post(
-            '/auth/register',
+            '/api/v2/auth/signup',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.user_registration)
         )
         self.assertEqual(res.status_code, 201)
         res = self.client().post(
-            '/auth/login',
+            '/api/v2/auth/login',
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(self.wrong_password)
         )
