@@ -43,15 +43,17 @@ class UserModel(BaseModel):
         result = self.find_item_if_exists(TABLE_NAME, email, value)
         return result
 
-    def user_to_dict(self):
-        '''Turn user object to dictionary'''
+    @staticmethod
+    def to_json(result):
+        '''Turn the table result to JSON'''
         return {
-            'firstname': self.firstname,
-            'lastname': self.lastname,
-            'othername': self.othername,
-            'email': self.email,
-            'phone_number': self.phone_number,
-            'username': self.username,
-            'registered': self.registered,
-            'password': self.password
+            'id': result['id'],
+            'firstname': result['firstname'],
+            'lastname': result['lastname'],
+            'othername': result['othername'],
+            'email': result['email'],
+            'phone_number': result['phone_number'],
+            'username': result['username'],
+            'registered ': str(result['registered']),
+            'is_admin': result['is_admin']
         }
