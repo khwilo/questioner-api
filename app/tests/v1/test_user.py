@@ -30,7 +30,7 @@ class UserTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 400)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual(response_msg["message"], "username cannot consist of digits only")
+        self.assertEqual(response_msg["message"]["error"], "username cannot consist of digits only")
 
     def test_empty_username(self):
         '''
@@ -43,7 +43,7 @@ class UserTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 400)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual(response_msg["message"], "username cannot be empty")
+        self.assertEqual(response_msg["message"]["error"], "username cannot be empty")
 
     def test_empty_password(self):
         '''
@@ -56,7 +56,7 @@ class UserTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 400)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual(response_msg["message"], "password cannot be empty")
+        self.assertEqual(response_msg["message"]["error"], "password cannot be empty")
 
     def test_invalid_email_address_registration(self):
         '''
@@ -70,7 +70,7 @@ class UserTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 400)
         self.assertEqual(
-            response_msg['message'],
+            response_msg["message"]["error"],
             "The email address is not valid. It must have exactly one @-sign."
         )
 
@@ -92,7 +92,7 @@ class UserTestCase(BaseTestCase):
         self.assertEqual(res.status_code, 409)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(
-            response_msg["message"],
+            response_msg["message"]["error"],
             "A user with username 'test_user' already exists!"
         )
 
@@ -129,7 +129,7 @@ class UserTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 404)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual("User with username 'test_user' doesn't exist!", response_msg["message"])
+        self.assertEqual(response_msg["message"]["error"], "User with username 'test_user' doesn't exist!")
 
     def test_incorrect_password(self):
         '''Test the API cannot log in a user with an incorrect password'''
@@ -146,4 +146,4 @@ class UserTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 401)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual('Wrong credentials', response_msg["message"])
+        self.assertEqual(response_msg["message"]["error"], "The password you entered doesn't match")

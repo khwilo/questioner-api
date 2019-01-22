@@ -11,14 +11,16 @@ class UserRegistration(Resource):
     """Register a new user"""
     def post(self):
         """Create a user account"""
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('firstname', type=str, required=True, help='firstname cannot be blank!')
         parser.add_argument('lastname', type=str, required=True, help='lastname cannot be blank!')
         parser.add_argument('othername', type=str, required=True, help='othername cannot be blank!')
         parser.add_argument('email', type=str, required=True, help='email cannot be blank!')
-        parser.add_argument('phone_number', type=str, required=True, help='phone_number cannot be blank!')
+        parser.add_argument(
+            'phoneNumber', type=str, required=True, help='phoneNumber cannot be blank!'
+        )
         parser.add_argument('username', type=str, required=True, help='username cannot be blank!')
-        parser.add_argument('is_admin', type=bool, required=True, help='is_admin cannot be blank!')
+        parser.add_argument('isAdmin', type=bool, required=True, help='isAdmin cannot be blank!')
         parser.add_argument('password', type=str, required=True, help='password cannot be blank!')
 
         data = parser.parse_args()
@@ -29,9 +31,9 @@ class UserRegistration(Resource):
             lastname=data['lastname'],
             othername=data['othername'],
             email=data['email'],
-            phone_number=data['phone_number'],
+            phone_number=data['phoneNumber'],
             username=data['username'],
-            is_admin=data['is_admin'],
+            is_admin=data['isAdmin'],
             password=UserModel.generate_password_hash(data['password'])
         )
 
@@ -68,7 +70,7 @@ class UserLogin(Resource):
     '''Log in a user'''
     def post(self):
         '''Sign In a registered user'''
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('username', type=str, required=True, help='username cannot be blank!')
         parser.add_argument('password', type=str, required=True, help='password cannot be blank!')
 
@@ -78,7 +80,10 @@ class UserLogin(Resource):
 
         ValidationHandler.validate_correct_username(data['username'])
         if not current_user:
-            abort(404, "User with username '{}' doesn't exist!".format(data['username']))
+            abort(404, {
+                "error": "User with username '{}' doesn't exist!".format(data['username']),
+                "status": 404}
+            )
 
         if UserModel.verify_password_hash(data['password'], current_user['password']):
             access_token = create_access_token(identity=data['username'])
@@ -86,5 +91,8 @@ class UserLogin(Resource):
                 'message': "Logged in as '{}'".format(current_user['username']),
                 'access_token': access_token
             }, 200
-        abort(401, 'Wrong credentials')
+        abort(401, {
+            "error": "The password you entered doesn't match",
+            "status": 401
+        })
         return None

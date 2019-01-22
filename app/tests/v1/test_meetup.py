@@ -29,7 +29,7 @@ class MeetupTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 403)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual(response_msg['message'], "Only administrators can create a meetup")
+        self.assertEqual(response_msg["message"]["error"], "Only administrators can create a meetup")
 
     def test_fetch_one_meetup(self):
         '''Test the API can fetch one meetup'''
@@ -56,7 +56,7 @@ class MeetupTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 400)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual(response_msg["message"], "Meetup ID must be an Integer")
+        self.assertEqual(response_msg["message"]["error"], "Meetup ID must be an Integer")
 
     def test_empty_meetup_item(self):
         '''Test the API cannot read data from an empty meetup item'''
@@ -67,7 +67,7 @@ class MeetupTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 404)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual(response_msg["message"], "Meetup with id '2' doesn't exist!")
+        self.assertEqual(response_msg["message"]["error"], "Meetup with id '2' doesn't exist!")
 
     def test_fetch_all_meetups(self):
         '''Test the API can fetch all meetups'''
@@ -95,4 +95,4 @@ class MeetupTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 404)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual(response_msg['message'], 'No meetup is available')
+        self.assertEqual(response_msg["message"]["error"], 'No meetup is available')

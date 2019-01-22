@@ -12,11 +12,11 @@ class MeetupList(Resource):
     @jwt_required
     def post(self):
         '''Create a meetup record'''
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('location', required=True, help="location cannot be blank!")
         parser.add_argument('images', action='append')
         parser.add_argument('topic', required=True, help="location cannot be blank!")
-        parser.add_argument('happening_on', required=True, help="location cannot be blank!")
+        parser.add_argument('happeningOn', required=True, help="location cannot be blank!")
         parser.add_argument('tags', action='append')
         data = parser.parse_args()
 
@@ -24,14 +24,17 @@ class MeetupList(Resource):
         user = UserModel.get_user_by_username(current_user)
 
         if not user:
-            abort(401, 'This action required loggin in!')
+            abort(401, {
+                "error": "This action required loggin in!",
+                "status": 401
+            })
 
         if user['is_admin']:
             meetup = MeetupModel(
                 location=data['location'],
                 images=data['images'],
                 topic=data['topic'],
-                happening_on=MeetupModel.convert_string_to_date(data['happening_on']),
+                happening_on=MeetupModel.convert_string_to_date(data['happeningOn']),
                 tags=data['tags']
             )
             MeetupModel.add_meetup(Utility.serialize(meetup))
@@ -39,7 +42,10 @@ class MeetupList(Resource):
                 'status': 201,
                 'data': [Utility.serialize(meetup)]
             }, 201
-        abort(403, "Only administrators can create a meetup")
+        abort(403, {
+            "error": "Only administrators can create a meetup",
+            "status": 403
+        })
         return None
 
 class Meetup(Resource):
@@ -50,12 +56,18 @@ class Meetup(Resource):
         if meetup_id.isdigit():
             meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
             if meetup == {}:
-                abort(404, "Meetup with id '{}' doesn't exist!".format(meetup_id))
+                abort(404, {
+                    "error": "Meetup with id '{}' doesn't exist!".format(meetup_id),
+                    "status": 404
+                })
             return {
                 'status': 200,
                 'data': [meetup]
             }, 200
-        abort(400, 'Meetup ID must be an Integer')
+        abort(400, {
+            "error": "Meetup ID must be an Integer",
+            "status": 400
+        })
         return None
 
 class UpcomingMeetup(Resource):
@@ -65,7 +77,10 @@ class UpcomingMeetup(Resource):
         '''Fetch all upcoming meetups'''
         meetups = MeetupModel.get_all_meetups()
         if meetups == []:
-            abort(404, 'No meetup is available')
+            abort(404, {
+                "error": "No meetup is available",
+                "status": 404
+            })
         return {
             'status': 200,
             'data': sorted(meetups, key=lambda item: item['happening_on'], reverse=True)

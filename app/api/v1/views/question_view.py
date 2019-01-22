@@ -12,7 +12,7 @@ class Question(Resource):
     @jwt_required
     def post(self, meetup_id):
         '''Create a question record'''
-        parser = reqparse.RequestParser()
+        parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('title', required=True, help="title cannot be blank!")
         parser.add_argument('body', required=True, help="body cannot be blank!")
         data = parser.parse_args()
@@ -21,7 +21,10 @@ class Question(Resource):
         user = UserModel.get_user_by_username(current_user)
 
         if not user:
-            abort(401, 'This action required loggin in!')
+            abort(401, {
+                "error": "This action required loggin in!",
+                "status": 401
+            })
 
         question = QuestionModel(
             created_by=user['user_id'],
@@ -33,13 +36,19 @@ class Question(Resource):
         if meetup_id.isdigit():
             meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
             if meetup == {}:
-                abort(404, "Meetup with id '{}' doesn't exist!".format(meetup_id))
+                abort(404, {
+                    "error": "Meetup with id '{}' doesn't exist!".format(meetup_id),
+                    "status": 404
+                })
             QuestionModel.add_question(question, meetup_id)
             return {
                 'status': 201,
                 'data': [meetup]
             }, 201
-        abort(400, 'meetup ID must be an integer value')
+        abort(400, {
+            "error": "Meetup ID must be an integer value",
+            "status": 400
+        })
         return None
 
 class Upvote(Resource):
@@ -49,10 +58,16 @@ class Upvote(Resource):
         '''Increase the vote of a question by 1'''
         meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
         if meetup == {}:
-            abort(404, "Meetup with ID '{}' doesn't exist!".format(meetup_id))
+            abort(404, {
+                "error": "Meetup with ID '{}' doesn't exist!".format(meetup_id),
+                "status": 404
+            })
         question = MeetupModel.get_question_by_id(meetup, int(question_id))
         if question == {}:
-            abort(404, "Question with ID '{}' doesn't exist!".format(question_id))
+            abort(404, {
+                "error": "Question with ID '{}' doesn't exist!".format(question_id),
+                "status": 404
+            })
         question["votes"] += 1
         return {
             "status": 200,
@@ -73,10 +88,16 @@ class Downvote(Resource):
         '''Decrease the vote of a question by 1'''
         meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
         if meetup == {}:
-            abort(404, "Meetup with ID '{}' doesn't exist!".format(meetup_id))
+            abort(404, {
+                "error": "Meetup with ID '{}' doesn't exist!".format(meetup_id),
+                "status": 404
+            })
         question = MeetupModel.get_question_by_id(meetup, int(question_id))
         if question == {}:
-            abort(404, "Question with ID '{}' doesn't exist!".format(question_id))
+            abort(404, {
+                "error": "Question with ID '{}' doesn't exist!".format(question_id),
+                "status": 404
+            })
         question["votes"] -= 1
         return {
             "status": 200,

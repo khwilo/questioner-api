@@ -9,3 +9,6 @@ venv/
 
 # Ignore .vscode directory and its files
 .vscode/
+
+# Ignore .env file
+.env
