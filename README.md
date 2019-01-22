@@ -6,17 +6,32 @@
 
 API implementation for the [Questioner](https://khwilo.github.io/questioner/) application.
 
+## Work In Progress
+
+- [x] User registration
+- [x] User log in
+- [ ] User log out
+- [ ] Admin user creating a meetup
+- [ ] Fetching all meetups
+- [ ] Fetching a specific meetup
+- [ ] Admin user deleting a meetup
+- [ ] User posting a question
+- [ ] User commenting on a question
+- [ ] User upvoting on a question
+- [ ] User downvoting on a question
+- [ ] User RSVP meetup
+
 ### API ENDPOINTS
 
 **_NOTE_**:
 
-- API endoints for user registration and login are prefixed by `/auth` while the rest of the endpoints are prefixed by `/api/v1`.
+- API endpoints are prefixed by `/api/v2`.
 - Fields for the date are specified like this `month day year time`. An example date format: `"Jan 10 2019 12:15AM"`
 
 | Method        | Endpoint                                                       | Description              |
 | ------------- | -------------------------------------------------------------- | ------------------------ |
-| POST          | `/register`                                                    | Create a user record     |
-| POST          | `/login`                                                       | Log in a user            |
+| POST          | `/auth/signup`                                                 | Create a user record     |
+| POST          | `/auth/login`                                                  | Log in a user            |
 | POST          | `/meetups`                                                     | Create a meetup record   |
 | GET           | `/meetups/<meetup-id>`                                         | Fetch a specific meetup record |
 | GET           | `/meetups/upcoming/`                                           | Fetch all upcoming meetup records |
@@ -27,7 +42,7 @@ API implementation for the [Questioner](https://khwilo.github.io/questioner/) ap
 
 ## Pre-requisites
 
-Make sure you have Python version 3 installed on your local machine.
+Make sure you have Python version 3 and Postgres installed on your local machine.
 
 ## Usage
 
@@ -43,7 +58,16 @@ Make sure you have Python version 3 installed on your local machine.
     $ cd questioner-api
     ``` 
 
-3. Set environment variables for **APP_SETTINGS**, **SECRET_KEY** and **JWT_SECRET_KEY**. For more information see the `config.py` file from the _instance_ directory.
+3. Set environment variables for **APP_SETTINGS**, **SECRET_KEY**, **JWT_SECRET_KEY**, **DATABASE_URL** and **DATABASE_TEST_URL**. For more information see the `config.py` file from the _instance_ directory.
+
+4. Create a database for the development database and test environment, example:
+
+    ```bash
+    $ sudo -u postgres psql
+    $ CREATE DATABASE yourdbname;
+    $ CREATE USER youruser WITH ENCRYPTED PASSWORD 'yourpassword';
+    $ GRANT ALL PRIVILEGES ON DATABASE yourdbname TO youruser;
+    ``` 
 
 4. Create a virtual environment and activate it:
 
@@ -58,7 +82,13 @@ Make sure you have Python version 3 installed on your local machine.
     $ pip install -r requirements.txt
     ``` 
 
-6. Run the Flask application:
+6. Create the tables by running this script:
+
+    ```bash
+    $ python3 migrate.py
+    ```
+
+7. Run the Flask application:
 
     ```bash
     $ export FLASK_APP=run.py
@@ -81,7 +111,7 @@ The **access-token** is found from the response when a user logs in.
 
 ### Unit testing
 
-Running the unit test is done using the command `pytest --cov=app/` or `python -m unittest discover -v` on your terminal.
+Running the unit test is done using the command `pytest --cov=app/api` or `python -m unittest discover -v` on your terminal.
 
 ## Heroku
 
