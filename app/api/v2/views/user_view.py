@@ -91,6 +91,7 @@ class UserLogin(Resource):
                 "status": 200,
                 "data": [{
                     "token": token,
+                    "user": UserModel_v2.table_result_to_json(current_user),
                     "message": "Logged in as '{}'".format(current_user['username'])
                 }]
             }
