@@ -3,7 +3,6 @@ from flask import abort
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 
-from app.api.v2.utils.utility import Utility
 from app.api.v2.utils.validator import ValidationHandler
 from app.api.v2.models.user_model import UserModel
 
@@ -20,7 +19,6 @@ class UserRegistration(Resource):
             'phoneNumber', type=str, required=True, help='phoneNumber cannot be blank!'
         )
         parser.add_argument('username', type=str, required=True, help='username cannot be blank!')
-        parser.add_argument('isAdmin', type=bool, required=True, help='isAdmin cannot be blank!')
         parser.add_argument('password', type=str, required=True, help='password cannot be blank!')
 
         data = parser.parse_args()
@@ -31,9 +29,8 @@ class UserRegistration(Resource):
             lastname=data['lastname'],
             othername=data['othername'],
             email=data['email'],
-            phone_number=data['phoneNumber'],
+            phoneNumber=data['phoneNumber'],
             username=data['username'],
-            is_admin=data['isAdmin'],
             password=UserModel.generate_password_hash(data['password'])
         )
 
@@ -50,18 +47,25 @@ class UserRegistration(Resource):
         # Validate the password
         ValidationHandler.validate_password(password)
 
-        users = UserModel.get_all_users()
+        if user.find_user_by_username('username', username):
+            abort(409, "Username '{}' already taken!".format(username))
 
-        ValidationHandler.validate_existing_user(users, username)
+        if user.find_user_by_email('email', email):
+            abort(409, "Email address '{}' already in use!".format(email))
 
-        UserModel.add_user(Utility.serialize(user))
+        token = create_access_token(identity=username)
+
+        user.add_user()
+
+        result = user.find_user_by_username('username', username)
 
         return {
             "status": 201,
             "data": [
                 {
-                    "id": user.get_user_id(),
-                    "message": "Create a user record"
+                    "token": token,
+                    "user": UserModel.to_json(result),
+                    "message": "User account created successfully"
                 }
             ]
         }, 201
@@ -70,21 +74,24 @@ class UserLogin(Resource):
     '''Log in a user'''
     def post(self):
         '''Sign In a registered user'''
+        user = UserModel()
+
         parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('username', type=str, required=True, help='username cannot be blank!')
         parser.add_argument('password', type=str, required=True, help='password cannot be blank!')
 
         data = parser.parse_args()
 
-        current_user = UserModel.get_user_by_username(data['username'])
+        current_user = user.find_user_by_username('username', data['username'])
 
         ValidationHandler.validate_correct_username(data['username'])
+        ValidationHandler.validate_password(data['password'])
+
         if not current_user:
             abort(404, {
                 "error": "User with username '{}' doesn't exist!".format(data['username']),
-                "status": 404}
-            )
-
+                "status": 404
+            })
         if UserModel.verify_password_hash(data['password'], current_user['password']):
             access_token = create_access_token(identity=data['username'])
             return {
