@@ -1,21 +1,11 @@
 language: python
-env:
-  DATABASE_URL="dbname='questioner' host='127.0.0.1' port='5432' user='postgres' password=''"
-  DATABASE_TEST_URL="dbname='test_questioner' host='127.0.0.1' port='5432' user='postgres' password=''"
 python:
   - "3.6.7"
 install:
   - pip install -r requirements.txt
   - pip install coveralls
-services:
-  - postgresql
-before_script:
-  - psql -c 'CREATE DATABASE questioner' -U postgres
-  - psql -c 'CREATE DATABASE test_questioner' -U postgres
-  - psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to postgres ;" -U postgres
-  - python3 manage.py
 script:
-  - pytest --cov=app/
+  - pytest --cov=app/api
   - coveralls
 after_success:
   - coveralls
