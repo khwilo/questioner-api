@@ -32,11 +32,11 @@ def create_table_queries():
     id SERIAL PRIMARY KEY,
     created_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     m_location VARCHAR NOT NULL,
-    images VARCHAR ARRAY NOT NULL,
+    images VARCHAR,
     topic VARCHAR NOT NULL,
     m_description VARCHAR(200) NOT NULL,
     happening_on DATE NOT NULL,
-    tags VARCHAR ARRAY NOT NULL
+    tags VARCHAR
     )""" # create the meetups table
 
     question = """CREATE TABLE IF NOT EXISTS questions(
@@ -67,9 +67,9 @@ def drop_table_queries():
     '''SQL queries to drop tables'''
     drop_queries = [
         "DELETE FROM users WHERE is_admin='f'",
-        "DROP TABLE IF EXISTS meetups CASCADE",
-        "DROP TABLE IF EXISTS questions CASCADE",
-        "DROP TABLE IF EXISTS rsvps CASCADE"
+        "DELETE FROM meetups CASCADE",
+        "DELETE FROM questions CASCADE",
+        "DELETE FROM rsvps CASCADE"
     ]
     return drop_queries
 
