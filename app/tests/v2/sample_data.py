@@ -77,10 +77,11 @@ USER_LOGIN_INCORRECT_PASSWORD = dict(username="tester_user", password="abcde")
 
 MEETUP = dict(
     location="Test Location",
-    images=[],
+    images="image1",
     topic="Test Topic",
+    description="Test description",
     happeningOn="Jan 10 2019 3:30PM",
-    tags=["Programming", "Design"]
+    tags="Design"
 )
 
 NEW_MEETUP = dict(

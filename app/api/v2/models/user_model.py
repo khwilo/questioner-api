@@ -6,8 +6,6 @@ from app.api.v2.models.base_model import BaseModel
 
 TABLE_NAME = 'users'
 
-USERS = [] # Data store for the users
-
 class UserModel(BaseModel):
     '''Entity representation for a user'''
     def __init__(self, **kwargs):
