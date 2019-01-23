@@ -52,7 +52,7 @@ class MeetupModel(BaseModel):
         return {
             'id': result['id'],
             'createdOn': str(result['created_on']),
-            'm_location': result['m_location'],
+            'location': result['m_location'],
             'images': result['images'],
             'topic': result['topic'],
             'description': result['m_description'],
