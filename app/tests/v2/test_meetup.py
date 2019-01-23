@@ -81,4 +81,11 @@ class MeetupTestCase(BaseTestCase):
 
     def test_fetch_empty_meetup_list(self):
         '''Test the API cannot fetch data from an empty meetup list data store'''
-        pass
+        access_token = self.get_access_token(USER_REGISTRATION, USER_LOGIN)
+        res = self.client().get(
+            '/api/v2/meetups/upcoming/',
+            headers=self.get_authentication_headers(access_token)
+        )
+        self.assertEqual(res.status_code, 404)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"]["error"], 'No meetup is available')
