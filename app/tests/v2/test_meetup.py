@@ -1,7 +1,7 @@
 '''This module represents tests for the meetup entity'''
 import json
 from app.tests.v2.sample_data import ADMIN_LOGIN, MEETUP, USER_REGISTRATION, \
-USER_LOGIN
+USER_LOGIN, NEW_MEETUP
 from app.tests.v2.test_base import BaseTestCase
 
 class MeetupTestCase(BaseTestCase):
@@ -43,7 +43,14 @@ class MeetupTestCase(BaseTestCase):
 
     def test_fetch_incorrect_meetup_id(self):
         '''Test the API cannot fetch a meetup with an incorrect ID'''
-        pass
+        access_token = self.get_access_token(USER_REGISTRATION, USER_LOGIN)
+        res = self.client().get(
+            '/api/v2/meetups/i',
+            headers=self.get_authentication_headers(access_token)
+        )
+        self.assertEqual(res.status_code, 400)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"]["error"], "Meetup ID must be an Integer")
 
     def test_empty_meetup_item(self):
         '''Test the API cannot read data from an empty meetup item'''
