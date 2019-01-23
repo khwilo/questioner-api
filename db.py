@@ -32,11 +32,11 @@ def create_table_queries():
     id SERIAL PRIMARY KEY,
     created_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     m_location VARCHAR NOT NULL,
-    images VARCHAR,
+    images VARCHAR [] DEFAULT '{}',
     topic VARCHAR NOT NULL,
     m_description VARCHAR(200) NOT NULL,
     happening_on DATE NOT NULL,
-    tags VARCHAR
+    tags VARCHAR [] DEFAULT '{}'
     )""" # create the meetups table
 
     question = """CREATE TABLE IF NOT EXISTS questions(
