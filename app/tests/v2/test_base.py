@@ -45,7 +45,7 @@ class BaseTestCase(unittest.TestCase):
             data=json.dumps(user_login)
         ) # User Log In
         response_msg = json.loads(res.data.decode("UTF-8"))
-        access_token = response_msg["access_token"]
+        access_token = response_msg["data"][0]["token"]
         return access_token
 
     def create_meetup(self, access_token, meetup):
