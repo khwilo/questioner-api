@@ -2,7 +2,6 @@
 from datetime import datetime
 
 from app.api.v2.models.base_model import BaseModel
-from app.api.v2.utils.utility import Utility
 
 TABLE_NAME = 'meetups'
 
