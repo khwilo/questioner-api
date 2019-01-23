@@ -31,15 +31,29 @@ class MeetupModel(BaseModel):
         self.cursor.execute(query)
         self.connection.commit()
 
+    def get_meetup_by_id(self, meetup_id, value):
+        '''Return a meetup given a meetup id'''
+        result = self.find_item_if_exists(TABLE_NAME, meetup_id, value)
+        return result
+
     @staticmethod
     def convert_string_to_date(string_date):
         '''Convert string object to datetime object'''
         return str(datetime.strptime(string_date, '%b %d %Y %I:%M%p'))
 
     @staticmethod
-    def get_meetup_by_id(meetup_id):
-        '''Return a meetup given a meetup id'''
-        pass
+    def to_dict(result):
+        '''Convert meetup model to dictionary'''
+        return {
+            'id': result['id'],
+            'createdOn': str(result['created_on']),
+            'm_location': result['m_location'],
+            'images': result['images'],
+            'topic': result['topic'],
+            'description': result['m_description'],
+            'happeningOn': str(result['happening_on']),
+            'tags': result['tags']
+        }
 
     @staticmethod
     def get_all_meetups():

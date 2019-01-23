@@ -67,9 +67,9 @@ def drop_table_queries():
     '''SQL queries to drop tables'''
     drop_queries = [
         "DELETE FROM users WHERE is_admin='f'",
-        "DELETE FROM meetups CASCADE",
-        "DELETE FROM questions CASCADE",
-        "DELETE FROM rsvps CASCADE"
+        "TRUNCATE meetups CASCADE",
+        "TRUNCATE questions CASCADE",
+        "TRUNCATE rsvps CASCADE"
     ]
     return drop_queries
 

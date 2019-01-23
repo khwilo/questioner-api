@@ -37,17 +37,27 @@ class MeetupTestCase(BaseTestCase):
             "Only administrators can create a meetup"
         )
 
-    def test_fetch_one_meetup(self):
-        '''Test the API can fetch one meetup'''
-        pass
-
     def test_fetch_incorrect_meetup_id(self):
         '''Test the API cannot fetch a meetup with an incorrect ID'''
-        pass
+        access_token = self.get_access_token(USER_REGISTRATION, USER_LOGIN)
+        res = self.client().get(
+            '/api/v2/meetups/i',
+            headers=self.get_authentication_headers(access_token)
+        )
+        self.assertEqual(res.status_code, 400)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"]["error"], "Meetup ID must be an Integer")
 
     def test_empty_meetup_item(self):
         '''Test the API cannot read data from an empty meetup item'''
-        pass
+        access_token = self.get_access_token(USER_REGISTRATION, USER_LOGIN)
+        res = self.client().get(
+            '/api/v2/meetups/2',
+            headers=self.get_authentication_headers(access_token)
+        )
+        self.assertEqual(res.status_code, 404)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"]["error"], "Meetup with id '2' doesn't exist!")
 
     def test_fetch_all_meetups(self):
         '''Test the API can fetch all meetups'''
