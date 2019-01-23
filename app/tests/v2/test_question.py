@@ -1,7 +1,4 @@
 '''This module represents tests for the question entity'''
-import json
-
-from app.api.v2.models.meetup_model import MEETUPS
 from app.tests.v2.test_base import BaseTestCase
 
 class QuestionTestCase(BaseTestCase):
