@@ -78,9 +78,16 @@ class Meetup(Resource):
         """Delete a specific meetup"""
         meetup_obj = MeetupModel()
         if meetup_id.isdigit():
+            meetup = meetup_obj.get_meetup_by_id('id', int(meetup_id))
+            if not meetup:
+                abort(404, {
+                    "error": "Meetup with id '{}' doesn't exist!".format(meetup_id),
+                    "status": 404
+                })
             meetup_obj.delete_meetup_by_id('id', int(meetup_id))
             return {
                 'status': 200,
+                'message': "Meetup with ID '{}' successfully deleted".format(meetup_id)
             }, 200
         abort(400, {
             "error": "Meetup ID must be an Integer",
