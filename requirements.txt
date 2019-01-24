@@ -31,7 +31,7 @@ pytest==4.1.0
 pytest-cov==2.6.1
 python-dotenv==0.10.1
 pytz==2018.9
-PyYAML==3.13
+PyYAML==4.2b4
 six==1.12.0
 typed-ast==1.1.1
 Werkzeug==0.14.1
