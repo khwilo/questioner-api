@@ -73,6 +73,37 @@ class Meetup(Resource):
         })
         return None
 
+    @jwt_required
+    def delete(self, meetup_id):
+        """Delete a specific meetup"""
+        meetup_obj = MeetupModel()
+        if meetup_id.isdigit():
+            user_obj = UserModel()
+            current_user = get_jwt_identity()
+            user = user_obj.find_user_by_username('username', current_user)
+            if user['is_admin']:
+                meetup = meetup_obj.get_meetup_by_id('id', int(meetup_id))
+                if not meetup:
+                    abort(404, {
+                        "error": "Meetup with ID '{}' has been removed!".format(meetup_id),
+                        "status": 404
+                    })
+                meetup_obj.delete_meetup_by_id('id', int(meetup_id))
+                return {
+                    'status': 200,
+                    'message': "Meetup with ID '{}' successfully deleted".format(meetup_id)
+                }, 200
+            abort(403, {
+                "error": "Only administrators can delete a meetup!",
+                "status": 403
+            })
+        abort(400, {
+            "error": "Meetup ID must be an Integer",
+            "status": 400
+        })
+        return None
+
+
 class UpcomingMeetup(Resource):
     """Request on an upcoming meetup item"""
     @jwt_required

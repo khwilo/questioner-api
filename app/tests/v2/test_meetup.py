@@ -89,3 +89,30 @@ class MeetupTestCase(BaseTestCase):
         self.assertEqual(res.status_code, 404)
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg["message"]["error"], 'No meetup is available')
+
+    def test_admin_delete_meetup(self):
+        """Test the API can delete a meetup record"""
+        res = self.client().post(
+            '/api/v2/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(ADMIN_LOGIN)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["data"][0]["token"]
+        res = self.client().delete(
+            '/api/v2/meetups/1',
+            headers=self.get_authentication_headers(access_token)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"]['error'], "Meetup with ID '1' has been removed!")
+
+    def test_regular_user_cannot_delete_meetup(self):
+        """Test the API cannot delete a meetup on wrong authorization"""
+        access_token = self.get_access_token(USER_REGISTRATION, USER_LOGIN)
+        res = self.client().delete(
+            '/api/v2/meetups/1',
+            headers=self.get_authentication_headers(access_token)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(response_msg["message"]["error"], "Only administrators can delete a meetup!")

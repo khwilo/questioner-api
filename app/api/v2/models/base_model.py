@@ -22,3 +22,9 @@ class BaseModel:
         self.cursor.execute(query)
         result = self.cursor.fetchall()
         return result
+
+    def delete_one(self, tablename, column, value):
+        """Delete one record from the database table"""
+        query = """DELETE FROM {} WHERE {}={}""".format(tablename, column, value)
+        self.cursor.execute(query)
+        self.connection.commit()
