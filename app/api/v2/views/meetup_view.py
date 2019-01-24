@@ -73,6 +73,22 @@ class Meetup(Resource):
         })
         return None
 
+    @jwt_required
+    def delete(self, meetup_id):
+        """Delete a specific meetup"""
+        meetup_obj = MeetupModel()
+        if meetup_id.isdigit():
+            meetup_obj.delete_meetup_by_id('id', int(meetup_id))
+            return {
+                'status': 200,
+            }, 200
+        abort(400, {
+            "error": "Meetup ID must be an Integer",
+            "status": 400
+        })
+        return None
+
+
 class UpcomingMeetup(Resource):
     """Request on an upcoming meetup item"""
     @jwt_required
