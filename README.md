@@ -17,8 +17,8 @@ API implementation for the [Questioner](https://khwilo.github.io/questioner/) ap
 - [x] Admin user deleting a meetup
 - [x] User posting a question
 - [x] User commenting on a question
-- [ ] User upvoting on a question
-- [ ] User downvoting on a question
+- [x] User upvoting on a question
+- [x] User downvoting on a question
 - [ ] User RSVP meetup
 
 ### API ENDPOINTS
