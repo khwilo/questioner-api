@@ -30,10 +30,36 @@ class QuestionTestCase(BaseTestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(response_msg["message"]["error"], "Meetup ID must be an integer value")
 
-    def test_upvote_question(self):
-        """Test the API can upvote a question"""
-        pass
+    def test_vote_with_incorrect_question_id(self):
+        """Test validate question ID on voting"""
+        access_token = self.get_access_token(USER_REGISTRATION, USER_LOGIN)
+        res = self.client().patch(
+            '/api/v2/questions/i/upvote',
+            headers=self.get_authentication_headers(access_token)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 400)
+        self.assertTrue(response_msg["message"]["error"])
+        res = self.client().patch(
+            '/api/v2/questions/b/downvote',
+            headers=self.get_authentication_headers(access_token)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"]["error"], "Question ID must be an integer value")
 
-    def test_downvote_question(self):
-        """Test the API can downvote a question"""
-        pass
+    def test_vote_on_non_existent_question(self):
+        """Test one cannot vote on a non-existent question"""
+        access_token = self.get_access_token(USER_REGISTRATION, USER_LOGIN)
+        res = self.client().patch(
+            '/api/v2/questions/2/upvote',
+            headers=self.get_authentication_headers(access_token)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 404)
+        self.assertTrue(response_msg["message"]["error"])
+        res = self.client().patch(
+            '/api/v2/questions/3/downvote',
+            headers=self.get_authentication_headers(access_token)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertTrue(response_msg["message"]["error"], "Question with ID '3' doesn't exist!")
