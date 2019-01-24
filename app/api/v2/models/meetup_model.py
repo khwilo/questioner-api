@@ -63,8 +63,3 @@ class MeetupModel(BaseModel):
             'happeningOn': str(result['happening_on']),
             'tags': result['tags']
         }
-
-    @staticmethod
-    def get_question_by_id(meetup, question_id):
-        """Return a question to a meetup by its ID"""
-        pass
