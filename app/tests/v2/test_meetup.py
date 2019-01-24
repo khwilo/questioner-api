@@ -97,11 +97,11 @@ class MeetupTestCase(BaseTestCase):
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(ADMIN_LOGIN)
         )
-        respone_msg = json.loads(res.data.decode("UTF-8"))
-        access_token = respone_msg["data"][0]["token"]
-        self.create_meetup(access_token, MEETUP)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["data"][0]["token"]
         res = self.client().delete(
             '/api/v2/meetups/1',
             headers=self.get_authentication_headers(access_token)
         )
-        self.assertEqual(res.status_code, 200)
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(response_msg["message"]['error'], "Meetup with ID '1' has been removed!")
