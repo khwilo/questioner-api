@@ -36,6 +36,11 @@ class MeetupModel(BaseModel):
         result = self.find_item_if_exists(TABLE_NAME, meetup_id, value)
         return result
 
+    def get_all_meetups(self):
+        '''Fetch all meetups'''
+        result = self.fetch_all(TABLE_NAME)
+        return result
+
     @staticmethod
     def convert_string_to_date(string_date):
         '''Convert string object to datetime object'''
@@ -47,18 +52,13 @@ class MeetupModel(BaseModel):
         return {
             'id': result['id'],
             'createdOn': str(result['created_on']),
-            'm_location': result['m_location'],
+            'location': result['m_location'],
             'images': result['images'],
             'topic': result['topic'],
             'description': result['m_description'],
             'happeningOn': str(result['happening_on']),
             'tags': result['tags']
         }
-
-    @staticmethod
-    def get_all_meetups():
-        '''Fetch all meetups'''
-        pass
 
     @staticmethod
     def get_question_by_id(meetup, question_id):

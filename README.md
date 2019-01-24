@@ -11,9 +11,9 @@ API implementation for the [Questioner](https://khwilo.github.io/questioner/) ap
 - [x] User registration
 - [x] User log in
 - [ ] User log out
-- [ ] Admin user creating a meetup
-- [ ] Fetching all meetups
-- [ ] Fetching a specific meetup
+- [x] Admin user creating a meetup
+- [x] Fetching all meetups
+- [x] Fetching a specific meetup
 - [ ] Admin user deleting a meetup
 - [ ] User posting a question
 - [ ] User commenting on a question

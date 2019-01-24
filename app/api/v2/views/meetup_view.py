@@ -1,4 +1,4 @@
-'''This module represents the meetup view'''
+"""This module represents the meetup view"""
 from flask import abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import reqparse, Resource
@@ -7,10 +7,10 @@ from app.api.v2.models.meetup_model import MeetupModel
 from app.api.v2.models.user_model import UserModel
 
 class MeetupList(Resource):
-    '''Request on a meetup list'''
+    """Request on a meetup list"""
     @jwt_required
     def post(self):
-        '''Create a meetup record'''
+        """Create a meetup record"""
         parser = reqparse.RequestParser(bundle_errors=True)
         parser.add_argument('location', required=True, help="location cannot be blank!")
         parser.add_argument('images')
@@ -51,10 +51,10 @@ class MeetupList(Resource):
         return None
 
 class Meetup(Resource):
-    '''Request on a meetup item'''
+    """Request on a meetup item"""
     @jwt_required
     def get(self, meetup_id):
-        '''Fetch a single meetup item'''
+        """Fetch a single meetup item"""
         meetup_obj = MeetupModel()
         if meetup_id.isdigit():
             meetup = meetup_obj.get_meetup_by_id('id', int(meetup_id))
@@ -74,17 +74,19 @@ class Meetup(Resource):
         return None
 
 class UpcomingMeetup(Resource):
-    '''Request on an upcoming meetup item'''
+    """Request on an upcoming meetup item"""
     @jwt_required
     def get(self):
-        '''Fetch all upcoming meetups'''
-        meetups = MeetupModel.get_all_meetups()
-        if meetups == []:
+        """Fetch all upcoming meetups"""
+        meetup_obj = MeetupModel()
+        meetups = meetup_obj.get_all_meetups()
+        if not meetups:
             abort(404, {
                 "error": "No meetup is available",
                 "status": 404
             })
+        sorted_meetups = sorted(meetups, key=lambda item: item['happening_on'], reverse=True)
         return {
             'status': 200,
-            'data': sorted(meetups, key=lambda item: item['happening_on'], reverse=True)
+            'data': [MeetupModel.to_dict(meetup) for meetup in sorted_meetups]
         }, 200
