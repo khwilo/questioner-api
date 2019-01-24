@@ -60,7 +60,25 @@ def create_table_queries():
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
     )""" # create the rsvps table
 
-    queries = [users, meetup, question, rsvp]
+    comments = """CREATE TABLE IF NOT EXISTS comments(
+    id SERIAL PRIMARY KEY,
+    question_id INT NOT NULL,
+    user_id INT NOT NULL,
+    comment VARCHAR NOT NULL,
+    FOREIGN KEY (question_id) REFERENCES questions (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    )""" # create the users table
+
+    votes = """CREATE TABLE IF NOT EXISTS votes(
+    id SERIAL PRIMARY KEY,
+    question_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (question_id) REFERENCES questions (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    )""" # create the users table
+
+
+    queries = [users, meetup, question, rsvp, comments, votes]
     return queries
 
 def drop_table_queries():
@@ -69,7 +87,8 @@ def drop_table_queries():
         "DELETE FROM users WHERE is_admin='f'",
         "TRUNCATE meetups CASCADE",
         "TRUNCATE questions CASCADE",
-        "TRUNCATE rsvps CASCADE"
+        "TRUNCATE rsvps CASCADE",
+        "TRUNCATE comments CASCADE"
     ]
     return drop_queries
 
