@@ -1,4 +1,4 @@
-'''This module represents the user view'''
+"""This module represents the user view"""
 from flask import abort
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
@@ -53,8 +53,6 @@ class UserRegistration(Resource):
         if user.find_user_by_email('email', email):
             abort(409, "Email address '{}' already in use!".format(email))
 
-        token = create_access_token(identity=username)
-
         user.add_user()
 
         result = user.find_user_by_username('username', username)
@@ -63,7 +61,6 @@ class UserRegistration(Resource):
             "status": 201,
             "data": [
                 {
-                    "token": token,
                     "user": UserModel.to_json(result),
                     "message": "User account created successfully"
                 }
@@ -71,9 +68,9 @@ class UserRegistration(Resource):
         }, 201
 
 class UserLogin(Resource):
-    '''Log in a user'''
+    """Log in a user"""
     def post(self):
-        '''Sign In a registered user'''
+        """Sign In a registered user"""
         user = UserModel()
 
         parser = reqparse.RequestParser(bundle_errors=True)
