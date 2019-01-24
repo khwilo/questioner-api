@@ -19,7 +19,7 @@ API implementation for the [Questioner](https://khwilo.github.io/questioner/) ap
 - [x] User commenting on a question
 - [x] User upvoting on a question
 - [x] User downvoting on a question
-- [ ] User RSVP meetup
+- [x] User RSVP meetup
 
 ### API ENDPOINTS
 
