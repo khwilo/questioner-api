@@ -17,8 +17,8 @@ API implementation for the [Questioner](https://khwilo.github.io/questioner/) ap
 - [x] Admin user deleting a meetup
 - [x] User posting a question
 - [x] User commenting on a question
-- [ ] User upvoting on a question
-- [ ] User downvoting on a question
+- [x] User upvoting on a question
+- [x] User downvoting on a question
 - [ ] User RSVP meetup
 
 ### API ENDPOINTS
@@ -36,8 +36,9 @@ API implementation for the [Questioner](https://khwilo.github.io/questioner/) ap
 | GET           | `/meetups/<meetup-id>`                                         | Fetch a specific meetup record |
 | GET           | `/meetups/upcoming/`                                           | Fetch all upcoming meetup records |
 | POST          | `/meetups/<meetup-id>/questions`                               | Create a question for a specific meetup |
-| PATCH         | `/meetups/<meetup-id>/questions/<question-id>/upvote`          | Upvote (_increase votes by 1_) a specific question |
-| PATCH         | `/meetups/<meetup-id>/questions/<question-id>/downvote`        | Downvote (_decrease votes by 1_) a specific question |
+| POST          | `/questions/<question_id>/comments`                            | Comment on a specific question |
+| PATCH         | `/questions/<question-id>/upvote`                              | Upvote (_increase votes by 1_) a specific question |
+| PATCH         | `/questions/<question-id>/downvote`                            | Downvote (_decrease votes by 1_) a specific question |
 | POST          | `/meetups/<meetup-id>/rsvps`                                   | Respond to meetup RSVP with a "yes", "no" or "maybe" |
 
 ## Pre-requisites

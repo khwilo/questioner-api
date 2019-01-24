@@ -54,63 +54,61 @@ class Question(Resource):
 class Upvote(Resource):
     """Upvotes requests"""
     @jwt_required
-    def patch(self, meetup_id, question_id):
-        """
-        '''Increase the vote of a question by 1'''
-        meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
-        if meetup == {}:
-            abort(404, {
-                "error": "Meetup with ID '{}' doesn't exist!".format(meetup_id),
-                "status": 404
-            })
-        question = MeetupModel.get_question_by_id(meetup, int(question_id))
-        if question == {}:
-            abort(404, {
-                "error": "Question with ID '{}' doesn't exist!".format(question_id),
-                "status": 404
-            })
-        question["votes"] += 1
-        return {
-            "status": 200,
-            "data": [
-                {
-                    "meetup": meetup_id,
-                    "title": question["title"],
-                    "body": question["body"],
-                    "votes": question["votes"]
-                }
-            ]
-        }, 200
-    """
+    def patch(self, question_id):
+        """Increase the vote of a question by 1"""
+        if question_id.isdigit():
+            question_obj = QuestionModel()
+            question = question_obj.get_question_by_id('id', int(question_id))
+            if not question:
+                abort(404, {
+                    "error": "Question with ID '{}' doesn't exist!".format(question_id),
+                    "status": 404
+                })
+            question_obj.vote_question("upvote", int(question_id))
+            updated_question = question_obj.get_question_by_id('id', int(question_id))
+            return {
+                "status": 200,
+                "data": [
+                    {
+                        "title": updated_question["title"],
+                        "body": updated_question["body"],
+                        "votes": updated_question["votes"]
+                    }
+                ]
+            }, 200
+        abort(400, {
+            "error": "Question ID must be an integer value",
+            "status": 400
+        })
+        return None
 
 class Downvote(Resource):
     """Downvotes requests"""
     @jwt_required
-    def patch(self, meetup_id, question_id):
-        """
-        '''Decrease the vote of a question by 1'''
-        meetup = MeetupModel.get_meetup_by_id(int(meetup_id))
-        if meetup == {}:
-            abort(404, {
-                "error": "Meetup with ID '{}' doesn't exist!".format(meetup_id),
-                "status": 404
-            })
-        question = MeetupModel.get_question_by_id(meetup, int(question_id))
-        if question == {}:
-            abort(404, {
-                "error": "Question with ID '{}' doesn't exist!".format(question_id),
-                "status": 404
-            })
-        question["votes"] -= 1
-        return {
-            "status": 200,
-            "data": [
-                {
-                    "meetup": meetup_id,
-                    "title": question["title"],
-                    "body": question["body"],
-                    "votes": question["votes"]
-                }
-            ]
-        },
-    """
+    def patch(self, question_id):
+        """Decrease the vote of a question by 1"""
+        if question_id.isdigit():
+            question_obj = QuestionModel()
+            question = question_obj.get_question_by_id('id', int(question_id))
+            if not question:
+                abort(404, {
+                    "error": "Question with ID '{}' doesn't exist!".format(question_id),
+                    "status": 404
+                })
+            question_obj.vote_question("downvote", int(question_id))
+            updated_question = question_obj.get_question_by_id('id', int(question_id))
+            return {
+                "status": 200,
+                "data": [
+                    {
+                        "title": updated_question["title"],
+                        "body": updated_question["body"],
+                        "votes": updated_question["votes"]
+                    }
+                ]
+            }, 200
+        abort(400, {
+            "error": "Question ID must be an integer value",
+            "status": 400
+        })
+        return None

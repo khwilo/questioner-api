@@ -28,3 +28,16 @@ class QuestionModel(BaseModel):
         """Fetch a question by its ID"""
         result = self.find_item_if_exists(TABLE_NAME, question_id, value)
         return result
+
+    def vote_question(self, vote_type, question_id):
+        """
+        Update the votes on a question.
+        A vote can either be upvote or downvote
+        """
+        query = None
+        if vote_type == "upvote":
+            query = "UPDATE questions SET votes = votes + 1 WHERE id={};".format(question_id)
+        else:
+            query = "UPDATE questions SET votes = votes - 1 WHERE id={};".format(question_id)
+        self.cursor.execute(query)
+        self.connection.commit()
