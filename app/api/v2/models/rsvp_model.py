@@ -1,16 +1,22 @@
-'''This module represents an meetup rsvp entity'''
+"""This module represents an meetup rsvp entity"""
 
-RSVPS = [] # Data store for the RSVP
+from app.api.v2.models.base_model import BaseModel
 
-class RsvpModel:
-    '''Entity representation for an RSVP'''
-    def __init__(self, meetup, user, response):
-        self.rsvp_id = len(RSVPS) + 1
-        self.meetup = meetup
-        self.user = user
-        self.response = response
+class RsvpModel(BaseModel):
+    """Entity representation for an RSVP"""
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.response = kwargs.get('response')
 
-    @staticmethod
-    def add_rsvp(rsvp):
-        '''Add an RSVP to the data store'''
-        RSVPS.append(rsvp)
+    def save(self, meetup_id, user_id):
+        """Save a meetup RSVP"""
+        query = """INSERT INTO rsvps(
+        meetup_id, user_id, response) VALUES(
+        (SELECT id FROM meetups WHERE id={}),
+        (SELECT id FROM users WHERE id={}), '{}')""".format(
+            meetup_id,
+            user_id,
+            self.response
+        )
+        self.cursor.execute(query)
+        self.connection.commit()
