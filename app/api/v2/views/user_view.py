@@ -86,7 +86,7 @@ class UserLogin(Resource):
 
         if not current_user:
             abort(404, {
-                "error": "User with username '{}' doesn't exist!".format(data['username']),
+                "error": "Username and password not found!",
                 "status": 404
             })
         if UserModel.verify_password_hash(data['password'], current_user['password']):
@@ -102,7 +102,7 @@ class UserLogin(Resource):
                 ]
             }, 200
         abort(401, {
-            "error": "The password you entered doesn't match",
+            "error": "Username and password not found!",
             "status": 401
         })
         return None
