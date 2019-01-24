@@ -23,3 +23,8 @@ class QuestionModel(BaseModel):
         )
         self.cursor.execute(query)
         self.connection.commit()
+
+    def get_question_by_id(self, question_id, value):
+        """Fetch a question by its ID"""
+        result = self.find_item_if_exists(TABLE_NAME, question_id, value)
+        return result

@@ -4,6 +4,7 @@ Modularize the app using BluePrints and the API resource
 from flask import Blueprint
 from flask_restful import Api
 
+from app.api.v2.views.comment_view import Comment
 from app.api.v2.views.meetup_view import MeetupList, Meetup, UpcomingMeetup
 from app.api.v2.views.question_view import Question, Upvote, Downvote
 from app.api.v2.views.rsvp_view import Rsvp
@@ -25,3 +26,4 @@ API.add_resource(Question, '/meetups/<meetup_id>/questions')
 API.add_resource(Upvote, '/meetups/<meetup_id>/questions/<question_id>/upvote')
 API.add_resource(Downvote, '/meetups/<meetup_id>/questions/<question_id>/downvote')
 API.add_resource(Rsvp, '/meetups/<meetup_id>/rsvps')
+API.add_resource(Comment, '/questions/<question_id>/comments')

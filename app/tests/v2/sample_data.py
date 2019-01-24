@@ -98,3 +98,5 @@ QUESTION = dict(
 )
 
 RSVP = dict(response="maybe")
+
+COMMENT = dict(comment="Test comment")
