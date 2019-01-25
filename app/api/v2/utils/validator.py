@@ -19,6 +19,15 @@ class ValidationHandler:
             })
 
     @staticmethod
+    def validate_field_empty(field, value):
+        """Validate if a field is empty"""
+        if not value or not value.split():
+            abort(400, {
+                "error": "{} cannot be empty".format(field),
+                "status": 400
+            })
+
+    @staticmethod
     def validate_existing_user(users, username):
         '''Validation for an existing user'''
         if next(filter(lambda u: u['username'] == username, users), None):

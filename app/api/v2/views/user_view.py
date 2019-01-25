@@ -41,6 +41,18 @@ class UserRegistration(Resource):
         password = data['password']
         email = data['email']
 
+        # Validate firstname
+        ValidationHandler.validate_field_empty('Firstname', data['firstname'])
+
+        # Validate lastname
+        ValidationHandler.validate_field_empty('Lastname', data['lastname'])
+
+        # Validate othername
+        ValidationHandler.validate_field_empty('Othername', data['othername'])
+
+        # Validate phonenumber
+        ValidationHandler.validate_field_empty('PhoneNumber', data['phoneNumber'])
+
         # Validate the username
         ValidationHandler.validate_correct_username(username)
 
