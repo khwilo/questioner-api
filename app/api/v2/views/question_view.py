@@ -85,35 +85,3 @@ class Upvote(Resource):
             "status": 400
         })
         return None
-
-class Downvote(Resource):
-    """Downvotes requests"""
-    @jwt_required
-    @swag_from('docs/question_downvote.yml')
-    def patch(self, question_id):
-        """Decrease the vote of a question by 1"""
-        if question_id.isdigit():
-            question_obj = QuestionModel()
-            question = question_obj.get_question_by_id('id', int(question_id))
-            if not question:
-                abort(404, {
-                    "error": "Question with ID '{}' doesn't exist!".format(question_id),
-                    "status": 404
-                })
-            question_obj.vote_question("downvote", int(question_id))
-            updated_question = question_obj.get_question_by_id('id', int(question_id))
-            return {
-                "status": 200,
-                "data": [
-                    {
-                        "title": updated_question["title"],
-                        "body": updated_question["body"],
-                        "votes": updated_question["votes"]
-                    }
-                ]
-            }, 200
-        abort(400, {
-            "error": "Question ID must be an integer value",
-            "status": 400
-        })
-        return None
