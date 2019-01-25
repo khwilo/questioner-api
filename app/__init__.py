@@ -2,6 +2,8 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
+from flasgger import Swagger
+
 from app.api.v2 import AUTH_BLUEPRINT, API_BLUEPRINT
 
 from instance.config import APP_CONFIG
@@ -16,5 +18,16 @@ def create_app(config_name):
 
     app.register_blueprint(AUTH_BLUEPRINT)
     app.register_blueprint(API_BLUEPRINT)
+
+    template = {
+        "swagger": "3.0",
+        "info": {
+            "title": "Questioner API",
+            "description": "API for the Questioner application",
+            "version": "2.0.0"
+        }
+    }
+
+    Swagger(app, template=template)
 
     return app

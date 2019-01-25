@@ -1,0 +1,28 @@
+Delete a meetup
+Removes a meetup given its ID.
+Only administrators can delete a meetup.
+---
+tags:
+- meetups
+parameters:
+- in: header
+  name: Authorization
+  description: The jwt token generated during user login
+    example (Bearer excAEyr...)
+  type: string
+  required: true
+- in: path
+  name: meetup_id
+  type: string
+  required: true
+  description: The id of the meetup to delete
+responses:
+  200:
+    description: Success, Meetup has been deleted
+  403:
+    description: Forbidden, Only administrators can delete a meetup
+  400:
+    description: Returned when value passed in as
+      meetup_id is not an integer.
+  404:
+    description: Not found, Meetup with that ID has been removed

@@ -3,11 +3,14 @@ from flask import abort
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource, reqparse
 
+from flasgger import swag_from
+
 from app.api.v2.utils.validator import ValidationHandler
 from app.api.v2.models.user_model import UserModel
 
 class UserRegistration(Resource):
     """Register a new user"""
+    @swag_from('docs/auth_register.yml')
     def post(self):
         """Create a user account"""
         parser = reqparse.RequestParser(bundle_errors=True)
@@ -69,6 +72,7 @@ class UserRegistration(Resource):
 
 class UserLogin(Resource):
     """Log in a user"""
+    @swag_from('docs/auth_login.yml')
     def post(self):
         """Sign In a registered user"""
         user = UserModel()

@@ -1,0 +1,17 @@
+Retrieve All Meetups
+Returns all meetups that have been created
+---
+tags:
+- meetups
+parameters:
+- in: header
+  name: Authorization
+  description: The jwt token generated during user
+    login example (Bearer excAEyr...)
+  type: string
+  required: true
+responses:
+  200:
+    description: Success, list of meetups is returned.
+  404:
+    description: Not Found, no meetup is available.

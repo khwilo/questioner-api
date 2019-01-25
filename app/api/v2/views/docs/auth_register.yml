@@ -1,0 +1,48 @@
+Register User
+This endpoint allows a user to sign up.
+---
+tags:
+- auth
+consumes:
+- application/json
+parameters:
+- in: body
+  name: Registration Details
+  description: The details of the user to be registered
+  schema:
+    type: object
+    required:
+    - firstname
+    - lastname
+    - othername
+    - email
+    - phoneNumber
+    - username
+    - password
+    properties:
+      firstname:
+        type: string
+        default: joe
+      lastname:
+        type: string
+        default: doe
+      othername:
+        type: string
+        default: foo
+      email:
+        type: string
+        default: john@example.com
+      phoneNumber:
+        type: string
+        default: "0700000000"
+      username:
+        type: string
+        default: jazz
+      password:
+        type: string
+        default: doe#21
+responses:
+  201:
+    description: Success, user account is created successfully
+  409:
+    description: Conflict, username and email address already in use!

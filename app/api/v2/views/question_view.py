@@ -3,6 +3,8 @@ from flask import abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import reqparse, Resource
 
+from flasgger import swag_from
+
 from app.api.v2.models.meetup_model import MeetupModel
 from app.api.v2.models.user_model import UserModel
 from app.api.v2.models.question_model import QuestionModel
@@ -10,6 +12,7 @@ from app.api.v2.models.question_model import QuestionModel
 class Question(Resource):
     """Question requests"""
     @jwt_required
+    @swag_from('docs/question_post.yml')
     def post(self, meetup_id):
         '''Create a question record'''
         user_obj = UserModel()
@@ -54,6 +57,7 @@ class Question(Resource):
 class Upvote(Resource):
     """Upvotes requests"""
     @jwt_required
+    @swag_from('docs/question_upvote.yml')
     def patch(self, question_id):
         """Increase the vote of a question by 1"""
         if question_id.isdigit():
@@ -85,6 +89,7 @@ class Upvote(Resource):
 class Downvote(Resource):
     """Downvotes requests"""
     @jwt_required
+    @swag_from('docs/question_downvote.yml')
     def patch(self, question_id):
         """Decrease the vote of a question by 1"""
         if question_id.isdigit():

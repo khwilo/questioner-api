@@ -1,0 +1,26 @@
+Comment on a question
+This endpoint allows for a user to comment on a question.
+---
+tags:
+- comments
+consumes:
+- application/json
+parameters:
+- in: header
+  name: Authorization
+  description: The jwt token generated during user
+    login example (Bearer excAEyr...)
+  type: string
+  required: true
+- in: path
+  name: question_id
+  type: string
+  required: true
+  description: The id of the question to comment to.
+responses:
+  201:
+    description: Success, the comment has been posted successfully
+  400:
+    description: Bad request, question_id must be an integer
+  404:
+    description: Not found, question with that ID doesn't exist

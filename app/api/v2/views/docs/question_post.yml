@@ -1,0 +1,39 @@
+Create a question
+This endpoint allows for the creation of a question to a meetup.
+---
+tags:
+- questions
+consumes:
+- application/json
+parameters:
+- in: header
+  name: Authorization
+  description: The jwt token generated during user
+    login example (Bearer excAEyr...)
+  type: string
+  required: true
+- in: path
+  name: meetup_id
+  type: string
+  required: true
+  description: The id of the meetup to create a question to.
+- in: body
+  name: Question Details
+  description: The Details of the question to be created
+  schema:
+    type: object
+    required:
+    - title
+    - body
+    properties:
+      title:
+        type: string
+      body:
+        type: string
+responses:
+  201:
+    description: Success, the question created successfully
+  400:
+    description: Bad request, meetup_id must be an integer
+  404:
+    description: Not found, meetup is not found

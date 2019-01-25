@@ -1,0 +1,25 @@
+Retrieve a meetup
+Returns a meetup with the specified id.
+---
+tags:
+- meetups
+parameters:
+- in: header
+  name: Authorization
+  description: The jwt token generated during user login
+    example (Bearer excAEyr...)
+  type: string
+  required: true
+- in: path
+  name: meetup_id
+  type: string
+  required: true
+  description: The id of the meetup to view.
+responses:
+  200:
+    description: Success, Retrieves the meetup item
+  404:
+    description: Not found, Meetup is not found
+  400:
+    description: Returned when value passed in as
+      meetup_id is not an integer.
