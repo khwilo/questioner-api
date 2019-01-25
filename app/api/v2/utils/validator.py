@@ -19,6 +19,15 @@ class ValidationHandler:
             })
 
     @staticmethod
+    def validate_field_empty(field, value):
+        """Validate if a field is empty"""
+        if not value or not value.split():
+            abort(400, {
+                "error": "{} cannot be empty".format(field),
+                "status": 400
+            })
+
+    @staticmethod
     def validate_existing_user(users, username):
         '''Validation for an existing user'''
         if next(filter(lambda u: u['username'] == username, users), None):
@@ -35,6 +44,13 @@ class ValidationHandler:
                 "error": "password cannot be empty",
                 "status": 400
             })
+        if len(password) < 8:
+            abort(
+                400, {
+                    "error": "Password is less than eight characters",
+                    "status": 400
+                }
+            )
 
     @staticmethod
     def validate_email_address(email):

@@ -3,12 +3,15 @@ from flask import abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import reqparse, Resource
 
+from flasgger import swag_from
+
 from app.api.v2.models.meetup_model import MeetupModel
 from app.api.v2.models.user_model import UserModel
 
 class MeetupList(Resource):
     """Request on a meetup list"""
     @jwt_required
+    @swag_from('docs/meetup_post.yml')
     def post(self):
         """Create a meetup record"""
         parser = reqparse.RequestParser(bundle_errors=True)
@@ -53,6 +56,7 @@ class MeetupList(Resource):
 class Meetup(Resource):
     """Request on a meetup item"""
     @jwt_required
+    @swag_from('docs/meetup_get.yml')
     def get(self, meetup_id):
         """Fetch a single meetup item"""
         meetup_obj = MeetupModel()
@@ -74,6 +78,7 @@ class Meetup(Resource):
         return None
 
     @jwt_required
+    @swag_from('docs/meetup_delete.yml')
     def delete(self, meetup_id):
         """Delete a specific meetup"""
         meetup_obj = MeetupModel()
@@ -107,6 +112,7 @@ class Meetup(Resource):
 class UpcomingMeetup(Resource):
     """Request on an upcoming meetup item"""
     @jwt_required
+    @swag_from('docs/meetup_get_all.yml')
     def get(self):
         """Fetch all upcoming meetups"""
         meetup_obj = MeetupModel()

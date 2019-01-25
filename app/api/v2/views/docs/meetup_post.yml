@@ -1,0 +1,48 @@
+Create a meetup
+This endpoint allows for the creation of a meetup.
+Only Administrator can create a meetup.
+---
+tags:
+- meetups
+consumes:
+- application/json
+parameters:
+- in: header
+  name: Authorization
+  description: The jwt token generated during user
+    login example (Bearer excAEyr...)
+  type: string
+  required: true
+- in: body
+  name: Meetup Details
+  description: The Details of the meetup to be created
+  schema:
+    type: object
+    required:
+    - location
+    - topic
+    - description
+    - happeningOn
+    properties:
+      location:
+        type: string
+      images:
+        type: array
+        items:
+          type: string
+      topic:
+        type: string
+      description:
+        type: string
+      happeningOn:
+        type: string
+        format: date-time
+      tags:
+        type: array
+        items:
+          type: string
+responses:
+  201:
+    description: Success, the meetup created successfully
+  403:
+    description: Forbidden, Only administrators can create a meetup

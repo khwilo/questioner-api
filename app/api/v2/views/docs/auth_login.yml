@@ -1,0 +1,30 @@
+Login User
+This endpoint allows a user to login.
+---
+tags:
+- auth
+consumes:
+- application/json
+parameters:
+- in: body
+  name: Login Credentials
+  description: The User credentials for login
+  schema:
+    type: object
+    required:
+    - username
+    - password
+    properties:
+      username:
+        type: string
+        default: John
+      password:
+        type: string
+        default: doe#21
+responses:
+  200:
+    description: Success, login successful, access token is generated and returned in response body
+  401:
+    description: Password entered doesn't match
+  404:
+    description: Not found, user with provided username does not exist

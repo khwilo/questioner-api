@@ -6,7 +6,7 @@ USER_REGISTRATION = dict(
     email="tester@example.com",
     phoneNumber="0700000000",
     username="tester_user",
-    password="12345"
+    password="12345abcsde"
 )
 
 USER_DUPLICATE_USERNAME = dict(
@@ -16,7 +16,7 @@ USER_DUPLICATE_USERNAME = dict(
     email="test@example.com",
     phoneNumber="0700000000",
     username="tester_user",
-    password="12345"
+    password="12345abcsde"
 )
 
 USER_DUPLICATE_EMAIL = dict(
@@ -26,7 +26,7 @@ USER_DUPLICATE_EMAIL = dict(
     email="tester@example.com",
     phoneNumber="0700000000",
     username="tes_user",
-    password="12345"
+    password="12345abcsde"
 )
 
 USER_DIGIT_USERNAME = dict(
@@ -36,7 +36,7 @@ USER_DIGIT_USERNAME = dict(
     email="test@example.com",
     phoneNumber="0700000000",
     username="1234",
-    password="12345"
+    password="12345abcsde"
 )
 
 USER_EMPTY_USERNAME = dict(
@@ -46,7 +46,7 @@ USER_EMPTY_USERNAME = dict(
     email="test@example.com",
     phoneNumber="0700000000",
     username="",
-    password="12345"
+    password="12345abcsde"
 )
 
 USER_EMPTY_PASSWORD = dict(
@@ -66,14 +66,14 @@ USER_WRONG_EMAIL_FORMAT = dict(
     email="testexample.com",
     phoneNumber="0700000000",
     username="test",
-    password="12345"
+    password="12345abcsde"
 )
 
-USER_LOGIN = dict(username="tester_user", password="12345")
+USER_LOGIN = dict(username="tester_user", password="12345abcsde")
 
 ADMIN_LOGIN = dict(username="watai", password="questioner_1234")
 
-USER_LOGIN_INCORRECT_PASSWORD = dict(username="tester_user", password="abcde")
+USER_LOGIN_INCORRECT_PASSWORD = dict(username="tester_user", password="abcde122edasda")
 
 MEETUP = dict(
     location="Test Location",

@@ -151,7 +151,7 @@ class UserTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(
             response_msg["message"]["error"],
-            "User with username 'tester_user' doesn't exist!"
+            "Username and password not found!"
         )
 
     def test_incorrect_password(self):
@@ -169,4 +169,7 @@ class UserTestCase(BaseTestCase):
         )
         self.assertEqual(res.status_code, 401)
         response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertEqual(response_msg["message"]["error"], "The password you entered doesn't match")
+        self.assertEqual(
+            response_msg["message"]["error"],
+            "Username and password not found!"
+        )

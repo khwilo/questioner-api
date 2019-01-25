@@ -40,11 +40,6 @@ class QuestionTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 400)
         self.assertTrue(response_msg["message"]["error"])
-        res = self.client().patch(
-            '/api/v2/questions/b/downvote',
-            headers=self.get_authentication_headers(access_token)
-        )
-        response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(response_msg["message"]["error"], "Question ID must be an integer value")
 
     def test_vote_on_non_existent_question(self):
@@ -56,10 +51,4 @@ class QuestionTestCase(BaseTestCase):
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 404)
-        self.assertTrue(response_msg["message"]["error"])
-        res = self.client().patch(
-            '/api/v2/questions/3/downvote',
-            headers=self.get_authentication_headers(access_token)
-        )
-        response_msg = json.loads(res.data.decode("UTF-8"))
-        self.assertTrue(response_msg["message"]["error"], "Question with ID '3' doesn't exist!")
+        self.assertEqual(response_msg["message"]["error"], "Question with ID '2' doesn't exist!")

@@ -6,7 +6,7 @@ from flask_restful import Api
 
 from app.api.v2.views.comment_view import Comment
 from app.api.v2.views.meetup_view import MeetupList, Meetup, UpcomingMeetup
-from app.api.v2.views.question_view import Question, Upvote, Downvote
+from app.api.v2.views.question_view import Question, Upvote
 from app.api.v2.views.rsvp_view import Rsvp
 from app.api.v2.views.user_view import UserRegistration, UserLogin
 
@@ -24,6 +24,5 @@ API.add_resource(Meetup, '/meetups/<meetup_id>')
 API.add_resource(UpcomingMeetup, '/meetups/upcoming/')
 API.add_resource(Question, '/meetups/<meetup_id>/questions')
 API.add_resource(Upvote, '/questions/<question_id>/upvote')
-API.add_resource(Downvote, '/questions/<question_id>/downvote')
 API.add_resource(Rsvp, '/meetups/<meetup_id>/rsvps')
 API.add_resource(Comment, '/questions/<question_id>/comments')

@@ -3,6 +3,8 @@ from flask import abort
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import reqparse, Resource
 
+from flasgger import swag_from
+
 from app.api.v2.models.comment_model import CommentsModel
 from app.api.v2.models.question_model import QuestionModel
 from app.api.v2.models.user_model import UserModel
@@ -10,6 +12,7 @@ from app.api.v2.models.user_model import UserModel
 class Comment(Resource):
     """Comments requests"""
     @jwt_required
+    @swag_from('docs/question_comment.yml')
     def post(self, question_id):
         '''Create a question record'''
         user_obj = UserModel()

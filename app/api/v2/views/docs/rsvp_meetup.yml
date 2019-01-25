@@ -1,0 +1,33 @@
+RSVP a meetup
+This endpoint allows for a user to RSVP a meetup.
+---
+tags:
+- rsvps
+consumes:
+- application/json
+parameters:
+- in: header
+  name: Authorization
+  description: The jwt token generated during user
+    login example (Bearer excAEyr...)
+  type: string
+  required: true
+- in: path
+  name: meetup_id
+  type: string
+  required: true
+  description: The id of the meetup to RSVP to.
+- in: body
+  name: RSVP Details
+  description: The Details of the RSVP
+  schema:
+    type: object
+    required:
+    - response
+    properties:
+      response:
+        type: string
+        default: "yes"
+responses:
+  201:
+    description: Success, the meetup has been RSVP successfully
