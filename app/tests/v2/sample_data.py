@@ -9,6 +9,16 @@ USER_REGISTRATION = dict(
     password="12345abcsde"
 )
 
+NEW_USER_REGISTRATION = dict(
+    firstname="test_first new",
+    lastname="test_last new",
+    othername="test_other new",
+    email="testernew@example.com",
+    phoneNumber="0711111111",
+    username="tester_user_new",
+    password="abcdqwqs11234"
+)
+
 USER_DUPLICATE_USERNAME = dict(
     firstname="test_first",
     lastname="test_last",
@@ -70,6 +80,8 @@ USER_WRONG_EMAIL_FORMAT = dict(
 )
 
 USER_LOGIN = dict(username="tester_user", password="12345abcsde")
+
+NEW_USER_LOGIN = dict(username="tester_user_new", password="abcdqwqs11234")
 
 ADMIN_LOGIN = dict(username="watai", password="questioner_1234")
 
