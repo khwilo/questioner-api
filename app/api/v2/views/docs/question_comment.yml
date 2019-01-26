@@ -17,6 +17,16 @@ parameters:
   type: string
   required: true
   description: The id of the question to comment to.
+- in: body
+  name: Comment Details
+  description: The details of the comment to be created
+  schema:
+    type: object
+    required:
+    - comment
+    properties:
+      comment:
+        type: string
 responses:
   201:
     description: Success, the comment has been posted successfully
