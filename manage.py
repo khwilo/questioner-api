@@ -1,12 +1,12 @@
-'''Module to define migrations for dev and test db'''
+"""Definitions for development and testing environment migrations"""
 import os
 import psycopg2
 
 from app.api.v2.models.user_model import UserModel
-from db import create_tables
+from db import create_tables, destroy
 
 def migrate(database_url):
-    '''Create tables and an admin user'''
+    """Create tables and an admin user"""
     connection = psycopg2.connect(database_url)
     create_tables(connection)
     query = """INSERT INTO users(
@@ -17,14 +17,18 @@ def migrate(database_url):
     cursor.execute(query)
     connection.commit()
 
-def migrate_main():
-    '''Perform database migrations for the main db'''
+def migrate_dev():
+    """Perform database migrations for the development database"""
     migrate(os.getenv('DATABASE_URL'))
 
+def drop_dev():
+    """Drop the development database tables"""
+    destroy(os.getenv('DATABASE_URL'))
+
 def migrate_test():
-    '''Perform database migrations for the test db'''
+    """Perform database migrations for the testing database"""
     migrate(os.getenv('DATABASE_TEST_URL'))
 
 if __name__ == '__main__':
-    migrate_main()
-    migrate_test()
+    drop_dev()
+    migrate_dev()
