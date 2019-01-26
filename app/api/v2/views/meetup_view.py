@@ -90,13 +90,13 @@ class Meetup(Resource):
                 meetup = meetup_obj.get_meetup_by_id('id', int(meetup_id))
                 if not meetup:
                     abort(404, {
-                        "error": "Meetup with ID '{}' has been removed!".format(meetup_id),
+                        "error": "Meetup with ID '{}' doesn't exist!".format(meetup_id),
                         "status": 404
                     })
                 meetup_obj.delete_meetup_by_id('id', int(meetup_id))
                 return {
                     'status': 200,
-                    'message': "Meetup with ID '{}' successfully deleted".format(meetup_id)
+                    'message': "Meetup with ID '{}' has been successfully deleted".format(meetup_id)
                 }, 200
             abort(403, {
                 "error": "Only administrators can delete a meetup!",
