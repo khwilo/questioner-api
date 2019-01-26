@@ -1,11 +1,10 @@
-'''Definitions for the database'''
-import os
+"""Definitions for the database"""
 import psycopg2
 
 from flask import current_app
 
 def establish_connection():
-    '''Establish a database connection'''
+    """Establish a database connection"""
     database_url = current_app.config['DATABASE_URL']
     try:
         connection = psycopg2.connect(database_url)
@@ -14,7 +13,7 @@ def establish_connection():
     return connection
 
 def create_table_queries():
-    '''SQL queries to create a database table'''
+    """SQL queries to create the database tables"""
     users = """CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     firstname VARCHAR(50) NOT NULL,
@@ -26,7 +25,7 @@ def create_table_queries():
     registered TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     is_admin BOOLEAN NOT NULL DEFAULT FALSE,
     password VARCHAR(100) NOT NULL
-    )""" # create the users table
+    )"""
 
     meetup = """CREATE TABLE IF NOT EXISTS meetups(
     id SERIAL PRIMARY KEY,
@@ -37,7 +36,7 @@ def create_table_queries():
     m_description VARCHAR(200) NOT NULL,
     happening_on DATE NOT NULL,
     tags VARCHAR [] DEFAULT '{}'
-    )""" # create the meetups table
+    )"""
 
     question = """CREATE TABLE IF NOT EXISTS questions(
     id SERIAL PRIMARY KEY,
@@ -49,7 +48,7 @@ def create_table_queries():
     votes INT DEFAULT 0,
     FOREIGN KEY (created_by) REFERENCES users (id)  ON DELETE CASCADE,
     FOREIGN KEY (meetup_id) REFERENCES meetups (id) ON DELETE CASCADE
-    )""" # create the questions table
+    )"""
 
     rsvp = """CREATE TABLE IF NOT EXISTS rsvps(
     id SERIAL PRIMARY KEY,
@@ -58,7 +57,7 @@ def create_table_queries():
     response VARCHAR NOT NULL,
     FOREIGN KEY (meetup_id) REFERENCES meetups (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-    )""" # create the rsvps table
+    )"""
 
     comments = """CREATE TABLE IF NOT EXISTS comments(
     id SERIAL PRIMARY KEY,
@@ -67,7 +66,7 @@ def create_table_queries():
     comment VARCHAR NOT NULL,
     FOREIGN KEY (question_id) REFERENCES questions (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-    )""" # create the users table
+    )"""
 
     votes = """CREATE TABLE IF NOT EXISTS votes(
     id SERIAL PRIMARY KEY,
@@ -75,34 +74,33 @@ def create_table_queries():
     user_id INT NOT NULL,
     FOREIGN KEY (question_id) REFERENCES questions (id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-    )""" # create the users table
-
+    )"""
 
     queries = [users, meetup, question, rsvp, comments, votes]
     return queries
 
 def drop_table_queries():
-    '''SQL queries to drop tables'''
+    """SQL queries to drop tables"""
     drop_queries = [
-        "DELETE FROM users WHERE is_admin='f'",
-        "TRUNCATE meetups CASCADE",
-        "TRUNCATE questions CASCADE",
-        "TRUNCATE rsvps CASCADE",
-        "TRUNCATE comments CASCADE"
+        "DROP TABLE IF EXISTS users CASCADE",
+        "DROP TABLE IF EXISTS meetups CASCADE",
+        "DROP TABLE IF EXISTS questions CASCADE",
+        "DROP TABLE IF EXISTS rsvps CASCADE",
+        "DROP TABLE IF EXISTS comments CASCADE",
+        "DROP TABLE IF EXISTS votes CASCADE"
     ]
     return drop_queries
 
 def create_tables(db_connection):
-    '''Create the database tables'''
+    """Create the database tables"""
     cursor = db_connection.cursor()
     queries = create_table_queries()
     for query in queries:
         cursor.execute(query)
     db_connection.commit()
 
-def destroy():
-    '''Delete database entries'''
-    database_url = os.getenv('DATABASE_TEST_URL')
+def destroy(database_url):
+    """Drop database table entries"""
     connection = psycopg2.connect(database_url)
     cursor = connection.cursor()
     queries = drop_table_queries()

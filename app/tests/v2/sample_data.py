@@ -9,6 +9,16 @@ USER_REGISTRATION = dict(
     password="12345abcsde"
 )
 
+NEW_USER_REGISTRATION = dict(
+    firstname="test_first new",
+    lastname="test_last new",
+    othername="test_other new",
+    email="testernew@example.com",
+    phoneNumber="0711111111",
+    username="tester_user_new",
+    password="abcdqwqs11234"
+)
+
 USER_DUPLICATE_USERNAME = dict(
     firstname="test_first",
     lastname="test_last",
@@ -71,6 +81,8 @@ USER_WRONG_EMAIL_FORMAT = dict(
 
 USER_LOGIN = dict(username="tester_user", password="12345abcsde")
 
+NEW_USER_LOGIN = dict(username="tester_user_new", password="abcdqwqs11234")
+
 ADMIN_LOGIN = dict(username="watai", password="questioner_1234")
 
 USER_LOGIN_INCORRECT_PASSWORD = dict(username="tester_user", password="abcde122edasda")
@@ -85,11 +97,12 @@ MEETUP = dict(
 )
 
 NEW_MEETUP = dict(
-    location="Test New Location",
-    images='{}',
-    topic="Test New Topic",
-    happeningOn="Mar 5 2019 11:00AM",
-    tags='{Programming, Design}'
+    location="Test Location Two",
+    images='{image3, image4}',
+    topic="Test Topic Two",
+    description="Test description Two",
+    happeningOn="Mar 5 2019 11:00PM",
+    tags='{Art, Entertainment}'
 )
 
 QUESTION = dict(

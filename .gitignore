@@ -14,4 +14,4 @@ venv/
 .env
 
 # Ignore script to create tables in production environment
-migrate_prod.py
+manage_prod.py
