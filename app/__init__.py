@@ -24,7 +24,7 @@ def create_app(config_name):
         "swagger": "3.0",
         "info": {
             "title": "Questioner API",
-            "description": "API for the Questioner application",
+            "description": "API documentation for the Questioner application",
             "version": "2.0.0"
         }
     }
