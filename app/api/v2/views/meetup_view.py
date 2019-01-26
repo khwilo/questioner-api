@@ -59,8 +59,8 @@ class Meetup(Resource):
     @swag_from('docs/meetup_get.yml')
     def get(self, meetup_id):
         """Fetch a single meetup item"""
-        meetup_obj = MeetupModel()
         if meetup_id.isdigit():
+            meetup_obj = MeetupModel()
             meetup = meetup_obj.get_meetup_by_id('id', int(meetup_id))
             if not meetup:
                 abort(404, {
