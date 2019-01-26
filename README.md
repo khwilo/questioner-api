@@ -5,6 +5,7 @@
 ## DESCRIPTION
 
 API implementation for the [Questioner](https://khwilo.github.io/questioner/) application.
+The API documentation can be accessed from [here](https://q-questioner-api.herokuapp.com/apidocs/).
 
 ## Work In Progress
 
@@ -116,4 +117,4 @@ Running the unit test is done using the command `pytest --cov=app/api` or `pytho
 
 ## Heroku
 
-The API is hosted on Heroku at `https://q-questioner-api.herokuapp.com/`. Currently there is no default route that is configured but you can test the API endpoints by providing their paths after the host name. For example, to test user account creation use the URL `https://q-questioner-api.herokuapp.com/auth/register`.
+The API is hosted on Heroku at `https://q-questioner-api.herokuapp.com/`. Currently there is no default route that is configured but you can test the API endpoints by providing their paths after the host name. For example, to test user account creation use the URL `https://q-questioner-api.herokuapp.com/api/v2/auth/signup`.
