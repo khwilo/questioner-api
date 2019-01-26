@@ -28,18 +28,18 @@ API implementation for the [Questioner](https://khwilo.github.io/questioner/) ap
 - API endpoints are prefixed by `/api/v2`.
 - Fields for the date are specified like this `month day year time`. An example date format: `"Jan 10 2019 12:15AM"`
 
-| Method        | Endpoint                                                       | Description              |
-| ------------- | -------------------------------------------------------------- | ------------------------ |
-| POST          | `/auth/signup`                                                 | Create a user record     |
-| POST          | `/auth/login`                                                  | Log in a user            |
-| POST          | `/meetups`                                                     | Create a meetup record   |
-| GET           | `/meetups/<meetup-id>`                                         | Fetch a specific meetup record |
-| GET           | `/meetups/upcoming/`                                           | Fetch all upcoming meetup records |
-| POST          | `/meetups/<meetup-id>/questions`                               | Create a question for a specific meetup |
-| POST          | `/questions/<question_id>/comments`                            | Comment on a specific question |
-| PATCH         | `/questions/<question-id>/upvote`                              | Upvote (_increase votes by 1_) a specific question |
-| PATCH         | `/questions/<question-id>/downvote`                            | Downvote (_decrease votes by 1_) a specific question |
-| POST          | `/meetups/<meetup-id>/rsvps`                                   | Respond to meetup RSVP with a "yes", "no" or "maybe" |
+| Method        | Endpoint                                    | Description              |
+| ------------- | --------------------------------------------| ------------------------ |
+| POST          | `/auth/signup`                              | Create a user record     |
+| POST          | `/auth/login`                               | Log in a user            |
+| POST          | `/meetups`                                  | Create a meetup record   |
+| GET           | `/meetups/<meetup-id>`                      | Fetch a specific meetup record |
+| GET           | `/meetups/upcoming/`                        | Fetch all upcoming meetup records |
+| POST          | `/meetups/<meetup-id>/questions`            | Create a question for a specific meetup |
+| POST          | `/questions/<question_id>/comments`         | Comment on a specific question |
+| PATCH         | `/questions/<question-id>/upvote`           | Upvote (_increase votes by 1_) a specific question |
+| PATCH         | `/questions/<question-id>/downvote`         | Downvote (_decrease votes by 1_) a specific question |
+| POST          | `/meetups/<meetup-id>/rsvps`                | Respond to meetup RSVP with a "yes", "no" or "maybe" |
 
 ## Pre-requisites
 
@@ -86,7 +86,7 @@ Make sure you have Python version 3 and Postgres installed on your local machine
 6. Create the tables by running this script:
 
     ```bash
-    $ python3 migrate.py
+    $ python3 manage.py
     ```
 
 7. Run the Flask application:
