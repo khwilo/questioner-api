@@ -15,6 +15,7 @@ def create_app(config_name):
 
     app.config.from_object(APP_CONFIG[config_name])
     app.config.from_pyfile('config.py')
+    app.config['SWAGGER'] = {'title': 'Questioner API', 'uiversion': 3}
 
     app.register_blueprint(AUTH_BLUEPRINT)
     app.register_blueprint(API_BLUEPRINT)
