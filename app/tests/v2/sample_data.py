@@ -85,11 +85,12 @@ MEETUP = dict(
 )
 
 NEW_MEETUP = dict(
-    location="Test New Location",
-    images='{}',
-    topic="Test New Topic",
-    happeningOn="Mar 5 2019 11:00AM",
-    tags='{Programming, Design}'
+    location="Test Location Two",
+    images='{image3, image4}',
+    topic="Test Topic Two",
+    description="Test description Two",
+    happeningOn="Mar 5 2019 11:00PM",
+    tags='{Art, Entertainment}'
 )
 
 QUESTION = dict(
