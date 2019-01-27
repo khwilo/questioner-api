@@ -54,12 +54,12 @@ class Question(Resource):
         })
         return None
 
-class Upvote(Resource):
-    """Upvotes requests"""
+class Vote(Resource):
+    """Upvote or downvote a question"""
     @jwt_required
     @swag_from('docs/question_upvote.yml')
-    def patch(self, question_id):
-        """Increase the vote of a question by 1"""
+    def patch(self, question_id, vote_type):
+        """Increase / decrease the vote of a question by 1"""
         if question_id.isdigit():
             question_obj = QuestionModel()
             question = question_obj.get_question_by_id('id', int(question_id))
@@ -68,7 +68,17 @@ class Upvote(Resource):
                     "error": "Question with ID '{}' doesn't exist!".format(question_id),
                     "status": 404
                 })
-            question_obj.vote_question("upvote", int(question_id))
+            if vote_type == "upvote":
+                question_obj.vote_question("upvote", int(question_id))
+            elif vote_type == "downvote":
+                question_obj.vote_question("downvote", int(question_id))
+            else:
+                abort(
+                    400, {
+                        "error": "Vote path parameter can either be upvote / downvote",
+                        "status": 400
+                    }
+                )
             updated_question = question_obj.get_question_by_id('id', int(question_id))
             return {
                 "status": 200,
