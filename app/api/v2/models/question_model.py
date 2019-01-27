@@ -37,7 +37,7 @@ class QuestionModel(BaseModel):
         query = None
         if vote_type == "upvote":
             query = "UPDATE questions SET votes = votes + 1 WHERE id={};".format(question_id)
-        else:
+        elif vote_type == "downvote":
             query = "UPDATE questions SET votes = votes - 1 WHERE id={};".format(question_id)
         self.cursor.execute(query)
         self.connection.commit()
