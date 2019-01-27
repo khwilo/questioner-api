@@ -52,8 +52,8 @@ class QuestionTestCase(BaseTestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(response_msg["message"]["error"], "Meetup ID must be an integer value")
 
-    def test_vote_question(self):
-        """Test the API can place a vote on a question"""
+    def test_upvote_question(self):
+        """Test the API can upvote a question"""
         res = self.client().post(
             '/api/v2/auth/login',
             headers=self.get_accept_content_type_headers(),
@@ -72,6 +72,27 @@ class QuestionTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
         self.assertEqual(response_msg["data"][0]["votes"], 1)
+
+    def test_downvote_question(self):
+        """Test the API can downvote a question"""
+        res = self.client().post(
+            '/api/v2/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(ADMIN_LOGIN)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["data"][0]["token"]
+        self.create_meetup(access_token, MEETUP)
+        access_token = self.get_access_token(USER_REGISTRATION, USER_LOGIN)
+        self.create_question(access_token, QUESTION)
+        access_token = self.get_access_token(NEW_USER_REGISTRATION, NEW_USER_LOGIN)
+        res = self.client().patch(
+            '/api/v2/questions/1/downvote',
+            headers=self.get_authentication_headers(access_token)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response_msg["data"][0]["votes"], -1)
 
     def test_vote_with_incorrect_question_id(self):
         """Test validate question ID on voting"""
