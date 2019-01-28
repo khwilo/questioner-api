@@ -58,7 +58,7 @@ class Question(Resource):
 class Vote(Resource):
     """Upvote or downvote a question"""
     @jwt_required
-    @swag_from('docs/question_upvote.yml')
+    @swag_from('docs/question_vote.yml')
     def patch(self, question_id, vote_type):
         """Increase / decrease the vote of a question by 1"""
         if question_id.isdigit():
