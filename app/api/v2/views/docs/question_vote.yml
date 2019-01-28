@@ -1,0 +1,34 @@
+Place a vote on a question
+This endpoint allows for a user to upvote or downvote a question.
+---
+tags:
+- questions
+consumes:
+- application/json
+parameters:
+- in: header
+  name: Authorization
+  description: The jwt token generated during user
+    login example (Bearer excAEyr...)
+  type: string
+  required: true
+- in: path
+  name: question_id
+  type: string
+  required: true
+  description: The id of the question to place a vote to.
+- in: path
+  name: vote_type
+  type: string
+  required: true
+  description: Can either be upvote or downvote
+responses:
+  201:
+    description: Success, the question has been voted successfully
+  400:
+    description: Bad request, question_id must be an integer or the
+      the vote type parameter is neither upvote / downvote
+  404:
+    description: Not found, question with that ID doesn't exist
+  423:
+    description: Locked, a user can only vote once
