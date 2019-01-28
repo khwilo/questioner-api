@@ -8,6 +8,7 @@ from flasgger import swag_from
 from app.api.v2.models.meetup_model import MeetupModel
 from app.api.v2.models.user_model import UserModel
 from app.api.v2.models.question_model import QuestionModel
+from app.api.v2.models.vote_model import VoteModel
 
 class Question(Resource):
     """Question requests"""
@@ -54,22 +55,46 @@ class Question(Resource):
         })
         return None
 
-class Upvote(Resource):
-    """Upvotes requests"""
+class Vote(Resource):
+    """Upvote or downvote a question"""
     @jwt_required
-    @swag_from('docs/question_upvote.yml')
-    def patch(self, question_id):
-        """Increase the vote of a question by 1"""
+    @swag_from('docs/question_vote.yml')
+    def patch(self, question_id, vote_type):
+        """Increase / decrease the vote of a question by 1"""
         if question_id.isdigit():
+            current_user = get_jwt_identity()
+            user_obj = UserModel()
             question_obj = QuestionModel()
+            vote_obj = VoteModel()
             question = question_obj.get_question_by_id('id', int(question_id))
+            user = user_obj.find_user_by_username('username', current_user)
             if not question:
                 abort(404, {
                     "error": "Question with ID '{}' doesn't exist!".format(question_id),
                     "status": 404
                 })
-            question_obj.vote_question("upvote", int(question_id))
-            updated_question = question_obj.get_question_by_id('id', int(question_id))
+            vote_entity = vote_obj.get_vote(int(question_id), user['id'])
+            if not vote_entity:
+                if vote_type == "upvote":
+                    question_obj.vote_question("upvote", int(question_id))
+                elif vote_type == "downvote":
+                    question_obj.vote_question("downvote", int(question_id))
+                else:
+                    abort(
+                        400, {
+                            "error": "Vote path parameter can either be upvote / downvote",
+                            "status": 400
+                        }
+                    )
+                updated_question = question_obj.get_question_by_id('id', int(question_id))
+                vote_obj.save(question_id, user['id'])
+            else:
+                abort(
+                    423, {
+                        "error": "A user can only vote once",
+                        "status": 423
+                    }
+                )
             return {
                 "status": 200,
                 "data": [
