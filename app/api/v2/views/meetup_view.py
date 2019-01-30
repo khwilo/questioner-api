@@ -32,21 +32,27 @@ class MeetupList(Resource):
                 "error": "This action required loggin in!",
                 "status": 401
             })
-
+        meetup_time = MeetupModel.convert_string_to_date(data['happeningOn'])
+        venue = data['location']
         if user['is_admin']:
             meetup = MeetupModel(
-                location=data['location'],
+                location=venue,
                 images=data['images'],
                 topic=data['topic'],
                 description=data['description'],
-                happening_on=MeetupModel.convert_string_to_date(data['happeningOn']),
+                happening_on=meetup_time,
                 tags=data['tags']
             )
-            meetup.save()
-            return {
-                'status': 201,
-                'message': "Meetup created successfully"
-            }, 201
+            if not meetup.find_meetup_by_location_and_happening_time(venue, meetup_time):
+                meetup.save()
+                return {
+                    'status': 201,
+                    'message': "Meetup created successfully"
+                }, 201
+            abort(409, {
+                "error": "Meetup with the same location and time already exists!",
+                "status": 409
+            })
         abort(403, {
             "error": "Only administrators can create a meetup",
             "status": 403
@@ -122,7 +128,7 @@ class UpcomingMeetup(Resource):
                 "error": "No meetup is available",
                 "status": 404
             })
-        sorted_meetups = sorted(meetups, key=lambda item: item['happening_on'], reverse=True)
+        sorted_meetups = sorted(meetups, key=lambda item: item['happening_on'])
         return {
             'status': 200,
             'data': [MeetupModel.to_dict(meetup) for meetup in sorted_meetups]

@@ -45,6 +45,17 @@ class MeetupModel(BaseModel):
         """Delete a meetup given its ID"""
         self.delete_one(TABLE_NAME, meetup_id, value)
 
+    def find_meetup_by_location_and_happening_time(self, location, happening_on):
+        """Find a meetup by location and the happening time"""
+        result = self.find_item_by_two_columns(
+            tablename=TABLE_NAME,
+            column1='m_location',
+            value1=location,
+            column2='happening_on ',
+            value2=happening_on
+        )
+        return result
+
     @staticmethod
     def convert_string_to_date(string_date):
         """Convert string object to datetime object"""

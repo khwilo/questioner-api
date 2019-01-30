@@ -13,8 +13,8 @@ class MeetupTestCase(BaseTestCase):
             headers=self.get_accept_content_type_headers(),
             data=json.dumps(ADMIN_LOGIN)
         )
-        respone_msg = json.loads(res.data.decode("UTF-8"))
-        access_token = respone_msg["data"][0]["token"]
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["data"][0]["token"]
         res = self.client().post(
             '/api/v2/meetups',
             headers=self.get_authentication_headers(access_token),
@@ -53,7 +53,7 @@ class MeetupTestCase(BaseTestCase):
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(response_msg["data"]["location"], "Test Location")
+        self.assertEqual(response_msg["data"]["location"], "PAC")
 
 
     def test_fetch_incorrect_meetup_id(self):
@@ -96,7 +96,7 @@ class MeetupTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
         self.assertTrue(response_msg["data"])
-        self.assertTrue(response_msg["data"][0], NEW_MEETUP)
+        self.assertEqual(response_msg["data"][0]["location"], MEETUP["location"])
 
     def test_fetch_empty_meetup_list(self):
         """Test the API cannot fetch data from an empty meetup list data store"""
@@ -173,4 +173,33 @@ class MeetupTestCase(BaseTestCase):
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 403)
-        self.assertEqual(response_msg["message"]["error"], "Only administrators can delete a meetup!")
+        self.assertEqual(
+            response_msg["message"]["error"],
+            "Only administrators can delete a meetup!"
+        )
+
+    def test_duplicate_meetup_creation(self):
+        """Test that a meetup with a duplicate location and time cannot be created"""
+        res = self.client().post(
+            '/api/v2/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(ADMIN_LOGIN)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["data"][0]["token"]
+        res = self.client().post(
+            '/api/v2/meetups',
+            headers=self.get_authentication_headers(access_token),
+            data=json.dumps(MEETUP)
+        )
+        res = self.client().post(
+            '/api/v2/meetups',
+            headers=self.get_authentication_headers(access_token),
+            data=json.dumps(MEETUP)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 409)
+        self.assertEqual(
+            response_msg["message"]["error"],
+            "Meetup with the same location and time already exists!"
+        )

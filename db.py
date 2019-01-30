@@ -34,7 +34,7 @@ def create_table_queries():
     images VARCHAR [] DEFAULT '{}',
     topic VARCHAR NOT NULL,
     m_description VARCHAR(200) NOT NULL,
-    happening_on DATE NOT NULL,
+    happening_on TIMESTAMP NOT NULL,
     tags VARCHAR [] DEFAULT '{}'
     )"""
 

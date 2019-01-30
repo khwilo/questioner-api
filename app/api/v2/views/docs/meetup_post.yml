@@ -46,3 +46,5 @@ responses:
     description: Success, the meetup created successfully
   403:
     description: Forbidden, Only administrators can create a meetup
+  409:
+    description: Conflict, a meetup with the same location and time already exists!
