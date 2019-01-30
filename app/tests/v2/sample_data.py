@@ -88,7 +88,7 @@ ADMIN_LOGIN = dict(username="watai", password="questioner_1234")
 USER_LOGIN_INCORRECT_PASSWORD = dict(username="tester_user", password="abcde122edasda")
 
 MEETUP = dict(
-    location="Test Location",
+    location="PAC",
     images='{image1, image2}',
     topic="Test Topic",
     description="Test description",
@@ -97,7 +97,7 @@ MEETUP = dict(
 )
 
 NEW_MEETUP = dict(
-    location="Test Location Two",
+    location="Andela",
     images='{image3, image4}',
     topic="Test Topic Two",
     description="Test description Two",
