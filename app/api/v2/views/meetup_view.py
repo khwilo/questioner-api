@@ -128,7 +128,7 @@ class UpcomingMeetup(Resource):
                 "error": "No meetup is available",
                 "status": 404
             })
-        sorted_meetups = sorted(meetups, key=lambda item: item['happening_on'], reverse=True)
+        sorted_meetups = sorted(meetups, key=lambda item: item['happening_on'])
         return {
             'status': 200,
             'data': [MeetupModel.to_dict(meetup) for meetup in sorted_meetups]
