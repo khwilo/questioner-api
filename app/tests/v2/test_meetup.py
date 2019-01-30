@@ -53,7 +53,7 @@ class MeetupTestCase(BaseTestCase):
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(response_msg["data"]["location"], "Test Location")
+        self.assertEqual(response_msg["data"]["location"], "PAC")
 
 
     def test_fetch_incorrect_meetup_id(self):
@@ -96,7 +96,7 @@ class MeetupTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 200)
         self.assertTrue(response_msg["data"])
-        self.assertTrue(response_msg["data"][0], NEW_MEETUP)
+        self.assertEqual(response_msg["data"][0]["location"], MEETUP["location"])
 
     def test_fetch_empty_meetup_list(self):
         """Test the API cannot fetch data from an empty meetup list data store"""
