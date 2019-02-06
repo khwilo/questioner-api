@@ -1,5 +1,6 @@
 '''Application entry module'''
 from flask import Flask
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
 from flasgger import Swagger
@@ -12,6 +13,7 @@ def create_app(config_name):
     '''Instantiate the Flask application'''
     app = Flask(__name__, instance_relative_config=True)
     jwt = JWTManager(app)
+    CORS(app)
 
     app.config.from_object(APP_CONFIG[config_name])
     app.config.from_pyfile('config.py')
