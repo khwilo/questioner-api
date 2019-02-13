@@ -93,7 +93,7 @@ class UserTestCase(BaseTestCase):
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 409)
-        self.assertEqual(response_msg['message'], "Username 'tester_user' already taken!")
+        self.assertEqual(response_msg['message']['error'], "Username 'tester_user' already taken!")
 
     def test_duplicate_email(self):
         '''Test a user account with an existing email address cannot be created'''
@@ -110,7 +110,7 @@ class UserTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 409)
         self.assertEqual(
-            response_msg['message'], "Email address 'tester@example.com' already in use!")
+            response_msg['message']['error'], "Email address 'tester@example.com' already in use!")
 
     def test_user_login(self):
         '''Test the API can log in a user'''
