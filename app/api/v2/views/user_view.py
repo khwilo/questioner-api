@@ -52,6 +52,7 @@ class UserRegistration(Resource):
 
         # Validate phonenumber
         ValidationHandler.validate_field_empty('PhoneNumber', data['phoneNumber'])
+        ValidationHandler.validate_phone_number(data['phoneNumber'])
 
         # Validate the username
         ValidationHandler.validate_correct_username(username)
