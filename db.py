@@ -20,7 +20,7 @@ def create_table_queries():
     lastname VARCHAR(50) NOT NULL,
     othername VARCHAR(50) NOT NULL,
     email VARCHAR(254) UNIQUE NOT NULL,
-    phone_number VARCHAR(15) NOT NULL,
+    phone_number VARCHAR(12) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     registered TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     is_admin BOOLEAN NOT NULL DEFAULT FALSE,

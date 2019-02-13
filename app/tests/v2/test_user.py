@@ -4,7 +4,8 @@ import json
 from app.tests.v2.test_base import BaseTestCase
 from app.tests.v2.sample_data import USER_REGISTRATION, USER_DUPLICATE_USERNAME, \
 USER_DUPLICATE_EMAIL, USER_DIGIT_USERNAME, USER_EMPTY_USERNAME, USER_EMPTY_PASSWORD, \
-USER_WRONG_EMAIL_FORMAT, USER_LOGIN, ADMIN_LOGIN, USER_LOGIN_INCORRECT_PASSWORD
+USER_WRONG_EMAIL_FORMAT, USER_LOGIN, ADMIN_LOGIN, USER_LOGIN_INCORRECT_PASSWORD, \
+USER_WRONG_PHONE_FORMAT
 
 class UserTestCase(BaseTestCase):
     '''Test definitions for a user'''
@@ -93,7 +94,7 @@ class UserTestCase(BaseTestCase):
         )
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 409)
-        self.assertEqual(response_msg['message'], "Username 'tester_user' already taken!")
+        self.assertEqual(response_msg['message']['error'], "Username 'tester_user' already taken!")
 
     def test_duplicate_email(self):
         '''Test a user account with an existing email address cannot be created'''
@@ -110,7 +111,7 @@ class UserTestCase(BaseTestCase):
         response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 409)
         self.assertEqual(
-            response_msg['message'], "Email address 'tester@example.com' already in use!")
+            response_msg['message']['error'], "Email address 'tester@example.com' already in use!")
 
     def test_user_login(self):
         '''Test the API can log in a user'''
@@ -172,4 +173,20 @@ class UserTestCase(BaseTestCase):
         self.assertEqual(
             response_msg["message"]["error"],
             "Username and password not found!"
+        )
+
+    def test_wrong_phone_number(self):
+        """
+        Test the API cannot register a user with an incorrect phone number format
+        """
+        res = self.client().post(
+            '/api/v2/auth/signup',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(USER_WRONG_PHONE_FORMAT)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(
+            response_msg["message"]["error"],
+            "Phone number is invalid. Example format '123-456-7890'"
         )

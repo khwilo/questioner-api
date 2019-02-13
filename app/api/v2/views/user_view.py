@@ -52,6 +52,7 @@ class UserRegistration(Resource):
 
         # Validate phonenumber
         ValidationHandler.validate_field_empty('PhoneNumber', data['phoneNumber'])
+        ValidationHandler.validate_phone_number(data['phoneNumber'])
 
         # Validate the username
         ValidationHandler.validate_correct_username(username)
@@ -63,10 +64,16 @@ class UserRegistration(Resource):
         ValidationHandler.validate_password(password)
 
         if user.find_user_by_username('username', username):
-            abort(409, "Username '{}' already taken!".format(username))
+            abort(409, {
+                "error": "Username '{}' already taken!".format(username),
+                "status": 409
+            })
 
         if user.find_user_by_email('email', email):
-            abort(409, "Email address '{}' already in use!".format(email))
+            abort(409, {
+                "error": "Email address '{}' already in use!".format(email),
+                "status": 409
+            })
 
         user.add_user()
 
