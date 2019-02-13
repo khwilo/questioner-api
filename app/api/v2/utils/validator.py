@@ -1,4 +1,6 @@
 '''Module for handling validations'''
+import re
+
 from email_validator import validate_email, EmailNotValidError
 from flask import abort
 
@@ -61,5 +63,15 @@ class ValidationHandler:
         except EmailNotValidError as email_valid_error:
             abort(400, {
                 "error": str(email_valid_error),
+                "status": 400
+            })
+
+    @staticmethod
+    def validate_phone_number(phone_number):
+        '''Validation for a phone number'''
+        pattern = re.compile("[0-9]{3}-[0-9]{3}-[0-9]{4}")
+        if not pattern.match(phone_number):
+            abort(400, {
+                "error": "Phone number is invalid. Example format '123-456-7890'",
                 "status": 400
             })
