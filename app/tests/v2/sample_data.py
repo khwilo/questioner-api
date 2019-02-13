@@ -4,7 +4,7 @@ USER_REGISTRATION = dict(
     lastname="test_last",
     othername="test_other",
     email="tester@example.com",
-    phoneNumber="0700000000",
+    phoneNumber="071-123-4567",
     username="tester_user",
     password="12345abcsde"
 )
@@ -14,7 +14,7 @@ NEW_USER_REGISTRATION = dict(
     lastname="test_last new",
     othername="test_other new",
     email="testernew@example.com",
-    phoneNumber="0711111111",
+    phoneNumber="072-345-6789",
     username="tester_user_new",
     password="abcdqwqs11234"
 )
@@ -24,7 +24,7 @@ USER_DUPLICATE_USERNAME = dict(
     lastname="test_last",
     othername="test_other",
     email="test@example.com",
-    phoneNumber="0700000000",
+    phoneNumber="073-456-7890",
     username="tester_user",
     password="12345abcsde"
 )
@@ -34,7 +34,7 @@ USER_DUPLICATE_EMAIL = dict(
     lastname="test_last",
     othername="test_other",
     email="tester@example.com",
-    phoneNumber="0700000000",
+    phoneNumber="074-567-8901",
     username="tes_user",
     password="12345abcsde"
 )
@@ -44,7 +44,7 @@ USER_DIGIT_USERNAME = dict(
     lastname="test_last",
     othername="test_other",
     email="test@example.com",
-    phoneNumber="0700000000",
+    phoneNumber="075-678-9012",
     username="1234",
     password="12345abcsde"
 )
@@ -54,7 +54,7 @@ USER_EMPTY_USERNAME = dict(
     lastname="test_last",
     othername="test_other",
     email="test@example.com",
-    phoneNumber="0700000000",
+    phoneNumber="076-789-0123",
     username="",
     password="12345abcsde"
 )
@@ -64,7 +64,7 @@ USER_EMPTY_PASSWORD = dict(
     lastname="test_last",
     othername="test_other",
     email="test@example.com",
-    phoneNumber="0700000000",
+    phoneNumber="077-890-1234",
     username="test_user",
     password=""
 )
@@ -74,7 +74,17 @@ USER_WRONG_EMAIL_FORMAT = dict(
     lastname="test_last",
     othername="test_other",
     email="testexample.com",
-    phoneNumber="0700000000",
+    phoneNumber="078-901-2345",
+    username="test",
+    password="12345abcsde"
+)
+
+USER_WRONG_PHONE_FORMAT = dict(
+    firstname="test_first",
+    lastname="test_last",
+    othername="test_other",
+    email="test@example.com",
+    phoneNumber="0789012345",
     username="test",
     password="12345abcsde"
 )
