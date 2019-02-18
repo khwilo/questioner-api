@@ -20,15 +20,15 @@ class MeetupModel(BaseModel):
         """Add a new meetup to the data store"""
         query = """INSERT INTO meetups(
         m_location, images, topic, m_description, happening_on, tags) VALUES(
-        '{}', '{}', '{}', '{}', '{}', '{}')""".format(
+        %s, %s, %s, %s, %s, %s);"""
+        self.cursor.execute(query, (
             self.location,
             self.images,
             self.topic,
             self.description,
             self.happening_on,
             self.tags
-        )
-        self.cursor.execute(query)
+        ))
         self.connection.commit()
 
     def get_meetup_by_id(self, meetup_id, value):
