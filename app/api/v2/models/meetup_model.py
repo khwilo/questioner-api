@@ -59,7 +59,7 @@ class MeetupModel(BaseModel):
     @staticmethod
     def convert_string_to_date(string_date):
         """Convert string object to datetime object"""
-        return str(datetime.strptime(string_date, '%b %d %Y %I:%M%p'))
+        return str(datetime.strptime(string_date, '%b %d %Y, %I:%M %p'))
 
     @staticmethod
     def to_dict(result):
