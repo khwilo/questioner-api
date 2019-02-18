@@ -20,7 +20,9 @@ class MeetupTestCase(BaseTestCase):
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(MEETUP)
         )
+        response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 201)
+        self.assertEqual(response_msg["message"], "Meetup created successfully")
 
     def test_wrong_meetup_datetime(self):
         """Validate meetup datetime input value"""
@@ -36,7 +38,12 @@ class MeetupTestCase(BaseTestCase):
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(WRONG_MEETUP_DATETIME)
         )
+        response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 400)
+        self.assertEqual(
+            response_msg["message"]["error"],
+            "Meetup time doesn't match the format 'Mon DD YYYY, HH:MI AM/PM'"
+        )
 
     def test_user_cannot_create_meetup(self):
         """Test a regular user cannot create a meetup"""
