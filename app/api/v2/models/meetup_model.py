@@ -10,11 +10,11 @@ class MeetupModel(BaseModel):
     def __init__(self, **kwargs):
         super().__init__()
         self.location = kwargs.get('location')
-        self.images = kwargs.get('images')
+        self.images = "{}" if not kwargs.get('images') else kwargs.get('images')
         self.topic = kwargs.get('topic')
         self.description = kwargs.get('description')
         self.happening_on = kwargs.get('happening_on')
-        self.tags = kwargs.get('tags')
+        self.tags = "{}" if not kwargs.get('tags') else kwargs.get('tags')
 
     def save(self):
         """Add a new meetup to the data store"""
