@@ -32,7 +32,12 @@ class MeetupList(Resource):
                 "error": "This action required loggin in!",
                 "status": 401
             })
-        meetup_time = MeetupModel.convert_string_to_date(data['happeningOn'])
+        try:
+            meetup_time = MeetupModel.convert_string_to_date(data['happeningOn'])
+        except ValueError:
+            abort(400, {
+                "error": "Meetup time doesn't match the format 'Mon DD YYYY, HH:MI AM/PM'"
+            })
         venue = data['location']
         if user['is_admin']:
             meetup = MeetupModel(
