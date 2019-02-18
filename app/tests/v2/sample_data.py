@@ -115,6 +115,16 @@ NEW_MEETUP = dict(
     tags='{Art, Entertainment}'
 )
 
+WRONG_MEETUP_DATETIME = dict(
+    location="Andela",
+    images='{image3, image4}',
+    topic="Test Topic Two",
+    description="Test description Two",
+    happeningOn="Jun 25 2019 9:00AM",
+    tags='{Art, Entertainment}'
+)
+
+
 QUESTION = dict(
     title="test title",
     body="test body"
