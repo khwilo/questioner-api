@@ -102,7 +102,7 @@ MEETUP = dict(
     images='{image1, image2}',
     topic="Test Topic",
     description="Test description",
-    happeningOn="Jan 10 2019 3:30PM",
+    happeningOn="Jan 10 2019, 3:30 PM",
     tags='{programming, design}'
 )
 
@@ -111,9 +111,19 @@ NEW_MEETUP = dict(
     images='{image3, image4}',
     topic="Test Topic Two",
     description="Test description Two",
-    happeningOn="Mar 5 2019 11:00PM",
+    happeningOn="Mar 5 2019, 11:00 PM",
     tags='{Art, Entertainment}'
 )
+
+WRONG_MEETUP_DATETIME = dict(
+    location="Andela",
+    images='{image3, image4}',
+    topic="Test Topic Two",
+    description="Test description Two",
+    happeningOn="Jun 25 2019 9:00AM",
+    tags='{Art, Entertainment}'
+)
+
 
 QUESTION = dict(
     title="test title",

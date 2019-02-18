@@ -1,7 +1,7 @@
 """This module represents tests for the meetup entity"""
 import json
 from app.tests.v2.sample_data import ADMIN_LOGIN, MEETUP, USER_REGISTRATION, \
-USER_LOGIN, NEW_MEETUP
+USER_LOGIN, NEW_MEETUP, WRONG_MEETUP_DATETIME
 from app.tests.v2.test_base import BaseTestCase
 
 class MeetupTestCase(BaseTestCase):
@@ -20,7 +20,30 @@ class MeetupTestCase(BaseTestCase):
             headers=self.get_authentication_headers(access_token),
             data=json.dumps(MEETUP)
         )
+        response_msg = json.loads(res.data.decode("UTF-8"))
         self.assertEqual(res.status_code, 201)
+        self.assertEqual(response_msg["message"], "Meetup created successfully")
+
+    def test_wrong_meetup_datetime(self):
+        """Validate meetup datetime input value"""
+        res = self.client().post(
+            '/api/v2/auth/login',
+            headers=self.get_accept_content_type_headers(),
+            data=json.dumps(ADMIN_LOGIN)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        access_token = response_msg["data"][0]["token"]
+        res = self.client().post(
+            '/api/v2/meetups',
+            headers=self.get_authentication_headers(access_token),
+            data=json.dumps(WRONG_MEETUP_DATETIME)
+        )
+        response_msg = json.loads(res.data.decode("UTF-8"))
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(
+            response_msg["message"]["error"],
+            "Meetup time doesn't match the format 'Mon DD YYYY, HH:MI AM/PM'"
+        )
 
     def test_user_cannot_create_meetup(self):
         """Test a regular user cannot create a meetup"""
