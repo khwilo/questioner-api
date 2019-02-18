@@ -44,6 +44,8 @@ parameters:
 responses:
   201:
     description: Success, the meetup created successfully
+  400:
+    description: Bad Request, Meetup time doesn't match the format 'Mon DD YYYY, HH:MI AM/PM'
   403:
     description: Forbidden, Only administrators can create a meetup
   409:
