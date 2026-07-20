@@ -28,7 +28,7 @@ psycopg2==2.7.6.1
 py==1.7.0
 PyJWT==2.4.0
 pylint==2.2.2
-pytest==4.1.0
+pytest==9.0.3
 pytest-cov==2.6.1
 python-dotenv==0.10.1
 pytz==2018.9
